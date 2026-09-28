@@ -2,7 +2,7 @@
 ### Universidad Tecnológica de Pereira (UTP)
 **Facultad de Ciencias Básicas • Departamento de Matemáticas**  
 **Asignatura:** Matemáticas II (CB215) — Grupo 403  
-**Autor:** Maikol Andrés Chito
+**Autor:** Michael Naranjo Chito
 **Evaluación Parcial 1 — Semestre 2026-2**
 
 ---
