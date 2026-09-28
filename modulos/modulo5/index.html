@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 5: Integral Definida y Área | UTP Cálculo Integral</title>
+  
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../index.html" class="brand-wrapper">
+        <div class="brand-logo-badge">∫</div>
+        <div class="brand-text">
+          <h1>Cálculo Integral + Software</h1>
+          <span>Universidad Tecnológica de Pereira</span>
+        </div>
+      </a>
+      <div class="nav-actions">
+        <a href="../../index.html" class="btn btn-secondary">
+          <span>← Volver al Menú Principal</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Header del Módulo -->
+  <div class="module-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">Inicio</a>
+        <span>/</span>
+        <span>Fase 1: Fundamentos</span>
+        <span>/</span>
+        <span style="color: var(--text-main);">Módulo 5: Integral Definida y Área bajo la Curva</span>
+      </div>
+      <div class="module-header-content">
+        <div class="module-title-box">
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem;">
+            <span class="module-index">MÓDULO 05</span>
+            <span class="phase-badge badge-live">● Fase 1 Activo</span>
+          </div>
+          <h1>Integral Definida y Área bajo la Curva</h1>
+          <p class="module-subtitle">Teorema Fundamental del Cálculo (TFC), cálculo analítico de antiderivadas evaluadas en los límites de integración y cálculo de áreas entre curvas intersectadas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido -->
+  <main class="container">
+    <div class="module-layout-grid">
+
+      <!-- Panel Izquierdo: Simulador Interactivo -->
+      <section class="simulator-panel">
+        <div class="panel-header">
+          <h2><span>⚡</span> Visualizador de Área con Plotly</h2>
+          <span style="font-size:0.8rem; color:var(--text-muted); font-family:var(--font-mono);">Definite Area Engine</span>
+        </div>
+
+        <div class="controls-card">
+          <div class="control-group">
+            <label for="modeSelect" class="control-label">Modo de Visualización:</label>
+            <select id="modeSelect" class="form-select">
+              <option value="single">Área bajo una curva: f(x)</option>
+              <option value="between">Área entre dos curvas: f(x) = 2x y g(x) = x² (Taller Ej 4)</option>
+            </select>
+          </div>
+
+          <div id="singleControls" class="control-group">
+            <label for="functionSelect" class="control-label">Función f(x):</label>
+            <select id="functionSelect" class="form-select">
+              <option value="3x^2-2x+1">f(x) = 3x² - 2x + 1 (Taller Ej 1)</option>
+              <option value="x^2">f(x) = x²</option>
+              <option value="cos(x)">f(x) = cos(x) (Taller Ej 3)</option>
+              <option value="exp(x)">f(x) = e^x (Taller Ej 5)</option>
+              <option value="1/x">f(x) = 1/x (Taller Ej 2)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Límite Inferior (a):</span>
+              <span id="aValDisplay" class="control-value">a = 0.0</span>
+            </div>
+            <input type="range" id="aSlider" class="form-range" min="0" max="3" value="0" step="0.1">
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Límite Superior (b):</span>
+              <span id="bValDisplay" class="control-value">b = 2.0</span>
+            </div>
+            <input type="range" id="bSlider" class="form-range" min="0.5" max="4" value="2.0" step="0.1">
+          </div>
+        </div>
+
+        <!-- Métricas -->
+        <div class="results-grid">
+          <div class="metric-box accent-value">
+            <div class="metric-title">Integral ∫ f(x) dx</div>
+            <div id="integralVal" class="metric-value">6.000000</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Área Geométrica Total</div>
+            <div id="areaVal" class="metric-value">6.000000</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Límite a</div>
+            <div id="aDisp" class="metric-value">0.00</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Límite b</div>
+            <div id="bDisp" class="metric-value">2.00</div>
+          </div>
+        </div>
+
+        <!-- Gráfico Plotly -->
+        <div id="plotlyChart" class="plot-container"></div>
+      </section>
+
+      <!-- Panel Derecho: Teoría y Ejercicios -->
+      <section class="theory-panel">
+        <div class="panel-header">
+          <h2><span>📖</span> Fundamentación Teórica</h2>
+          <span style="font-size:0.8rem; color:var(--accent-cyan); font-weight:600;">UTP CB215</span>
+        </div>
+
+        <div class="theory-text">
+          <p>
+            El <strong>Teorema Fundamental del Cálculo (TFC)</strong> establece el nexo crucial entre el cálculo diferencial y el cálculo integral.
+          </p>
+
+          <div class="formula-box">
+            <strong>TFC Parte 1 (Función de Acumulación):</strong><br>
+            Si $f$ es continua en $[a, b]$, entonces $g(x) = \int_a^x f(t)\,dt$ es diferenciable y:
+            $$g'(x) = \frac{d}{dx} \left[ \int_a^x f(t)\,dt \right] = f(x)$$
+          </div>
+
+          <div class="formula-box amber">
+            <strong>TFC Parte 2 (Regla de Barrow):</strong><br>
+            Si $f$ es continua en $[a, b]$ y $F$ es cualquier antiderivada de $f$ (es decir, $F' = f$), entonces:
+            $$\int_a^b f(x)\,dx = F(b) - F(a) = \left[ F(x) \right]_a^b$$
+          </div>
+
+          <p>
+            <strong>Área entre dos Curvas:</strong> Si $f(x) \ge g(x)$ en el intervalo $[a, b]$, el área de la región comprendida entre ambas curvas está dada por:
+          </p>
+
+          <div class="formula-box purple">
+            $$A = \int_a^b \left[ f(x) - g(x) \right]\,dx$$
+          </div>
+        </div>
+
+        <!-- Ejercicios Resueltos Paso a Paso -->
+        <div class="examples-section">
+          <h3><span>📝</span> Ejercicios Resueltos del Taller</h3>
+
+          <!-- Ejercicio 1 -->
+          <div class="example-card">
+            <div class="example-header">
+              <span>Ejercicio 1: $\int_0^2 (3x^2 - 2x + 1) dx$</span>
+              <span style="color:var(--text-dim); font-size:0.8rem;">Sección 1.5</span>
+            </div>
+            <div class="example-step">
+              <strong>Paso 1 (Antiderivada general):</strong><br>
+              Integrando término a término mediante la regla de potencias:
+              $$F(x) = \int (3x^2 - 2x + 1) dx = 3\left(\frac{x^3}{3}\right) - 2\left(\frac{x^2}{2}\right) + x = x^3 - x^2 + x$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 2 (Evaluación en el límite superior $b = 2$):</strong><br>
+              $$F(2) = (2)^3 - (2)^2 + (2) = 8 - 4 + 2 = 6$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 3 (Evaluación en el límite inferior $a = 0$):</strong><br>
+              $$F(0) = (0)^3 - (0)^2 + (0) = 0$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 4 (Aplicación del TFC):</strong><br>
+              $$\int_0^2 (3x^2 - 2x + 1) dx = F(2) - F(0) = 6 - 0 = \mathbf{6.000000}$$
+            </div>
+          </div>
+
+          <!-- Ejercicio 2 -->
+          <div class="example-card">
+            <div class="example-header">
+              <span>Ejercicio 2: Área acotada por $f(x) = x^2$ y $g(x) = 2x$</span>
+              <span style="color:var(--text-dim); font-size:0.8rem;">Sección 1.5</span>
+            </div>
+            <div class="example-step">
+              <strong>Paso 1 (Puntos de Intersección):</strong><br>
+              Igualamos las funciones para hallar los límites $a$ y $b$:
+              $$x^2 = 2x \implies x^2 - 2x = 0 \implies x(x - 2) = 0 \implies x_1 = 0,\quad x_2 = 2$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 2 (Identificación de curva superior):</strong><br>
+              En el intervalo $(0, 2)$, evaluamos en $x = 1$:
+              $g(1) = 2(1) = 2$, $f(1) = (1)^2 = 1$.
+              Como $2 > 1$, la recta $g(x) = 2x$ está por encima de la parábola $f(x) = x^2$.
+            </div>
+            <div class="example-step">
+              <strong>Paso 3 (Planteamiento de la integral de área):</strong><br>
+              $$A = \int_0^2 [g(x) - f(x)] dx = \int_0^2 (2x - x^2) dx$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 4 (Cálculo):</strong><br>
+              $$A = \left[ x^2 - \frac{x^3}{3} \right]_0^2 = \left( 2^2 - \frac{2^3}{3} \right) - 0 = 4 - \frac{8}{3} = \frac{12 - 8}{3} = \mathbf{\frac{4}{3}} \approx \mathbf{1.333333}$$
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <h4>Universidad Tecnológica de Pereira</h4>
+        <p>Facultad de Ciencias Básicas • Departamento de Matemáticas • CB215 Matemáticas II</p>
+      </div>
+      <div class="footer-links">
+        <a href="../modulo4/index.html">← Módulo 4: Simpson</a>
+        <a href="../../index.html">Menú Principal</a>
+        <a href="../modulo6/index.html">Siguiente: Integración Directa →</a>
+      </div>
+    </div>
+    <div class="footer-bottom container">
+      <p>© 2026 Plataforma de Cálculo Integral + Software - UTP. Desarrollado para Evaluación Parcial 1.</p>
+    </div>
+  </footer>
+
+  <script src="../../js/utils.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const modeSelect = document.getElementById('modeSelect');
+      const singleControls = document.getElementById('singleControls');
+      const functionSelect = document.getElementById('functionSelect');
+      const aSlider = document.getElementById('aSlider');
+      const bSlider = document.getElementById('bSlider');
+      const aValDisplay = document.getElementById('aValDisplay');
+      const bValDisplay = document.getElementById('bValDisplay');
+
+      const integralValEl = document.getElementById('integralVal');
+      const areaValEl = document.getElementById('areaVal');
+      const aDispEl = document.getElementById('aDisp');
+      const bDispEl = document.getElementById('bDisp');
+
+      function updateSimulation() {
+        const mode = modeSelect.value;
+        let a = parseFloat(aSlider.value);
+        let b = parseFloat(bSlider.value);
+
+        // Asegurar orden a <= b
+        if (a > b) {
+          const temp = a;
+          a = b;
+          b = temp;
+        }
+
+        aValDisplay.textContent = `a = ${a.toFixed(1)}`;
+        bValDisplay.textContent = `b = ${b.toFixed(1)}`;
+        aDispEl.textContent = a.toFixed(2);
+        bDispEl.textContent = b.toFixed(2);
+
+        const traces = [];
+
+        if (mode === 'single') {
+          singleControls.style.display = 'block';
+          const fnKey = functionSelect.value;
+          const fnObj = UTPMath.FUNCTIONS_CATALOG[fnKey];
+
+          // Curva completa
+          const xMin = Math.min(a - 0.5, 0);
+          const xMax = b + 1.0;
+          const curveX = [];
+          const curveY = [];
+          const step = (xMax - xMin) / 250;
+
+          for (let x = xMin; x <= xMax; x += step) {
+            curveX.push(x);
+            curveY.push(fnObj.fn(x));
+          }
+
+          traces.push({
+            x: curveX,
+            y: curveY,
+            type: 'scatter',
+            mode: 'lines',
+            name: fnObj.name,
+            line: { color: UTPMath.THEME.accentCyan, width: 3 }
+          });
+
+          // Región sombreada entre a y b
+          const shadeX = [];
+          const shadeY = [];
+          const shadeStep = (b - a) / 100;
+          for (let x = a; x <= b; x += shadeStep) {
+            shadeX.push(x);
+            shadeY.push(fnObj.fn(x));
+          }
+
+          traces.push({
+            x: [a, ...shadeX, b, a],
+            y: [0, ...shadeY, 0, 0],
+            fill: 'toself',
+            fillcolor: 'rgba(56, 189, 248, 0.3)',
+            mode: 'lines',
+            name: `Área en [${a.toFixed(1)}, ${b.toFixed(1)}]`,
+            line: { color: '#38bdf8', width: 2 }
+          });
+
+          const integralVal = fnObj.exactDefinite(a, b);
+          integralValEl.textContent = UTPMath.formatNum(integralVal);
+          areaValEl.textContent = UTPMath.formatNum(Math.abs(integralVal));
+
+          const layout = UTPMath.getPlotlyLayout({
+            title: `Integral Definida de ${fnObj.name} en [${a.toFixed(1)}, ${b.toFixed(1)}]`,
+            xTitle: 'x',
+            yTitle: 'f(x)'
+          });
+
+          Plotly.react('plotlyChart', traces, layout, { responsive: true, displayModeBar: false });
+
+        } else {
+          // Modo entre curvas: f(x) = 2x y g(x) = x^2
+          singleControls.style.display = 'none';
+
+          const f = (x) => 2 * x;
+          const g = (x) => x * x;
+
+          const xMin = -0.5;
+          const xMax = 2.5;
+          const curveX = [];
+          const curveY1 = [];
+          const curveY2 = [];
+          const step = (xMax - xMin) / 200;
+
+          for (let x = xMin; x <= xMax; x += step) {
+            curveX.push(x);
+            curveY1.push(f(x));
+            curveY2.push(g(x));
+          }
+
+          // Traza recta f(x) = 2x
+          traces.push({
+            x: curveX,
+            y: curveY1,
+            type: 'scatter',
+            mode: 'lines',
+            name: 'Recta Superior: f(x) = 2x',
+            line: { color: '#38bdf8', width: 2.5 }
+          });
+
+          // Traza parábola g(x) = x^2
+          traces.push({
+            x: curveX,
+            y: curveY2,
+            type: 'scatter',
+            mode: 'lines',
+            name: 'Parábola Inferior: g(x) = x²',
+            line: { color: '#f43f5e', width: 2.5 }
+          });
+
+          // Región de área entre las curvas en [a, b]
+          const shadeX = [];
+          const shadeTop = [];
+          const shadeBottom = [];
+          const sStep = (b - a) / 80;
+
+          for (let x = a; x <= b; x += sStep) {
+            shadeX.push(x);
+            shadeTop.push(f(x));
+            shadeBottom.push(g(x));
+          }
+
+          // Polígono cerrado
+          const polyX = [...shadeX, ...shadeX.slice().reverse()];
+          const polyY = [...shadeTop, ...shadeBottom.slice().reverse()];
+
+          traces.push({
+            x: polyX,
+            y: polyY,
+            fill: 'toself',
+            fillcolor: 'rgba(16, 185, 129, 0.35)',
+            mode: 'lines',
+            name: 'Región Acotada [f(x) - g(x)]',
+            line: { color: '#10b981', width: 1.5 }
+          });
+
+          // Integral exacta entre [a, b]: [x^2 - x^3/3]_a^b
+          const F = (x) => Math.pow(x, 2) - Math.pow(x, 3) / 3;
+          const diffIntegral = F(b) - F(a);
+
+          integralValEl.textContent = UTPMath.formatNum(diffIntegral);
+          areaValEl.textContent = UTPMath.formatNum(Math.abs(diffIntegral));
+
+          const layout = UTPMath.getPlotlyLayout({
+            title: `Área entre Curvas: f(x) = 2x y g(x) = x² en [${a.toFixed(1)}, ${b.toFixed(1)}]`,
+            xTitle: 'x',
+            yTitle: 'y'
+          });
+
+          Plotly.react('plotlyChart', traces, layout, { responsive: true, displayModeBar: false });
+        }
+      }
+
+      modeSelect.addEventListener('change', updateSimulation);
+      functionSelect.addEventListener('change', updateSimulation);
+      aSlider.addEventListener('input', updateSimulation);
+      bSlider.addEventListener('input', updateSimulation);
+
+      updateSimulation();
+      UTPMath.renderAllMath();
+    });
+  </script>
+</body>
+</html>

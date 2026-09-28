@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 3: Regla del Punto Medio | UTP Cálculo Integral</title>
+  
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../index.html" class="brand-wrapper">
+        <div class="brand-logo-badge">∫</div>
+        <div class="brand-text">
+          <h1>Cálculo Integral + Software</h1>
+          <span>Universidad Tecnológica de Pereira</span>
+        </div>
+      </a>
+      <div class="nav-actions">
+        <a href="../../index.html" class="btn btn-secondary">
+          <span>← Volver al Menú Principal</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Header del Módulo -->
+  <div class="module-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">Inicio</a>
+        <span>/</span>
+        <span>Fase 1: Métodos Numéricos</span>
+        <span>/</span>
+        <span style="color: var(--text-main);">Módulo 3: Regla del Punto Medio</span>
+      </div>
+      <div class="module-header-content">
+        <div class="module-title-box">
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem;">
+            <span class="module-index">MÓDULO 03</span>
+            <span class="phase-badge badge-live">● Fase 1 Activo</span>
+          </div>
+          <h1>Regla del Punto Medio</h1>
+          <p class="module-subtitle">Aproximación rectangular centrada en el punto medio de cada subintervalo, ofreciendo una notable compensación de curvatura y el doble de precisión teórica que el método del trapecio.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido -->
+  <main class="container">
+    <div class="module-layout-grid">
+
+      <!-- Panel Izquierdo: Simulador Interactivo -->
+      <section class="simulator-panel">
+        <div class="panel-header">
+          <h2><span>⚡</span> Simulador Interactivo</h2>
+          <span style="font-size:0.8rem; color:var(--text-muted); font-family:var(--font-mono);">Midpoint Engine</span>
+        </div>
+
+        <div class="controls-card">
+          <div class="control-group">
+            <label for="functionSelect" class="control-label">Función del Taller:</label>
+            <select id="functionSelect" class="form-select">
+              <option value="x^2">f(x) = x² en [0, 2] (Ejemplo 1)</option>
+              <option value="1/x">f(x) = 1/x en [1, 3] (Ejemplo 2)</option>
+              <option value="exp(x)">f(x) = e^x en [0, 1] (Ejemplo 3)</option>
+              <option value="cos(x)">f(x) = cos(x) en [0, π/2] (Ejemplo 4)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Número de Intervalos (n):</span>
+              <span id="nValDisplay" class="control-value">n = 4</span>
+            </div>
+            <input type="range" id="nSlider" class="form-range" min="1" max="50" value="4" step="1">
+          </div>
+        </div>
+
+        <!-- Métricas -->
+        <div class="results-grid">
+          <div class="metric-box accent-value">
+            <div class="metric-title">Punto Medio M_n</div>
+            <div id="approxVal" class="metric-value">0.000000</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Valor Exacto ∫</div>
+            <div id="exactVal" class="metric-value">0.000000</div>
+          </div>
+          <div class="metric-box error-box">
+            <div class="metric-title">Error Absoluto |ε|</div>
+            <div id="errorVal" class="metric-value">0.000000</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Paso Δx</div>
+            <div id="deltaXVal" class="metric-value">0.000000</div>
+          </div>
+        </div>
+
+        <!-- Gráfico Plotly -->
+        <div id="plotlyChart" class="plot-container"></div>
+      </section>
+
+      <!-- Panel Derecho: Teoría y Ejercicios -->
+      <section class="theory-panel">
+        <div class="panel-header">
+          <h2><span>📖</span> Fundamentación Teórica</h2>
+          <span style="font-size:0.8rem; color:var(--accent-cyan); font-weight:600;">UTP CB215</span>
+        </div>
+
+        <div class="theory-text">
+          <p>
+            En la <strong>Regla del Punto Medio</strong>, la altura del rectángulo aproximante en el $i$-ésimo subintervalo $[x_{i-1}, x_i]$ se evalúa en el punto central:
+          </p>
+
+          <div class="formula-box">
+            $$\bar{x}_i = \frac{x_{i-1} + x_i}{2}, \quad \Delta x = \frac{b - a}{n}$$
+          </div>
+
+          <p>
+            La fórmula de cuadratura compuesta se expresa como:
+          </p>
+
+          <div class="formula-box amber">
+            $$M_n = \Delta x \sum_{i=1}^n f(\bar{x}_i) = \Delta x \left[ f(\bar{x}_1) + f(\bar{x}_2) + \dots + f(\bar{x}_n) \right]$$
+          </div>
+
+          <p>
+            <strong>Justificación Geométrica y Cota de Error:</strong><br>
+            La recta tangente trazada en $(\bar{x}_i, f(\bar{x}_i))$ produce un trapecio equivalente cuya área es idéntica a la del rectángulo de punto medio. Por ello, el error de aproximación satisface:
+          </p>
+
+          <div class="formula-box purple">
+            $$|E_M| \le \frac{K (b - a)^3}{24 n^2}$$
+          </div>
+          <p>
+            Nótese que el denominador es $24n^2$, lo que demuestra formalmente que <em>la Regla del Punto Medio es típicamente el doble de precisa que la Regla del Trapecio</em> para una misma cantidad de subintervalos.
+          </p>
+        </div>
+
+        <!-- Ejercicios Resueltos Paso a Paso -->
+        <div class="examples-section">
+          <h3><span>📝</span> Ejercicios Resueltos del Taller</h3>
+
+          <!-- Ejercicio 1 -->
+          <div class="example-card">
+            <div class="example-header">
+              <span>Ejercicio 1: $\int_0^2 x^2 dx$ con Regla del Punto Medio ($n = 4$)</span>
+              <span style="color:var(--text-dim); font-size:0.8rem;">Sección 1.3</span>
+            </div>
+            <div class="example-step">
+              <strong>Paso 1:</strong> $\Delta x = \frac{2 - 0}{4} = 0.5$.<br>
+              Subintervalos: $[0, 0.5]$, $[0.5, 1.0]$, $[1.0, 1.5]$, $[1.5, 2.0]$.
+            </div>
+            <div class="example-step">
+              <strong>Paso 2 (Puntos Medios):</strong><br>
+              $\bar{x}_1 = 0.25$, $\bar{x}_2 = 0.75$, $\bar{x}_3 = 1.25$, $\bar{x}_4 = 1.75$.
+            </div>
+            <div class="example-step">
+              <strong>Paso 3 (Evaluación Funcional):</strong><br>
+              $f(0.25) = (0.25)^2 = 0.0625$<br>
+              $f(0.75) = (0.75)^2 = 0.5625$<br>
+              $f(1.25) = (1.25)^2 = 1.5625$<br>
+              $f(1.75) = (1.75)^2 = 3.0625$
+            </div>
+            <div class="example-step">
+              <strong>Paso 4 (Cálculo de $M_4$):</strong><br>
+              $$M_4 = 0.5 [0.0625 + 0.5625 + 1.5625 + 3.0625] = 0.5 [5.2500] = \mathbf{2.625000}$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 5 (Análisis de Error):</strong><br>
+              $$\int_0^2 x^2 dx = \frac{8}{3} \approx 2.666667 \implies |E_M| = |2.666667 - 2.625| = \mathbf{0.041667}$$
+              Nótese que el error del trapecio fue $|E_T| = 0.083333$, cumpliéndose exactamente que $|E_M| = \frac{1}{2}|E_T|$.
+            </div>
+          </div>
+
+          <!-- Ejercicio 2 -->
+          <div class="example-card">
+            <div class="example-header">
+              <span>Ejercicio 2: $\int_1^3 \frac{1}{x} dx$ usando $M_5$</span>
+              <span style="color:var(--text-dim); font-size:0.8rem;">Sección 1.3</span>
+            </div>
+            <div class="example-step">
+              <strong>Paso 1:</strong> $\Delta x = \frac{3 - 1}{5} = 0.4$.<br>
+              Nodos de borde: $1.0, 1.4, 1.8, 2.2, 2.6, 3.0$.
+            </div>
+            <div class="example-step">
+              <strong>Paso 2 (Puntos Medios):</strong><br>
+              $\bar{x} = \{1.2, 1.6, 2.0, 2.4, 2.8\}$.
+            </div>
+            <div class="example-step">
+              <strong>Paso 3 (Evaluaciones):</strong><br>
+              $f(1.2) = 0.833333$, $f(1.6) = 0.625000$, $f(2.0) = 0.500000$, $f(2.4) = 0.416667$, $f(2.8) \approx 0.357143$.
+            </div>
+            <div class="example-step">
+              <strong>Paso 4:</strong><br>
+              $$M_5 = 0.4 [0.833333 + 0.625000 + 0.500000 + 0.416667 + 0.357143] = 0.4 [2.732143] \approx \mathbf{1.092857}$$
+              Valor exacto: $\ln(3) \approx 1.098612 \implies \text{Error} \approx \mathbf{0.005755}$ ($0.52\%$).
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <h4>Universidad Tecnológica de Pereira</h4>
+        <p>Facultad de Ciencias Básicas • Departamento de Matemáticas • CB215 Matemáticas II</p>
+      </div>
+      <div class="footer-links">
+        <a href="../modulo2/index.html">← Módulo 2: Trapecio</a>
+        <a href="../../index.html">Menú Principal</a>
+        <a href="../modulo4/index.html">Siguiente: Regla de Simpson →</a>
+      </div>
+    </div>
+    <div class="footer-bottom container">
+      <p>© 2026 Plataforma de Cálculo Integral + Software - UTP. Desarrollado para Evaluación Parcial 1.</p>
+    </div>
+  </footer>
+
+  <script src="../../js/utils.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const functionSelect = document.getElementById('functionSelect');
+      const nSlider = document.getElementById('nSlider');
+      const nValDisplay = document.getElementById('nValDisplay');
+
+      const approxValEl = document.getElementById('approxVal');
+      const exactValEl = document.getElementById('exactVal');
+      const errorValEl = document.getElementById('errorVal');
+      const deltaXValEl = document.getElementById('deltaXVal');
+
+      function updateSimulation() {
+        const fnKey = functionSelect.value;
+        const fnObj = UTPMath.FUNCTIONS_CATALOG[fnKey];
+        const a = fnObj.defaultA;
+        const b = fnObj.defaultB;
+        const n = parseInt(nSlider.value, 10);
+
+        nValDisplay.textContent = `n = ${n}`;
+
+        const result = UTPMath.calcRiemann(fnObj.fn, a, b, n, 'mid');
+        const exact = fnObj.exactDefinite(a, b);
+        const absError = Math.abs(exact - result.sum);
+
+        approxValEl.textContent = UTPMath.formatNum(result.sum);
+        exactValEl.textContent = UTPMath.formatNum(exact);
+        errorValEl.textContent = UTPMath.formatNum(absError);
+        deltaXValEl.textContent = UTPMath.formatNum(result.deltaX);
+
+        // Curva analítica suave
+        const curveX = [];
+        const curveY = [];
+        const resolution = 200;
+        const pad = (b - a) * 0.1;
+        const xMinPlot = Math.max(0, a - pad);
+        const xMaxPlot = b + pad;
+        const step = (xMaxPlot - xMinPlot) / resolution;
+
+        for (let i = 0; i <= resolution; i++) {
+          const x = xMinPlot + i * step;
+          curveX.push(x);
+          curveY.push(fnObj.fn(x));
+        }
+
+        const traces = [];
+
+        // Curva analítica
+        traces.push({
+          x: curveX,
+          y: curveY,
+          type: 'scatter',
+          mode: 'lines',
+          name: fnObj.name,
+          line: { color: UTPMath.THEME.accentCyan, width: 3 }
+        });
+
+        // Barras centradas en los puntos medios
+        const barX = result.rectangles.map(r => r.evalX);
+        const barY = result.rectangles.map(r => r.height);
+        const barWidths = result.rectangles.map(() => result.deltaX);
+
+        traces.push({
+          x: barX,
+          y: barY,
+          width: barWidths,
+          type: 'bar',
+          name: `Rectángulos M_${n}`,
+          marker: {
+            color: 'rgba(16, 185, 129, 0.35)',
+            line: { color: '#10b981', width: 1.5 }
+          }
+        });
+
+        // Puntos medios evaluados
+        traces.push({
+          x: barX,
+          y: barY,
+          type: 'scatter',
+          mode: 'markers',
+          name: 'Punto Medio (x̄_i, f(x̄_i))',
+          marker: { color: '#38bdf8', size: 7, symbol: 'diamond' }
+        });
+
+        const layout = UTPMath.getPlotlyLayout({
+          title: `Regla del Punto Medio: ${fnObj.name} en [${a}, ${b}] (n = ${n})`,
+          xTitle: 'x',
+          yTitle: 'f(x)'
+        });
+        layout.bargap = 0;
+
+        Plotly.react('plotlyChart', traces, layout, { responsive: true, displayModeBar: false });
+      }
+
+      functionSelect.addEventListener('change', updateSimulation);
+      nSlider.addEventListener('input', updateSimulation);
+
+      updateSimulation();
+      UTPMath.renderAllMath();
+    });
+  </script>
+</body>
+</html>

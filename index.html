@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Plataforma interactiva para la Evaluación Parcial 1 de Cálculo Integral + Desarrollo de Software en la Universidad Tecnológica de Pereira (UTP). Simuladores numéricos, Plotly.js y KaTeX.">
+  <title>Cálculo Integral + Desarrollo de Software | UTP</title>
+  
+  <!-- CSS Global -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- KaTeX para Fórmulas Matemáticas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+</head>
+<body>
+
+  <!-- Barra Superior / Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-wrapper">
+        <div class="brand-logo-badge">∫</div>
+        <div class="brand-text">
+          <h1>Cálculo Integral + Desarrollo de Software</h1>
+          <span>Universidad Tecnológica de Pereira • CB215 GR 403</span>
+        </div>
+      </a>
+      <div class="nav-actions">
+        <a href="#proyecto-info" class="btn btn-secondary">
+          <span>📚 Información del Proyecto</span>
+        </a>
+        <a href="#modulos-seccion" class="btn btn-primary">
+          <span>⚡ Ver Módulos</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-pill">
+        <span class="dot"></span>
+        <span>Evaluación Parcial 1 • Fase 1 Entregable</span>
+      </div>
+
+      <h1 class="hero-title">
+        Plataforma Web de <span class="gradient-text">Cálculo Integral</span> & Modelado Computacional
+      </h1>
+
+      <p class="hero-subtitle">
+        Entorno interactivo desarrollado para la Facultad de Ciencias Básicas y la Tecnología en Desarrollo de Software de la UTP. Simuladores numéricos en tiempo real con Plotly, renderizado matemático con KaTeX y resolución completa de los 14 métodos del taller de 70 integrales.
+      </p>
+
+      <!-- Métricas / Stats Bar -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">14</div>
+          <div class="stat-label">Módulos Curriculares</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">6</div>
+          <div class="stat-label">Módulos Activos (Fase 1)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">70</div>
+          <div class="stat-label">Integrales del Taller</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">O(1/n⁴)</div>
+          <div class="stat-label">Precisión de Simpson</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección de Módulos -->
+  <section id="modulos-seccion" class="container" style="padding-bottom: 4rem;">
+    
+    <!-- Filtros de Navegación -->
+    <div class="filters-bar">
+      <button class="filter-btn active" data-filter="all">Todos los Módulos (14)</button>
+      <button class="filter-btn" data-filter="phase1">Fase 1: Módulos Activos (1 a 6)</button>
+      <button class="filter-btn" data-filter="phase2">Fase 2: Métodos de Integración (7 a 11)</button>
+      <button class="filter-btn" data-filter="phase3">Fase 3: Métodos Avanzados (12 a 14)</button>
+    </div>
+
+    <!-- Grilla de Tarjetas -->
+    <div class="modules-grid">
+
+      <!-- MÓDULO 1 -->
+      <article class="module-card active-phase" data-phase="phase1">
+        <div>
+          <div class="card-top">
+            <span class="module-index">MÓDULO 01</span>
+            <span class="phase-badge badge-live">● Fase 1 Activo</span>
+          </div>
+          <h2 class="card-title">Sumas de Riemann</h2>
+          <p class="card-desc">
+            Aproximación geométrica del área bajo la curva mediante sumas izquierdas $L_n$, derechas $R_n$ y de punto medio $M_n$ con slider dinámico de $n$.
+          </p>
+          <ul class="card-features">
+            <li>Simulador con Plotly y ajuste continuo de particiones</li>
+            <li>Convergencia y error frente a la integral analítica</li>
+            <li>Ejemplos resueltos: $f(x)=x^2$ en $[0,2]$ y $f(x)=1/x$ en $[1,3]$</li>
+          </ul>
+        </div>
+        <div class="card-action">
+          <a href="modulos/modulo1/index.html" class="btn btn-primary">
+            <span>Explorar Módulo & Simulador →</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 2 -->
+      <article class="module-card active-phase" data-phase="phase1">
+        <div>
+          <div class="card-top">
+            <span class="module-index">MÓDULO 02</span>
+            <span class="phase-badge badge-live">● Fase 1 Activo</span>
+          </div>
+          <h2 class="card-title">Regla del Trapecio</h2>
+          <p class="card-desc">
+            Cuadratura numérica mediante interpolación lineal por cuerdas secantes formando trapecios bajo la curva, con análisis de cota de error $O(1/n^2)$.
+          </p>
+          <ul class="card-features">
+            <li>Visualizador interactivo de polígonos trapeciales</li>
+            <li>Fórmula compuesta ponderada $T_n$</li>
+            <li>Ejemplos resueltos: $\int_0^2 x^2 dx$ con $n=4$ y $\int_1^3 \frac{1}{x} dx$ con $n=5$</li>
+          </ul>
+        </div>
+        <div class="card-action">
+          <a href="modulos/modulo2/index.html" class="btn btn-primary">
+            <span>Explorar Módulo & Simulador →</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 3 -->
+      <article class="module-card active-phase" data-phase="phase1">
+        <div>
+          <div class="card-top">
+            <span class="module-index">MÓDULO 03</span>
+            <span class="phase-badge badge-live">● Fase 1 Activo</span>
+          </div>
+          <h2 class="card-title">Regla del Punto Medio</h2>
+          <p class="card-desc">
+            Aproximación por rectángulos tangentes evaluados en $\bar{x}_i$, alcanzando el doble de exactitud teórica que la regla del trapecio ($24n^2$ vs $12n^2$).
+          </p>
+          <ul class="card-features">
+            <li>Gráficas interactivas con nodos $\bar{x}_i$ destacados</li>
+            <li>Comparativa directa de precisión frente al trapecio</li>
+            <li>Ejemplos resueltos: $f(x)=x^2$ en $[0,2]$ y $f(x)=1/x$ en $[1,3]$</li>
+          </ul>
+        </div>
+        <div class="card-action">
+          <a href="modulos/modulo3/index.html" class="btn btn-primary">
+            <span>Explorar Módulo & Simulador →</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 4 -->
+      <article class="module-card active-phase" data-phase="phase1">
+        <div>
+          <div class="card-top">
+            <span class="module-index">MÓDULO 04</span>
+            <span class="phase-badge badge-live">● Fase 1 Activo</span>
+          </div>
+          <h2 class="card-title">Regla de Simpson (1/3)</h2>
+          <p class="card-desc">
+            Interpolación parabólica continua sobre pares de subintervalos con condición obligatoria de $n$ par. Precisión exacta para polinomios de grado $\le 3$.
+          </p>
+          <ul class="card-features">
+            <li>Ajuste en tiempo real de arcos parabólicos con Plotly</li>
+            <li>Ponderación $(1, 4, 2, 4, \dots, 1)$ y orden de error $O(1/n^4)$</li>
+            <li>Demostración de error $0.000000$ en $\int_0^2 x^2 dx$ con $n=4$</li>
+          </ul>
+        </div>
+        <div class="card-action">
+          <a href="modulos/modulo4/index.html" class="btn btn-primary">
+            <span>Explorar Módulo & Simulador →</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 5 -->
+      <article class="module-card active-phase" data-phase="phase1">
+        <div>
+          <div class="card-top">
+            <span class="module-index">MÓDULO 05</span>
+            <span class="phase-badge badge-live">● Fase 1 Activo</span>
+          </div>
+          <h2 class="card-title">Integral Definida y Área</h2>
+          <p class="card-desc">
+            Fundamentos del Teorema Fundamental del Cálculo (TFC), evaluación por la regla de Barrow y sombreado dinámico de áreas entre dos curvas en colisión.
+          </p>
+          <ul class="card-features">
+            <li>Visualizador interactivo de límites $a$ y $b$ con sliders</li>
+            <li>Cálculo de área entre $f(x)=2x$ y $g(x)=x^2$</li>
+            <li>Ejemplos resueltos: $\int_0^2 (3x^2-2x+1)dx = 6$ y $A = 4/3$</li>
+          </ul>
+        </div>
+        <div class="card-action">
+          <a href="modulos/modulo5/index.html" class="btn btn-primary">
+            <span>Explorar Módulo & Simulador →</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 6 -->
+      <article class="module-card active-phase" data-phase="phase1">
+        <div>
+          <div class="card-top">
+            <span class="module-index">MÓDULO 06</span>
+            <span class="phase-badge badge-live">● Fase 1 Activo</span>
+          </div>
+          <h2 class="card-title">Integración Directa</h2>
+          <p class="card-desc">
+            Reglas de integración inmediata, linealidad del operador integral y visualización interactiva de la familia uniparamétrica de curvas $F(x) + C$.
+          </p>
+          <ul class="card-features">
+            <li>Slider interactivo para la constante de integración $C$</li>
+            <li>Familia de curvas primitivas y contraste con la derivada</li>
+            <li>3 ejercicios resueltos con verificación rigurosa por derivación</li>
+          </ul>
+        </div>
+        <div class="card-action">
+          <a href="modulos/modulo6/index.html" class="btn btn-primary">
+            <span>Explorar Módulo & Simulador →</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 7 (Placeholder) -->
+      <article class="module-card placeholder-phase" data-phase="phase2">
+        <div>
+          <div class="card-top">
+            <span class="module-index">MÓDULO 07</span>
+            <span class="phase-badge badge-upcoming">Fase 2 • Próximamente</span>
+          </div>
+          <h2 class="card-title">Sustitución (Potencias)</h2>
+          <p class="card-desc">
+            Método de sustitución algebraica elemental $u = g(x)$ para funciones con radicales y potencias compuestas.
+          </p>
+          <ul class="card-features">
+            <li>Integrales tipo $\int \frac{x^2}{\sqrt{x^3 + 2}}\,dx$</li>
+            <li>Balanceo algebraico de diferenciales</li>
+          </ul>
+        </div>
+        <div class="card-action">
+          <a href="modulos/modulo7/index.html" class="btn btn-secondary">
+            <span>Ver Planificación →</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 8 (Placeholder) -->
+      <article class="module-card placeholder-phase" data-phase="phase2">
+        <div>
+          <div class="card-top">
+            <span class="module-index">MÓDULO 08</span>
+            <span class="phase-badge badge-upcoming">Fase 2 • Próximamente</span>
+          </div>
+          <h2 class="card-title">Integrales Exponenciales</h2>
+          <p class="card-desc">
+            Integración de funciones exponenciales de base natural $e^u$ y base general $a^x$ con sustituciones avanzadas.
+          </p>
+          <ul class="card-features">
+            <li>Integrales $\int \frac{dx}{e^x + e^{-x}}$ y $\int 5^x e^x dx$</li>
+            <li>Modelado de crecimiento y saturación</li>
+          </ul>
+        </div>
+        <div class="card-action">
+          <a href="modulos/modulo8/index.html" class="btn btn-secondary">
+            <span>Ver Planificación →</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 9 (Placeholder) -->
+      <article class="module-card placeholder-phase" data-phase="phase2">
+        <div>
+          <div class="card-top">
+            <span class="module-index">MÓDULO 09</span>
+            <span class="phase-badge badge-upcoming">Fase 2 • Próximamente</span>
+          </div>
+          <h2 class="card-title">Integrales Logarítmicas</h2>
+          <p class="card-desc">
+            Cuadraturas que conducen a logaritmos naturales $\int \frac{du}{u} = \ln|u| + C$ y fracciones algebraicas.
+          </p>
+          <ul class="card-features">
+            <li>Integrales tipo $\int \frac{dx}{x \ln x}$</li>
+            <li>Fracciones racionales con denominadores cuadráticos</li>
+          </ul>
+        </div>
+        <div class="card-action">
+          <a href="modulos/modulo9/index.html" class="btn btn-secondary">
+            <span>Ver Planificación →</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 10 (Placeholder) -->
+      <article class="module-card placeholder-phase" data-phase="phase2">
+        <div>
+          <div class="card-top">
+            <span class="module-index">MÓDULO 10</span>
+            <span class="phase-badge badge-upcoming">Fase 2 • Próximamente</span>
+          </div>
+          <h2 class="card-title">Integrales Trigonométricas</h2>
+          <p class="card-desc">
+            Integración de funciones circulares periódicas aplicando identidades pitagóricas y ángulo doble.
+          </p>
+          <ul class="card-features">
+            <li>Integrales de potencias de senos, cosenos y secantes</li>
+            <li>Sustitución en funciones trigonométricas directas</li>
+          </ul>
+        </div>
+        <div class="card-action">
+          <a href="modulos/modulo10/index.html" class="btn btn-secondary">
+            <span>Ver Planificación →</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 11 (Placeholder) -->
+      <article class="module-card placeholder-phase" data-phase="phase2">
+        <div>
+          <div class="card-top">
+            <span class="module-index">MÓDULO 11</span>
+            <span class="phase-badge badge-upcoming">Fase 2 • Próximamente</span>
+          </div>
+          <h2 class="card-title">Trigonométricas Inversas</h2>
+          <p class="card-desc">
+            Formas canónicas que generan arcosenos, arcotangentes y arcosecantes mediante sustitución directa y trigonométrica.
+          </p>
+          <ul class="card-features">
+            <li>Integrales tipo $\int \frac{du}{\sqrt{a^2 - u^2}}$ y $\int \frac{du}{a^2 + u^2}$</li>
+            <li>Separación en sumas logarítmicas e inversas</li>
+          </ul>
+        </div>
+        <div class="card-action">
+          <a href="modulos/modulo11/index.html" class="btn btn-secondary">
+            <span>Ver Planificación →</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 12 (Placeholder) -->
+      <article class="module-card placeholder-phase" data-phase="phase3">
+        <div>
+          <div class="card-top">
+            <span class="module-index">MÓDULO 12</span>
+            <span class="phase-badge badge-upcoming">Fase 3 • Próximamente</span>
+          </div>
+          <h2 class="card-title">Hiperbólicas Inversas</h2>
+          <p class="card-desc">
+            Integración con radicales tipo $\sqrt{u^2 \pm a^2}$ expresadas en términos de logaritmos naturales y funciones catenarias.
+          </p>
+          <ul class="card-features">
+            <li>Resolución de $\int \frac{dx}{\sqrt{x^2 + 16}}$ y $\int \frac{dx}{\sqrt{4x^2 - 25}}$</li>
+            <li>Aplicaciones en líneas de transmisión y cables colgantes</li>
+          </ul>
+        </div>
+        <div class="card-action">
+          <a href="modulos/modulo12/index.html" class="btn btn-secondary">
+            <span>Ver Planificación →</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 13 (Placeholder) -->
+      <article class="module-card placeholder-phase" data-phase="phase3">
+        <div>
+          <div class="card-top">
+            <span class="module-index">MÓDULO 13</span>
+            <span class="phase-badge badge-upcoming">Fase 3 • Próximamente</span>
+          </div>
+          <h2 class="card-title">Trinomios ax² + bx + c</h2>
+          <p class="card-desc">
+            Completación de cuadrados en expresiones cuadráticas bajo raíces y en denominadores para reducir a formas canónicas conocidas.
+          </p>
+          <ul class="card-features">
+            <li>Casos con discriminante positivo, negativo y nulo</li>
+            <li>Integrales con numeradores lineales tipo $Ax + B$</li>
+          </ul>
+        </div>
+        <div class="card-action">
+          <a href="modulos/modulo13/index.html" class="btn btn-secondary">
+            <span>Ver Planificación →</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- MÓDULO 14 (Placeholder) -->
+      <article class="module-card placeholder-phase" data-phase="phase3">
+        <div>
+          <div class="card-top">
+            <span class="module-index">MÓDULO 14</span>
+            <span class="phase-badge badge-upcoming">Fase 3 • Próximamente</span>
+          </div>
+          <h2 class="card-title">Integración por Partes</h2>
+          <p class="card-desc">
+            Técnica $\int u\,dv = u v - \int v\,du$ basada en la regla mnemotécnica LIATE, integrales cíclicas y método tabular.
+          </p>
+          <ul class="card-features">
+            <li>Integrales de productos $\int e^{ax} \cos(bx) dx$ y $\int x \arctan(x) dx$</li>
+            <li>Conexión con cálculo de volúmenes de revolución en Fase 3</li>
+          </ul>
+        </div>
+        <div class="card-action">
+          <a href="modulos/modulo14/index.html" class="btn btn-secondary">
+            <span>Ver Planificación →</span>
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Sección Informativa del Proyecto Semestral -->
+  <section id="proyecto-info" class="info-section">
+    <div class="container">
+      <div class="info-header">
+        <span class="hero-pill" style="margin-bottom: 0.75rem;">CB215 • Matemáticas II</span>
+        <h2>Estructura del Proyecto Semestral</h2>
+        <p>
+          Integración pedagógica entre el rigor analítico del Cálculo Integral y la ingeniería de software aplicada.
+        </p>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-icon">🎯</div>
+          <h3>Fases de Desarrollo</h3>
+          <p>El proyecto se consolida a lo largo del semestre en tres etapas consecutivas:</p>
+          <ul>
+            <li><strong>Fase 1 (Parcial 1):</strong> Módulos 1 al 6 desarrollados con simuladores interactivos + arquitectura base de 14 módulos.</li>
+            <li><strong>Fase 2 (Parcial 2):</strong> Módulos 7 al 11 (Exponenciales, Logarítmicas, Trigonométricas e Inversas).</li>
+            <li><strong>Fase 3 (Proyecto Final):</strong> Módulos 12 al 14 (Hiperbólicas, Trinomios, Partes) + Sólidos de Revolución.</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-icon">📊</div>
+          <h3>Rúbrica de Evaluación (30% Curso)</h3>
+          <p>Ponderación establecida según los lineamientos de la Facultad de Ciencias Básicas:</p>
+          <ul>
+            <li><strong>Taller Manual (15%):</strong> 70 ejercicios resueltos a mano, escaneados en alta definición con verificaciones.</li>
+            <li><strong>Estructura Base Web (5%):</strong> Navegación responsive, 14 módulos y documentación en README.md.</li>
+            <li><strong>Módulos Numéricos 1-4 (5%):</strong> Precisión analítica, fórmulas en KaTeX y visualizadores Plotly.</li>
+            <li><strong>Módulos 5-6 Área & Directa (5%):</strong> Visualizador dinámico, Teorema Fundamental y familia $F(x)+C$.</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-icon">💻</div>
+          <h3>Stack Tecnológico & Despliegue</h3>
+          <p>Desarrollo web moderno y modular sin dependencias complejas:</p>
+          <ul>
+            <li><strong>Plotly.js:</strong> Motor de gráficos interactivos, mallas adaptativas y renderizado de parábolas y trapecios.</li>
+            <li><strong>KaTeX:</strong> Renderizado tipográfico ultra-rápido de notación matemática LaTeX en el cliente.</li>
+            <li><strong>Vanilla JS (ES6+):</strong> Motores de integración numérica modulares en <code>utils.js</code>.</li>
+            <li><strong>GitHub Pages:</strong> Despliegue en producción accesible para toda la comunidad académica UTP.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <h4>Universidad Tecnológica de Pereira</h4>
+        <p>Facultad de Ciencias Básicas • Departamento de Matemáticas</p>
+        <p style="margin-top:0.35rem; color:var(--text-dim);">Asignatura: Matemáticas II (CB215) • Grupo 403 • Semestre 2026-2</p>
+      </div>
+      <div class="footer-links">
+        <a href="#modulos-seccion">Módulos</a>
+        <a href="modulos/modulo1/index.html">Sumas de Riemann</a>
+        <a href="modulos/modulo2/index.html">Regla del Trapecio</a>
+        <a href="modulos/modulo4/index.html">Regla de Simpson</a>
+        <a href="modulos/modulo5/index.html">Integral Definida</a>
+        <a href="modulos/modulo6/index.html">Integración Directa</a>
+      </div>
+    </div>
+    <div class="footer-bottom container">
+      <p>© 2026 Universidad Tecnológica de Pereira. Proyecto Académico de Cálculo Integral + Desarrollo de Software.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/utils.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Renderizado automático de fórmulas KaTeX
+      UTPMath.renderAllMath();
+
+      // Filtro interactivo de módulos
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const cards = document.querySelectorAll('.module-card');
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const filter = btn.getAttribute('data-filter');
+
+          cards.forEach(card => {
+            const cardPhase = card.getAttribute('data-phase');
+            if (filter === 'all' || filter === cardPhase) {
+              card.style.display = 'flex';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

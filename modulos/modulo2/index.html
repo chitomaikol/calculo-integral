@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 2: Regla del Trapecio | UTP Cálculo Integral</title>
+  
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../index.html" class="brand-wrapper">
+        <div class="brand-logo-badge">∫</div>
+        <div class="brand-text">
+          <h1>Cálculo Integral + Software</h1>
+          <span>Universidad Tecnológica de Pereira</span>
+        </div>
+      </a>
+      <div class="nav-actions">
+        <a href="../../index.html" class="btn btn-secondary">
+          <span>← Volver al Menú Principal</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Header del Módulo -->
+  <div class="module-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">Inicio</a>
+        <span>/</span>
+        <span>Fase 1: Métodos Numéricos</span>
+        <span>/</span>
+        <span style="color: var(--text-main);">Módulo 2: Regla del Trapecio</span>
+      </div>
+      <div class="module-header-content">
+        <div class="module-title-box">
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem;">
+            <span class="module-index">MÓDULO 02</span>
+            <span class="phase-badge badge-live">● Fase 1 Activo</span>
+          </div>
+          <h1>Regla del Trapecio</h1>
+          <p class="module-subtitle">Aproximación por interpolación lineal continua que reemplaza la curva por segmentos secantes formando trapecios yuxtapuestos bajo la función.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido -->
+  <main class="container">
+    <div class="module-layout-grid">
+
+      <!-- Panel Izquierdo: Simulador Interactivo -->
+      <section class="simulator-panel">
+        <div class="panel-header">
+          <h2><span>⚡</span> Simulador Interactivo</h2>
+          <span style="font-size:0.8rem; color:var(--text-muted); font-family:var(--font-mono);">Trapezoid Engine</span>
+        </div>
+
+        <div class="controls-card">
+          <div class="control-group">
+            <label for="functionSelect" class="control-label">Función del Taller:</label>
+            <select id="functionSelect" class="form-select">
+              <option value="x^2">f(x) = x² en [0, 2] (Ejemplo 1)</option>
+              <option value="1/x">f(x) = 1/x en [1, 3] (Ejemplo 2)</option>
+              <option value="exp(x)">f(x) = e^x en [0, 1] (Ejemplo 3)</option>
+              <option value="sin(x)">f(x) = sin(x) en [0, π/2] (Ejemplo 4)</option>
+              <option value="sqrt(x)">f(x) = √x en [1, 2] (Ejemplo 5)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Número de Intervalos (n):</span>
+              <span id="nValDisplay" class="control-value">n = 4</span>
+            </div>
+            <input type="range" id="nSlider" class="form-range" min="1" max="50" value="4" step="1">
+          </div>
+        </div>
+
+        <!-- Métricas -->
+        <div class="results-grid">
+          <div class="metric-box accent-value">
+            <div class="metric-title">Trapecio T_n</div>
+            <div id="approxVal" class="metric-value">0.000000</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Valor Exacto ∫</div>
+            <div id="exactVal" class="metric-value">0.000000</div>
+          </div>
+          <div class="metric-box error-box">
+            <div class="metric-title">Error Absoluto |ε|</div>
+            <div id="errorVal" class="metric-value">0.000000</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Paso Δx</div>
+            <div id="deltaXVal" class="metric-value">0.000000</div>
+          </div>
+        </div>
+
+        <!-- Gráfico Plotly -->
+        <div id="plotlyChart" class="plot-container"></div>
+      </section>
+
+      <!-- Panel Derecho: Teoría y Ejercicios -->
+      <section class="theory-panel">
+        <div class="panel-header">
+          <h2><span>📖</span> Fundamentación Teórica</h2>
+          <span style="font-size:0.8rem; color:var(--accent-cyan); font-weight:600;">UTP CB215</span>
+        </div>
+
+        <div class="theory-text">
+          <p>
+            La <strong>Regla del Trapecio</strong> aproxima el área bajo $f(x)$ uniendo los puntos adyacentes $(x_{i-1}, f(x_{i-1}))$ y $(x_i, f(x_i))$ mediante segmentos de recta secantes.
+          </p>
+          <p>
+            El área de cada trapecio elemental con base sobre el eje $x$ es:
+          </p>
+
+          <div class="formula-box">
+            $$A_i = \frac{f(x_{i-1}) + f(x_i)}{2} \Delta x, \quad \text{con } \Delta x = \frac{b - a}{n}$$
+          </div>
+
+          <p>
+            Al sumar los $n$ trapecios y factorizar $\frac{\Delta x}{2}$, observamos que los vértices interiores se comparten entre dos trapecios contiguos:
+          </p>
+
+          <div class="formula-box amber">
+            $$T_n = \frac{\Delta x}{2} \left[ f(x_0) + 2\sum_{i=1}^{n-1} f(x_i) + f(x_n) \right]$$
+          </div>
+
+          <p>
+            <strong>Cota Superior del Error:</strong> Si $f''(x)$ es continua y $|f''(x)| \le K$ en $[a, b]$, el error de truncamiento satisface:
+          </p>
+
+          <div class="formula-box purple">
+            $$|E_T| \le \frac{K (b - a)^3}{12 n^2}$$
+          </div>
+        </div>
+
+        <!-- Ejercicios Resueltos Paso a Paso -->
+        <div class="examples-section">
+          <h3><span>📝</span> Ejercicios Resueltos del Taller</h3>
+
+          <!-- Ejercicio 1 -->
+          <div class="example-card">
+            <div class="example-header">
+              <span>Ejercicio 1: $\int_0^2 x^2 dx$ con Regla del Trapecio ($n = 4$)</span>
+              <span style="color:var(--text-dim); font-size:0.8rem;">Sección 1.2</span>
+            </div>
+            <div class="example-step">
+              <strong>Paso 1:</strong> $\Delta x = \frac{2 - 0}{4} = 0.5$. Malla: $x_0=0,\, x_1=0.5,\, x_2=1.0,\, x_3=1.5,\, x_4=2.0$.
+            </div>
+            <div class="example-step">
+              <strong>Paso 2:</strong> Evaluamos las alturas correspondientes:<br>
+              $f(0)=0$, $f(0.5)=0.25$, $f(1)=1.0$, $f(1.5)=2.25$, $f(2)=4.0$.
+            </div>
+            <div class="example-step">
+              <strong>Paso 3:</strong> Aplicamos la fórmula del trapecio:<br>
+              $$T_4 = \frac{0.5}{2} \left[ 0 + 2(0.25 + 1.0 + 2.25) + 4.0 \right]$$
+              $$T_4 = 0.25 \left[ 0 + 2(3.5) + 4.0 \right] = 0.25 [11.0] = \mathbf{2.750000}$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 4:</strong> Error frente al valor analítico:<br>
+              $$\int_0^2 x^2 dx = \frac{8}{3} \approx 2.666667 \implies |E_T| = |2.666667 - 2.75| = \mathbf{0.083333}$$
+              Como $f''(x) = 2 > 0$ (cóncava hacia arriba), los trapecios quedan por encima de la curva y sobreestiman el área.
+            </div>
+          </div>
+
+          <!-- Ejercicio 2 -->
+          <div class="example-card">
+            <div class="example-header">
+              <span>Ejercicio 2: $\int_1^3 \frac{1}{x} dx$ usando $T_5$</span>
+              <span style="color:var(--text-dim); font-size:0.8rem;">Sección 1.2</span>
+            </div>
+            <div class="example-step">
+              <strong>Paso 1:</strong> $\Delta x = \frac{3 - 1}{5} = 0.4$. Nodos: $x = \{1.0, 1.4, 1.8, 2.2, 2.6, 3.0\}$.
+            </div>
+            <div class="example-step">
+              <strong>Paso 2:</strong> Valores funcionales:<br>
+              $f(1.0)=1$, $f(1.4) \approx 0.714286$, $f(1.8) \approx 0.555556$, $f(2.2) \approx 0.454545$, $f(2.6) \approx 0.384615$, $f(3.0) \approx 0.333333$.
+            </div>
+            <div class="example-step">
+              <strong>Paso 3:</strong> Suma ponderada:<br>
+              $$T_5 = \frac{0.4}{2} \left[ 1 + 2(0.714286 + 0.555556 + 0.454545 + 0.384615) + 0.333333 \right]$$
+              $$T_5 = 0.2 \left[ 1 + 2(2.108998) + 0.333333 \right] = 0.2 [5.551329] \approx \mathbf{1.110266}$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 4:</strong> Comparación exacta:<br>
+              $$\int_1^3 \frac{1}{x} dx = \ln(3) \approx 1.098612 \implies \text{Error} \approx \mathbf{0.011654} \ (1.06\%)$$
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <h4>Universidad Tecnológica de Pereira</h4>
+        <p>Facultad de Ciencias Básicas • Departamento de Matemáticas • CB215 Matemáticas II</p>
+      </div>
+      <div class="footer-links">
+        <a href="../modulo1/index.html">← Módulo 1: Riemann</a>
+        <a href="../../index.html">Menú Principal</a>
+        <a href="../modulo3/index.html">Siguiente: Regla del Punto Medio →</a>
+      </div>
+    </div>
+    <div class="footer-bottom container">
+      <p>© 2026 Plataforma de Cálculo Integral + Software - UTP. Desarrollado para Evaluación Parcial 1.</p>
+    </div>
+  </footer>
+
+  <script src="../../js/utils.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const functionSelect = document.getElementById('functionSelect');
+      const nSlider = document.getElementById('nSlider');
+      const nValDisplay = document.getElementById('nValDisplay');
+
+      const approxValEl = document.getElementById('approxVal');
+      const exactValEl = document.getElementById('exactVal');
+      const errorValEl = document.getElementById('errorVal');
+      const deltaXValEl = document.getElementById('deltaXVal');
+
+      function updateSimulation() {
+        const fnKey = functionSelect.value;
+        let fnObj = UTPMath.FUNCTIONS_CATALOG[fnKey];
+        let a = fnObj.defaultA;
+        let b = fnObj.defaultB;
+
+        // Ajustes para ejercicios específicos
+        if (fnKey === 'sin(x)') {
+          b = Math.PI / 2; // ejercicio 4: [0, pi/2]
+        } else if (fnKey === 'sqrt(x)') {
+          a = 1; b = 2; // ejercicio 5: [1, 2]
+        }
+
+        const n = parseInt(nSlider.value, 10);
+        nValDisplay.textContent = `n = ${n}`;
+
+        const result = UTPMath.calcTrapezoid(fnObj.fn, a, b, n);
+        const exact = fnObj.exactDefinite(a, b);
+        const absError = Math.abs(exact - result.sum);
+
+        approxValEl.textContent = UTPMath.formatNum(result.sum);
+        exactValEl.textContent = UTPMath.formatNum(exact);
+        errorValEl.textContent = UTPMath.formatNum(absError);
+        deltaXValEl.textContent = UTPMath.formatNum(result.deltaX);
+
+        // Curva analítica suave
+        const curveX = [];
+        const curveY = [];
+        const resolution = 200;
+        const pad = (b - a) * 0.1;
+        const xMinPlot = Math.max(0, a - pad);
+        const xMaxPlot = b + pad;
+        const step = (xMaxPlot - xMinPlot) / resolution;
+
+        for (let i = 0; i <= resolution; i++) {
+          const x = xMinPlot + i * step;
+          curveX.push(x);
+          curveY.push(fnObj.fn(x));
+        }
+
+        const traces = [];
+
+        // Curva analítica
+        traces.push({
+          x: curveX,
+          y: curveY,
+          type: 'scatter',
+          mode: 'lines',
+          name: fnObj.name,
+          line: { color: UTPMath.THEME.accentCyan, width: 3 }
+        });
+
+        // Polígonos de los trapecios (relleno sombreado bajo cuerdas secantes)
+        const trapX = [];
+        const trapY = [];
+        result.intervals.forEach((interval) => {
+          trapX.push(interval.x0, interval.x0, interval.x1, interval.x1, interval.x0, null);
+          trapY.push(0, interval.y0, interval.y1, 0, 0, null);
+        });
+
+        traces.push({
+          x: trapX,
+          y: trapY,
+          fill: 'toself',
+          fillcolor: 'rgba(245, 158, 11, 0.25)',
+          mode: 'lines',
+          name: `Trapecios T_${n}`,
+          line: { color: '#f59e0b', width: 1.8 }
+        });
+
+        // Nodos discretos de la partición (x_i, f(x_i))
+        const nodeX = [];
+        const nodeY = [];
+        for (let i = 0; i <= n; i++) {
+          const x = a + i * result.deltaX;
+          nodeX.push(x);
+          nodeY.push(fnObj.fn(x));
+        }
+
+        traces.push({
+          x: nodeX,
+          y: nodeY,
+          type: 'scatter',
+          mode: 'markers',
+          name: 'Nodos de Partición',
+          marker: { color: '#f8fafc', size: 6, line: { color: '#f59e0b', width: 2 } }
+        });
+
+        const layout = UTPMath.getPlotlyLayout({
+          title: `Regla del Trapecio: ${fnObj.name} en [${a}, ${b}] (n = ${n})`,
+          xTitle: 'x',
+          yTitle: 'f(x)'
+        });
+
+        Plotly.react('plotlyChart', traces, layout, { responsive: true, displayModeBar: false });
+      }
+
+      functionSelect.addEventListener('change', updateSimulation);
+      nSlider.addEventListener('input', updateSimulation);
+
+      updateSimulation();
+      UTPMath.renderAllMath();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 6: Integración Directa | UTP Cálculo Integral</title>
+  
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../index.html" class="brand-wrapper">
+        <div class="brand-logo-badge">∫</div>
+        <div class="brand-text">
+          <h1>Cálculo Integral + Software</h1>
+          <span>Universidad Tecnológica de Pereira</span>
+        </div>
+      </a>
+      <div class="nav-actions">
+        <a href="../../index.html" class="btn btn-secondary">
+          <span>← Volver al Menú Principal</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Header del Módulo -->
+  <div class="module-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">Inicio</a>
+        <span>/</span>
+        <span>Fase 1: Métodos de Integración</span>
+        <span>/</span>
+        <span style="color: var(--text-main);">Módulo 6: Integración Directa</span>
+      </div>
+      <div class="module-header-content">
+        <div class="module-title-box">
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem;">
+            <span class="module-index">MÓDULO 06</span>
+            <span class="phase-badge badge-live">● Fase 1 Activo</span>
+          </div>
+          <h1>Integración Directa y Familia de Primitivas</h1>
+          <p class="module-subtitle">Reglas inmediatas de integración, linealidad del operador integral, verificación rigurosa por derivación y visualización interactiva de la familia uniparamétrica de curvas F(x) + C.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido -->
+  <main class="container">
+    <div class="module-layout-grid">
+
+      <!-- Panel Izquierdo: Simulador Interactivo -->
+      <section class="simulator-panel">
+        <div class="panel-header">
+          <h2><span>⚡</span> Visualizador de Familia F(x) + C</h2>
+          <span style="font-size:0.8rem; color:var(--text-muted); font-family:var(--font-mono);">Antiderivative Engine</span>
+        </div>
+
+        <div class="controls-card">
+          <div class="control-group">
+            <label for="functionSelect" class="control-label">Función f(x) a integrar:</label>
+            <select id="functionSelect" class="form-select">
+              <option value="2x">f(x) = 2x  ⟹  F(x) = x² + C</option>
+              <option value="poly">f(x) = 3x² - 4x + 1  ⟹  F(x) = x³ - 2x² + x + C</option>
+              <option value="diff_sq">f(x) = x² - 1  ⟹  F(x) = x³/3 - x + C (Taller Ej 5)</option>
+              <option value="cos">f(x) = cos(x)  ⟹  F(x) = sin(x) + C</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Constante de Integración (C):</span>
+              <span id="cValDisplay" class="control-value">C = 2.0</span>
+            </div>
+            <input type="range" id="cSlider" class="form-range" min="-8" max="8" value="2" step="0.5">
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+              <input type="checkbox" id="showFamilyCheck" checked style="cursor:pointer; accent-color:var(--accent-cyan);">
+              <span>Mostrar Familia de Curvas Fantasma (C = -6, -3, 0, 3, 6)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Métricas -->
+        <div class="results-grid">
+          <div class="metric-box accent-value">
+            <div class="metric-title">Función Original f(x)</div>
+            <div id="fFormula" class="metric-value" style="font-size:0.95rem;">2x</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Antiderivada F(x) + C</div>
+            <div id="antiderivFormula" class="metric-value" style="font-size:0.95rem; color:#38bdf8;">x² + 2.0</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Valor Actual C</div>
+            <div id="cDisp" class="metric-value">+2.00</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Pendiente dF/dx</div>
+            <div class="metric-value" style="color:#10b981;">f(x)</div>
+          </div>
+        </div>
+
+        <!-- Gráfico Plotly -->
+        <div id="plotlyChart" class="plot-container"></div>
+      </section>
+
+      <!-- Panel Derecho: Teoría y Ejercicios Resueltos -->
+      <section class="theory-panel">
+        <div class="panel-header">
+          <h2><span>📖</span> Fundamentación Teórica</h2>
+          <span style="font-size:0.8rem; color:var(--accent-cyan); font-weight:600;">UTP CB215</span>
+        </div>
+
+        <div class="theory-text">
+          <p>
+            Una función $F$ es una <strong>antiderivada</strong> o <strong>primitiva</strong> de $f$ en un intervalo $I$ si $F'(x) = f(x)$ para todo $x \in I$.
+          </p>
+
+          <p>
+            Si $F(x)$ es una antiderivada particular, la <em>integral indefinida</em> representa el conjunto infinito de todas las antiderivadas posibles:
+          </p>
+
+          <div class="formula-box">
+            $$\int f(x)\,dx = F(x) + C$$
+            donde $C \in \mathbb{R}$ es una constante arbitraria de integración que desplaza la curva verticalmente sin alterar sus pendientes tangenciales.
+          </div>
+
+          <p><strong>Fórmulas Básicas de Integración Inmediata:</strong></p>
+
+          <div class="formula-box amber">
+            $$\int x^n\,dx = \frac{x^{n+1}}{n + 1} + C \quad (n \neq -1)$$
+            $$\int \frac{1}{x}\,dx = \ln|x| + C$$
+            $$\int e^x\,dx = e^x + C$$
+            $$\int k\,f(x)\,dx = k \int f(x)\,dx \quad (k \in \mathbb{R})$$
+            $$\int \left[ f(x) \pm g(x) \right]\,dx = \int f(x)\,dx \pm \int g(x)\,dx$$
+          </div>
+        </div>
+
+        <!-- 3 Ejercicios Resueltos Paso a Paso -->
+        <div class="examples-section">
+          <h3><span>📝</span> 3 Ejercicios Resueltos del Taller</h3>
+
+          <!-- Ejercicio 1 -->
+          <div class="example-card">
+            <div class="example-header">
+              <span>Ejercicio 1: $\int (ax + by)^2 dx$</span>
+              <span style="color:var(--text-dim); font-size:0.8rem;">Sección 1.6 (Ej 1)</span>
+            </div>
+            <div class="example-step">
+              <strong>Paso 1 (Desarrollo del binomio al cuadrado):</strong><br>
+              $$(ax + by)^2 = a^2 x^2 + 2abxy + b^2 y^2$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 2 (Separación lineal con respecto a la variable $x$):</strong><br>
+              Notamos que la integración es respecto a la variable diferencial $dx$, por lo que $a, b, y$ actúan como constantes:
+              $$\int (a^2 x^2 + 2abxy + b^2 y^2)\,dx = a^2 \int x^2\,dx + 2aby \int x\,dx + b^2 y^2 \int 1\,dx$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 3 (Aplicación de la regla de potencias):</strong><br>
+              $$= a^2 \left( \frac{x^3}{3} \right) + 2aby \left( \frac{x^2}{2} \right) + b^2 y^2 (x) + C$$
+              $$\mathbf{= \frac{a^2 x^3}{3} + abx^2 y + b^2 x y^2 + C}$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 4 (Verificación por Derivación):</strong><br>
+              $$\frac{d}{dx}\left[ \frac{a^2 x^3}{3} + abx^2 y + b^2 x y^2 + C \right] = a^2 x^2 + 2abxy + b^2 y^2 = (ax + by)^2 \quad \checkmark$$
+            </div>
+          </div>
+
+          <!-- Ejercicio 2 -->
+          <div class="example-card">
+            <div class="example-header">
+              <span>Ejercicio 2: $\int \left( \frac{3}{x^2} - \frac{9}{\sqrt{x}} \right) dx$</span>
+              <span style="color:var(--text-dim); font-size:0.8rem;">Sección 1.6 (Ej 2)</span>
+            </div>
+            <div class="example-step">
+              <strong>Paso 1 (Reescritura con exponentes reales):</strong><br>
+              $$\frac{3}{x^2} = 3x^{-2}, \quad \frac{9}{\sqrt{x}} = 9x^{-1/2}$$
+              $$\int \left( 3x^{-2} - 9x^{-1/2} \right)\,dx$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 2 (Integración directa término a término):</strong><br>
+              $$= 3 \left( \frac{x^{-2 + 1}}{-2 + 1} \right) - 9 \left( \frac{x^{-1/2 + 1}}{-1/2 + 1} \right) + C$$
+              $$= 3 \left( \frac{x^{-1}}{-1} \right) - 9 \left( \frac{x^{1/2}}{1/2} \right) + C$$
+              $$\mathbf{= -\frac{3}{x} - 18\sqrt{x} + C}$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 3 (Verificación por Derivación):</strong><br>
+              $$\frac{d}{dx}\left[ -3x^{-1} - 18x^{1/2} + C \right] = 3x^{-2} - 18\left(\frac{1}{2}\right)x^{-1/2} = \frac{3}{x^2} - \frac{9}{\sqrt{x}} \quad \checkmark$$
+            </div>
+          </div>
+
+          <!-- Ejercicio 3 -->
+          <div class="example-card">
+            <div class="example-header">
+              <span>Ejercicio 3: $\int (x - 1)(x + 1)\,dx$</span>
+              <span style="color:var(--text-dim); font-size:0.8rem;">Sección 1.6 (Ej 5)</span>
+            </div>
+            <div class="example-step">
+              <strong>Paso 1 (Diferencia de cuadrados):</strong><br>
+              $$(x - 1)(x + 1) = x^2 - 1$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 2 (Integración directa):</strong><br>
+              $$\int (x^2 - 1)\,dx = \int x^2\,dx - \int 1\,dx = \mathbf{\frac{x^3}{3} - x + C}$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 3 (Verificación por Derivación):</strong><br>
+              $$\frac{d}{dx}\left[ \frac{x^3}{3} - x + C \right] = x^2 - 1 = (x - 1)(x + 1) \quad \checkmark$$
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <h4>Universidad Tecnológica de Pereira</h4>
+        <p>Facultad de Ciencias Básicas • Departamento de Matemáticas • CB215 Matemáticas II</p>
+      </div>
+      <div class="footer-links">
+        <a href="../modulo5/index.html">← Módulo 5: Integral Definida</a>
+        <a href="../../index.html">Menú Principal</a>
+        <a href="../modulo7/index.html">Siguiente: Módulo 7 (Fase 2) →</a>
+      </div>
+    </div>
+    <div class="footer-bottom container">
+      <p>© 2026 Plataforma de Cálculo Integral + Software - UTP. Desarrollado para Evaluación Parcial 1.</p>
+    </div>
+  </footer>
+
+  <script src="../../js/utils.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const functionSelect = document.getElementById('functionSelect');
+      const cSlider = document.getElementById('cSlider');
+      const cValDisplay = document.getElementById('cValDisplay');
+      const showFamilyCheck = document.getElementById('showFamilyCheck');
+
+      const fFormulaEl = document.getElementById('fFormula');
+      const antiderivFormulaEl = document.getElementById('antiderivFormula');
+      const cDispEl = document.getElementById('cDisp');
+
+      const models = {
+        '2x': {
+          fName: 'f(x) = 2x',
+          fTex: '2x',
+          f: (x) => 2 * x,
+          F: (x, c) => Math.pow(x, 2) + c,
+          FLabel: (c) => `x² ${c >= 0 ? '+ ' + c.toFixed(1) : '- ' + Math.abs(c).toFixed(1)}`,
+          xRange: [-4, 4]
+        },
+        'poly': {
+          fName: 'f(x) = 3x² - 4x + 1',
+          fTex: '3x² - 4x + 1',
+          f: (x) => 3 * x * x - 4 * x + 1,
+          F: (x, c) => Math.pow(x, 3) - 2 * Math.pow(x, 2) + x + c,
+          FLabel: (c) => `x³ - 2x² + x ${c >= 0 ? '+ ' + c.toFixed(1) : '- ' + Math.abs(c).toFixed(1)}`,
+          xRange: [-2, 3]
+        },
+        'diff_sq': {
+          fName: 'f(x) = x² - 1',
+          fTex: 'x² - 1',
+          f: (x) => x * x - 1,
+          F: (x, c) => (Math.pow(x, 3) / 3) - x + c,
+          FLabel: (c) => `x³/3 - x ${c >= 0 ? '+ ' + c.toFixed(1) : '- ' + Math.abs(c).toFixed(1)}`,
+          xRange: [-3, 3]
+        },
+        'cos': {
+          fName: 'f(x) = cos(x)',
+          fTex: 'cos(x)',
+          f: (x) => Math.cos(x),
+          F: (x, c) => Math.sin(x) + c,
+          FLabel: (c) => `sin(x) ${c >= 0 ? '+ ' + c.toFixed(1) : '- ' + Math.abs(c).toFixed(1)}`,
+          xRange: [-2 * Math.PI, 2 * Math.PI]
+        }
+      };
+
+      function updateSimulation() {
+        const key = functionSelect.value;
+        const model = models[key];
+        const C = parseFloat(cSlider.value);
+        const showFamily = showFamilyCheck.checked;
+
+        cValDisplay.textContent = `C = ${C >= 0 ? '+' : ''}${C.toFixed(1)}`;
+        cDispEl.textContent = `${C >= 0 ? '+' : ''}${C.toFixed(2)}`;
+        fFormulaEl.textContent = model.fTex;
+        antiderivFormulaEl.textContent = model.FLabel(C);
+
+        const xMin = model.xRange[0];
+        const xMax = model.xRange[1];
+        const steps = 200;
+        const dx = (xMax - xMin) / steps;
+
+        const curveX = [];
+        const curveYf = [];
+        const curveYF_current = [];
+
+        for (let i = 0; i <= steps; i++) {
+          const x = xMin + i * dx;
+          curveX.push(x);
+          curveYf.push(model.f(x));
+          curveYF_current.push(model.F(x, C));
+        }
+
+        const traces = [];
+
+        // Familia de Curvas Fantasma si está activado
+        if (showFamily) {
+          const cFamily = [-6, -3, 0, 3, 6];
+          cFamily.forEach((cVal) => {
+            if (Math.abs(cVal - C) > 0.4) {
+              const yVals = curveX.map(x => model.F(x, cVal));
+              traces.push({
+                x: curveX,
+                y: yVals,
+                type: 'scatter',
+                mode: 'lines',
+                name: `F(x) + (${cVal})`,
+                line: { color: 'rgba(148, 163, 184, 0.25)', width: 1.2, dash: 'dash' },
+                hoverinfo: 'none',
+                showlegend: false
+              });
+            }
+          });
+        }
+
+        // Función Original f(x)
+        traces.push({
+          x: curveX,
+          y: curveYf,
+          type: 'scatter',
+          mode: 'lines',
+          name: `f(x) [Derivada]`,
+          line: { color: '#f59e0b', width: 2.2, dash: 'dot' }
+        });
+
+        // Curva Activa F(x) + C
+        traces.push({
+          x: curveX,
+          y: curveYF_current,
+          type: 'scatter',
+          mode: 'lines',
+          name: `F(x) + C (C=${C.toFixed(1)})`,
+          line: { color: '#38bdf8', width: 3.5 }
+        });
+
+        const layout = UTPMath.getPlotlyLayout({
+          title: `Familia de Primitivas: ${model.fName}`,
+          xTitle: 'x',
+          yTitle: 'y'
+        });
+
+        Plotly.react('plotlyChart', traces, layout, { responsive: true, displayModeBar: false });
+      }
+
+      functionSelect.addEventListener('change', updateSimulation);
+      cSlider.addEventListener('input', updateSimulation);
+      showFamilyCheck.addEventListener('change', updateSimulation);
+
+      updateSimulation();
+      UTPMath.renderAllMath();
+    });
+  </script>
+</body>
+</html>

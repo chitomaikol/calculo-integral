@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 4: Regla de Simpson 1/3 | UTP Cálculo Integral</title>
+  
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../../index.html" class="brand-wrapper">
+        <div class="brand-logo-badge">∫</div>
+        <div class="brand-text">
+          <h1>Cálculo Integral + Software</h1>
+          <span>Universidad Tecnológica de Pereira</span>
+        </div>
+      </a>
+      <div class="nav-actions">
+        <a href="../../index.html" class="btn btn-secondary">
+          <span>← Volver al Menú Principal</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Header del Módulo -->
+  <div class="module-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../../index.html">Inicio</a>
+        <span>/</span>
+        <span>Fase 1: Métodos Numéricos</span>
+        <span>/</span>
+        <span style="color: var(--text-main);">Módulo 4: Regla de Simpson 1/3</span>
+      </div>
+      <div class="module-header-content">
+        <div class="module-title-box">
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem;">
+            <span class="module-index">MÓDULO 04</span>
+            <span class="phase-badge badge-live">● Fase 1 Activo</span>
+          </div>
+          <h1>Regla de Simpson (1/3)</h1>
+          <p class="module-subtitle">Cuadratura numérica parabólica de alto orden que interpola polinomios de segundo grado sobre pares sucesivos de subintervalos con convergencia acelerada de orden O(1/n⁴).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido -->
+  <main class="container">
+    <div class="module-layout-grid">
+
+      <!-- Panel Izquierdo: Simulador Interactivo -->
+      <section class="simulator-panel">
+        <div class="panel-header">
+          <h2><span>⚡</span> Simulador Interactivo</h2>
+          <span style="font-size:0.8rem; color:var(--text-muted); font-family:var(--font-mono);">Simpson 1/3 Engine</span>
+        </div>
+
+        <div class="controls-card">
+          <div class="control-group">
+            <label for="functionSelect" class="control-label">Función del Taller:</label>
+            <select id="functionSelect" class="form-select">
+              <option value="x^2">f(x) = x² en [0, 2] (Ejemplo 1 - Error Nulo)</option>
+              <option value="1/x">f(x) = 1/x en [1, 3] (Ejemplo 2)</option>
+              <option value="exp(x)">f(x) = e^x en [0, 1] (Ejemplo 3)</option>
+              <option value="sin(x)">f(x) = sin(x) en [0, π] (Ejemplo 4)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Número de Particiones n (OBLIGATORIAMENTE PAR):</span>
+              <span id="nValDisplay" class="control-value">n = 4</span>
+            </div>
+            <!-- Slider con paso 2 para garantizar n par -->
+            <input type="range" id="nSlider" class="form-range" min="2" max="40" value="4" step="2">
+          </div>
+        </div>
+
+        <!-- Métricas -->
+        <div class="results-grid">
+          <div class="metric-box accent-value">
+            <div class="metric-title">Simpson S_n</div>
+            <div id="approxVal" class="metric-value">0.000000</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Valor Exacto ∫</div>
+            <div id="exactVal" class="metric-value">0.000000</div>
+          </div>
+          <div class="metric-box error-box">
+            <div class="metric-title">Error Absoluto |ε|</div>
+            <div id="errorVal" class="metric-value">0.000000</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Paso Δx</div>
+            <div id="deltaXVal" class="metric-value">0.000000</div>
+          </div>
+        </div>
+
+        <!-- Gráfico Plotly -->
+        <div id="plotlyChart" class="plot-container"></div>
+      </section>
+
+      <!-- Panel Derecho: Teoría y Ejercicios -->
+      <section class="theory-panel">
+        <div class="panel-header">
+          <h2><span>📖</span> Fundamentación Teórica</h2>
+          <span style="font-size:0.8rem; color:var(--accent-cyan); font-weight:600;">UTP CB215</span>
+        </div>
+
+        <div class="theory-text">
+          <p>
+            En lugar de usar líneas rectas como el método de los trapecios, la <strong>Regla de Simpson (1/3)</strong> aproxima la curva mediante parábolas $P(x) = Ax^2 + Bx + C$ pasando por tres puntos sucesivos.
+          </p>
+
+          <p>
+            <strong>Condición Obligatoria de Paridad:</strong> Dado que cada parábola cubre 2 subintervalos contiguos, el número total de divisiones $n$ <em>debe ser estrictamente un número par</em>.
+          </p>
+
+          <div class="formula-box">
+            $$\Delta x = \frac{b - a}{n}, \quad n \in \{2, 4, 6, 8, \dots\}$$
+          </div>
+
+          <p>
+            La fórmula compuesta de Simpson asigna pesos periódicos $(1, 4, 2, 4, 2, \dots, 4, 1)$:
+          </p>
+
+          <div class="formula-box amber">
+            $$S_n = \frac{\Delta x}{3} \left[ f(x_0) + 4\sum_{i \text{ impar}} f(x_i) + 2\sum_{i \text{ par}} f(x_i) + f(x_n) \right]$$
+          </div>
+
+          <p>
+            <strong>Convergencia de Cuarto Orden y Exactitud Cúbica:</strong><br>
+            Si $f^{(4)}(x)$ es continua y $|f^{(4)}(x)| \le M$, la cota superior del error es:
+          </p>
+
+          <div class="formula-box purple">
+            $$|E_S| \le \frac{M (b - a)^5}{180 n^4}$$
+          </div>
+          <p>
+            Nótese que si $f(x)$ es un polinomio de grado $\le 3$, su cuarta derivada es idénticamente nula ($f^{(4)}(x) \equiv 0$), lo que significa que <strong>la Regla de Simpson calcula el valor exacto de la integral para funciones lineales, cuadráticas y cúbicas</strong>.
+          </p>
+        </div>
+
+        <!-- Ejercicios Resueltos Paso a Paso -->
+        <div class="examples-section">
+          <h3><span>📝</span> Ejercicios Resueltos del Taller</h3>
+
+          <!-- Ejercicio 1 -->
+          <div class="example-card">
+            <div class="example-header">
+              <span>Ejercicio 1: $\int_0^2 x^2 dx$ con Regla de Simpson ($n = 4$)</span>
+              <span style="color:var(--text-dim); font-size:0.8rem;">Sección 1.4</span>
+            </div>
+            <div class="example-step">
+              <strong>Paso 1:</strong> $\Delta x = \frac{2 - 0}{4} = 0.5$. $n=4$ es par.<br>
+              Puntos: $x_0 = 0.0,\, x_1 = 0.5,\, x_2 = 1.0,\, x_3 = 1.5,\, x_4 = 2.0$.
+            </div>
+            <div class="example-step">
+              <strong>Paso 2:</strong> Evaluamos $f(x) = x^2$:<br>
+              $f(0)=0.0$, $f(0.5)=0.25$, $f(1)=1.0$, $f(1.5)=2.25$, $f(2)=4.0$.
+            </div>
+            <div class="example-step">
+              <strong>Paso 3:</strong> Aplicamos los coeficientes $(1, 4, 2, 4, 1)$:<br>
+              $$S_4 = \frac{0.5}{3} \left[ 0 + 4(0.25 + 2.25) + 2(1.0) + 4.0 \right]$$
+              $$S_4 = \frac{1}{6} \left[ 0 + 4(2.5) + 2 + 4 \right] = \frac{1}{6} [10 + 6] = \frac{16}{6} = \frac{8}{3} \approx \mathbf{2.666667}$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 4 (Conclusión):</strong><br>
+              Como $f(x)=x^2$ tiene $f^{(4)}(x) = 0$, el error analítico es rigurosamente <strong>$0.000000$</strong>. Simpson entrega el valor exacto de la integral.
+            </div>
+          </div>
+
+          <!-- Ejercicio 2 -->
+          <div class="example-card">
+            <div class="example-header">
+              <span>Ejercicio 2: $\int_1^3 \frac{1}{x} dx$ usando $S_4$</span>
+              <span style="color:var(--text-dim); font-size:0.8rem;">Sección 1.4</span>
+            </div>
+            <div class="example-step">
+              <strong>Paso 1:</strong> $\Delta x = \frac{3 - 1}{4} = 0.5$.<br>
+              Nodos: $x_0=1.0,\, x_1=1.5,\, x_2=2.0,\, x_3=2.5,\, x_4=3.0$.
+            </div>
+            <div class="example-step">
+              <strong>Paso 2:</strong> Evaluaciones fraccionarias exactas:<br>
+              $f(1) = 1$, $f(1.5) = \frac{2}{3}$, $f(2) = \frac{1}{2}$, $f(2.5) = \frac{2}{5} = 0.4$, $f(3) = \frac{1}{3}$.
+            </div>
+            <div class="example-step">
+              <strong>Paso 3:</strong> Sustitución en la fórmula ponderada:<br>
+              $$S_4 = \frac{0.5}{3} \left[ 1 + 4\left(\frac{2}{3} + \frac{2}{5}\right) + 2\left(\frac{1}{2}\right) + \frac{1}{3} \right]$$
+              $$S_4 = \frac{1}{6} \left[ 1 + 4\left(\frac{16}{15}\right) + 1 + \frac{1}{3} \right] = \frac{1}{6} \left[ 2 + \frac{64}{15} + \frac{5}{15} \right] = \frac{1}{6} \left[ 2 + \frac{69}{15} \right]$$
+              $$S_4 = \frac{1}{6} [2 + 4.6] = \frac{6.6}{6} = \mathbf{1.100000}$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 4:</strong> Comparación con $\ln(3) \approx 1.098612$:<br>
+              $$|E_S| = |1.098612 - 1.100000| = \mathbf{0.001388} \quad (\text{Error de apenas } 0.12\%)$$
+              Comprobamos empíricamente la superioridad de Simpson frente a Trapecio ($1.06\%$) y Punto Medio ($0.52\%$).
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <h4>Universidad Tecnológica de Pereira</h4>
+        <p>Facultad de Ciencias Básicas • Departamento de Matemáticas • CB215 Matemáticas II</p>
+      </div>
+      <div class="footer-links">
+        <a href="../modulo3/index.html">← Módulo 3: Punto Medio</a>
+        <a href="../../index.html">Menú Principal</a>
+        <a href="../modulo5/index.html">Siguiente: Integral Definida y Área →</a>
+      </div>
+    </div>
+    <div class="footer-bottom container">
+      <p>© 2026 Plataforma de Cálculo Integral + Software - UTP. Desarrollado para Evaluación Parcial 1.</p>
+    </div>
+  </footer>
+
+  <script src="../../js/utils.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const functionSelect = document.getElementById('functionSelect');
+      const nSlider = document.getElementById('nSlider');
+      const nValDisplay = document.getElementById('nValDisplay');
+
+      const approxValEl = document.getElementById('approxVal');
+      const exactValEl = document.getElementById('exactVal');
+      const errorValEl = document.getElementById('errorVal');
+      const deltaXValEl = document.getElementById('deltaXVal');
+
+      function updateSimulation() {
+        const fnKey = functionSelect.value;
+        const fnObj = UTPMath.FUNCTIONS_CATALOG[fnKey];
+        const a = fnObj.defaultA;
+        const b = fnObj.defaultB;
+
+        let n = parseInt(nSlider.value, 10);
+        if (n % 2 !== 0) n += 1; // Forzar condición de paridad
+
+        nValDisplay.textContent = `n = ${n} (Par)`;
+
+        const result = UTPMath.calcSimpson(fnObj.fn, a, b, n);
+        const exact = fnObj.exactDefinite(a, b);
+        const absError = Math.abs(exact - result.sum);
+
+        approxValEl.textContent = UTPMath.formatNum(result.sum);
+        exactValEl.textContent = UTPMath.formatNum(exact);
+        errorValEl.textContent = UTPMath.formatNum(absError);
+        deltaXValEl.textContent = UTPMath.formatNum(result.deltaX);
+
+        // Curva analítica suave
+        const curveX = [];
+        const curveY = [];
+        const resolution = 200;
+        const pad = (b - a) * 0.1;
+        const xMinPlot = Math.max(0, a - pad);
+        const xMaxPlot = b + pad;
+        const step = (xMaxPlot - xMinPlot) / resolution;
+
+        for (let i = 0; i <= resolution; i++) {
+          const x = xMinPlot + i * step;
+          curveX.push(x);
+          curveY.push(fnObj.fn(x));
+        }
+
+        const traces = [];
+
+        // Curva original
+        traces.push({
+          x: curveX,
+          y: curveY,
+          type: 'scatter',
+          mode: 'lines',
+          name: fnObj.name,
+          line: { color: UTPMath.THEME.accentCyan, width: 3 }
+        });
+
+        // Parábolas de Simpson sobre pares de intervalos [x_{2k}, x_{2k+2}]
+        const parabX = [];
+        const parabY = [];
+        const pts = result.points;
+
+        for (let k = 0; k < n; k += 2) {
+          const x0 = pts[k].x;
+          const x1 = pts[k + 1].x;
+          const x2 = pts[k + 2].x;
+          const y0 = pts[k].y;
+          const y1 = pts[k + 1].y;
+          const y2 = pts[k + 2].y;
+
+          // Interpolación polinómica cuadrática de Lagrange
+          const subSteps = 15;
+          const dxSub = (x2 - x0) / subSteps;
+          for (let s = 0; s <= subSteps; s++) {
+            const x = x0 + s * dxSub;
+            // Base de Lagrange
+            const L0 = ((x - x1) * (x - x2)) / ((x0 - x1) * (x0 - x2));
+            const L1 = ((x - x0) * (x - x2)) / ((x1 - x0) * (x1 - x2));
+            const L2 = ((x - x0) * (x - x1)) / ((x2 - x0) * (x2 - x1));
+            const y = y0 * L0 + y1 * L1 + y2 * L2;
+
+            parabX.push(x);
+            parabY.push(y);
+          }
+        }
+
+        // Sombreado bajo las parábolas
+        traces.push({
+          x: [a, ...parabX, b, a],
+          y: [0, ...parabY, 0, 0],
+          fill: 'toself',
+          fillcolor: 'rgba(168, 85, 247, 0.25)',
+          mode: 'lines',
+          name: `Parábolas Simpson S_${n}`,
+          line: { color: '#c084fc', width: 2, dash: 'dot' }
+        });
+
+        // Puntos de los nodos con alternancia de pesos 1, 4, 2
+        const nodeX = pts.map(p => p.x);
+        const nodeY = pts.map(p => p.y);
+        const nodeColors = pts.map((p, idx) => {
+          if (idx === 0 || idx === n) return '#38bdf8'; // Extremos (peso 1)
+          return idx % 2 === 1 ? '#f43f5e' : '#10b981'; // Impares peso 4 (rojo), Pares peso 2 (verde)
+        });
+
+        traces.push({
+          x: nodeX,
+          y: nodeY,
+          type: 'scatter',
+          mode: 'markers',
+          name: 'Nodos Ponderados (1, 4, 2)',
+          marker: {
+            color: nodeColors,
+            size: 7,
+            line: { color: '#ffffff', width: 1.5 }
+          }
+        });
+
+        const layout = UTPMath.getPlotlyLayout({
+          title: `Regla de Simpson 1/3: ${fnObj.name} en [${a}, ${b}] (n = ${n})`,
+          xTitle: 'x',
+          yTitle: 'f(x)'
+        });
+
+        Plotly.react('plotlyChart', traces, layout, { responsive: true, displayModeBar: false });
+      }
+
+      functionSelect.addEventListener('change', updateSimulation);
+      nSlider.addEventListener('input', updateSimulation);
+
+      updateSimulation();
+      UTPMath.renderAllMath();
+    });
+  </script>
+</body>
+</html>
