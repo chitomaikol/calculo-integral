@@ -2,6 +2,7 @@
 ### Universidad Tecnológica de Pereira (UTP)
 **Facultad de Ciencias Básicas • Departamento de Matemáticas**  
 **Asignatura:** Matemáticas II (CB215) — Grupo 403  
+**Autor:** Maikol Andrés Chito
 **Evaluación Parcial 1 — Semestre 2026-2**
 
 ---
@@ -152,19 +153,18 @@ Para publicar la plataforma en internet y compartir el enlace en Google Classroo
 2. **Vincular con su repositorio remoto en GitHub:**
    ```bash
    git branch -M main
-   git remote add origin https://github.com/TU_USUARIO/TU_REPOSITORIO.git
-   git push -u origin main
+   git remote add origin https://github.com/chitomaikol/calculo-integral.git
    ```
 
 3. **Activar GitHub Pages:**
-   - Ingrese a su repositorio en [GitHub](https://github.com).
+   - Ingrese a su repositorio en [GitHub](https://github.com/chitomaikol/calculo-integral.git).
    - Diríjase a **Settings** (Configuración) > pestaña **Pages** (menú lateral izquierdo).
    - En la sección **Build and deployment > Source**, seleccione **Deploy from a branch**.
    - En **Branch**, seleccione `main` y la carpeta `/ (root)`.
    - Haga clic en **Save**.
    - En 1-2 minutos, su plataforma estará disponible en:
      ```text
-     https://TU_USUARIO.github.io/TU_REPOSITORIO/
+     https://github.com/chitomaikol/calculo-integral.git
      ```
 
 ---
