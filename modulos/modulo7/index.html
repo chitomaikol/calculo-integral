@@ -5,14 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Módulo 7: Integración por Sustitución (Potencias) | UTP Cálculo Integral</title>
   
+  <!-- Estilos del Sistema Global -->
   <link rel="stylesheet" href="../../css/style.css">
+  
+  <!-- CDN KaTeX para Renderizado Matemático Riguroso -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
-</head>
-<body>
 
-  <!-- Navbar -->
+  <!-- Plotly.js para Visualización Dinámica -->
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body class="dark-theme">
+
+  <!-- Barra Superior / Navbar -->
   <header class="navbar">
     <div class="container nav-container">
       <a href="../../index.html" class="brand-wrapper">
@@ -30,68 +36,375 @@
     </div>
   </header>
 
-  <!-- Vista Placeholder -->
-  <main class="container">
-    <div class="placeholder-view">
-      <div class="placeholder-badge">🔒 Fase 2 (Parcial 2) • En Desarrollo</div>
-      <h1>Módulo 07: Integración por Sustitución (Potencias)</h1>
-      <p style="font-size:1.15rem; max-width:680px; margin:0 auto; color:var(--text-muted);">
-        Método de cambio de variable algebraico para funciones compuestas de tipo potencia y radicales.
-      </p>
-
-      <div class="placeholder-card">
-        <h2>📐 Modelo Matemático Principal</h2>
-        <div class="formula-box purple" style="font-size:1.15rem; text-align:center;">
-          $$\int u^n\,du = \frac{u^{n+1}}{n+1} + C \quad (n \neq -1)$$
-        </div>
-
-        <h3 style="margin-top:2rem; font-size:1.1rem; color:var(--text-main);">📋 Contenidos Programados para esta Fase:</h3>
-        <ul class="placeholder-list">
-          <li><span class="bullet">✦</span> <span>Elección sistemática de la variable auxiliar u = g(x)</span></li>
-          <li><span class="bullet">✦</span> <span>Cálculo y balanceo de diferenciales du = g\'(x) dx</span></li>
-          <li><span class="bullet">✦</span> <span>Integrales con radicales tipo $\int \frac{x^2}{\sqrt{x^3 + 2}}\,dx$</span></li>
-          <li><span class="bullet">✦</span> <span>Sustitución en expresiones racionales con binomios elevados a potencias</span></li>
-          <li><span class="bullet">✦</span> <span>Verificación de soluciones mediante derivación por regla de la cadena</span></li>
-        </ul>
-
-        <div style="background:rgba(56, 189, 248, 0.08); border-left:3px solid var(--accent-cyan); padding:1rem 1.25rem; border-radius:var(--radius-sm); margin-top:2rem;">
-          <strong style="color:var(--accent-cyan);">Nota de Planificación Curricular UTP:</strong>
-          <p style="font-size:0.9rem; margin-top:0.35rem; color:#cbd5e1;">
-            Este módulo se habilitará con sus simuladores interactivos, gráficos dinámicos y demostraciones paso a paso en las <strong>Fases 2 y 3</strong> del proyecto semestral CB215 Grupo 403.
+  <!-- Encabezado del Módulo -->
+  <header class="module-header">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Ruta de navegación">
+        <a href="../../index.html">Inicio</a>
+        <span>/</span>
+        <span>Fase 2: Métodos de Integración</span>
+        <span>/</span>
+        <span style="color: var(--text-main);">Módulo 7: Sustitución (Potencias)</span>
+      </nav>
+      <div class="module-header-content">
+        <div class="module-title-box">
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem;">
+            <span class="module-index">MÓDULO 07</span>
+            <span class="phase-badge badge-live">● Fase 2 Activo</span>
+          </div>
+          <h1>Integración por Sustitución y Regla de la Potencia</h1>
+          <p class="module-subtitle">
+            Fundamentos del cambio de variable $u = g(x)$, balanceo analítico de diferenciales $du = g'(x)\,dx$, resolución de binomios con potencias racionales y familias de primitivas.
           </p>
         </div>
       </div>
+    </div>
+  </header>
 
-      <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;">
-        <a href="../../index.html" class="btn btn-primary" style="padding:0.75rem 2rem;">
-          <span>← Explorar Módulos Activos (1 a 6)</span>
-        </a>
-      </div>
+  <!-- Contenedor Principal -->
+  <main class="container">
+    <div class="module-layout-grid">
+
+      <!-- Panel Izquierdo: Visualización y Espacio Plotly -->
+      <section class="simulator-panel card">
+        <div class="card-header">
+          <h2><span>⚡</span> Visualizador de Curvas y Primitivas</h2>
+          <span class="card-tag">Plotly.js Interactive</span>
+        </div>
+
+        <!-- Controles Interactivos -->
+        <div class="controls-card">
+          <div class="control-group">
+            <label for="potenciaFunctionSelect" class="control-label">Seleccionar Función del Taller UTP:</label>
+            <select id="potenciaFunctionSelect" class="form-select">
+              <option value="radical">f(x) = (x + 3)√(x² + 6x)  ⟹  F(x) = (1/3)(x² + 6x)^(3/2)</option>
+              <option value="rational_root">f(x) = x² / √(x³ + 2)  ⟹  F(x) = (2/3)√(x³ + 2)</option>
+              <option value="power_chain">f(x) = (2x + 1)(x² + x)^2  ⟹  F(x) = (1/3)(x² + x)^3</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Constante de Integración (C):</span>
+              <span id="cValueLabel" class="control-value">C = 0.0</span>
+            </div>
+            <input type="range" id="cRangeSlider" class="form-range" min="-10" max="10" value="0" step="0.5">
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+              <input type="checkbox" id="showGhostCurves" checked style="cursor:pointer; accent-color:var(--accent-cyan);">
+              <span>Visualizar familia de antiderivadas (C = -6, -3, 0, 3, 6)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Métricas Rápidas -->
+        <div class="results-grid">
+          <div class="metric-box accent-value">
+            <div class="metric-title">Variable Auxiliar</div>
+            <div id="uAuxDisplay" class="metric-value" style="font-size:0.95rem;">u = x² + 6x</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Diferencial du</div>
+            <div id="duDisplay" class="metric-value" style="font-size:0.95rem;">2(x + 3)dx</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Exponente n</div>
+            <div id="nExponentDisplay" class="metric-value" style="font-size:0.95rem;">n = 1/2</div>
+          </div>
+        </div>
+
+        <!-- Contenedor del Gráfico con Plotly.js -->
+        <div class="plotly-placeholder-wrapper">
+          <div class="plotly-placeholder-header">
+            <strong style="color:var(--accent-cyan); font-size:0.9rem;">Lienzo Gráfico Dinámico: $f(x)$ vs $F(x) + C$</strong>
+            <span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);">Motor: Plotly SVG/WebGL</span>
+          </div>
+          <div id="plotlyChart" class="plot-container"></div>
+        </div>
+      </section>
+
+      <!-- Panel Derecho: Fundamento Teórico y Ejemplos Resueltos -->
+      <section class="theory-panel card">
+        <div class="card-header">
+          <h2><span>📖</span> Fundamentación Teórica Rigurosa</h2>
+          <span class="card-tag">Cálculo Diferencial e Integral</span>
+        </div>
+
+        <div class="card-body">
+          <div class="theory-text">
+            <p>
+              El <strong>Método de Integración por Sustitución</strong> (o cambio de variable) representa la contraparte analítica directa de la <em>Regla de la Cadena</em> en derivación. Si $F$ es una antiderivada de $f$, entonces:
+            </p>
+          </div>
+
+          <div class="formula-box purple">
+            $$\int f(g(x)) \cdot g'(x)\,dx = \int f(u)\,du = F(u) + C = F(g(x)) + C$$
+          </div>
+
+          <div class="theory-text">
+            <p>
+              En el caso particular de funciones compuestas formadas por una base elevada a una potencia constante $n \in \mathbb{R}$ con $n \neq -1$, se aplica la <strong>Regla de la Potencia Generalizada</strong>:
+            </p>
+          </div>
+
+          <div class="formula-box">
+            $$\int [g(x)]^n \cdot g'(x)\,dx = \int u^n\,du = \frac{u^{n+1}}{n+1} + C \quad (n \neq -1)$$
+          </div>
+
+          <!-- Protocolo Metodológico -->
+          <div style="background:rgba(15, 23, 42, 0.6); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:1rem 1.25rem;">
+            <h4 style="color:var(--accent-cyan); font-size:0.95rem; margin-bottom:0.5rem;">⚙️ Protocolo de Resolución Sistemática:</h4>
+            <ol style="padding-left:1.25rem; font-size:0.875rem; color:var(--text-muted); line-height:1.7;">
+              <li><strong>Elección del núcleo interno:</strong> Identificar la expresión $u = g(x)$ ubicada bajo un radical, exponente o denominador.</li>
+              <li><strong>Diferenciación exacta:</strong> Obtener $du = g'(x)\,dx$ y despejar o balancear las constantes que acompañan al diferencial.</li>
+              <li><strong>Conversión integral:</strong> Reexpresar la integral enteramente en términos de la variable auxiliar $u$ y aplicar $\int u^n du$.</li>
+              <li><strong>Retorno e invariancia:</strong> Restituir la variable original $x$ y verificar por derivación: $\frac{d}{dx}[F(g(x)) + C] = f(x)$.</li>
+            </ol>
+          </div>
+
+          <!-- Sección de Ejercicios del Taller Oficial -->
+          <div class="examples-section">
+            <h3 style="color:var(--text-main); font-size:1.15rem; margin-bottom:1rem;">
+              <span>📝</span> Ejercicios Resueltos Paso a Paso (Taller Oficial UTP)
+            </h3>
+
+            <!-- Ejemplo 1: Ejercicio 1 del Taller -->
+            <article class="example-card">
+              <div class="example-header">
+                <span>Ejercicio 1: Integral con Radical en el Denominador</span>
+                <span class="card-tag">Taller VII - Ej. 1</span>
+              </div>
+              <div class="formula-box" style="margin:0.5rem 0;">
+                $$\int \frac{x^2}{\sqrt{x^3 + 2}}\,dx$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 1: Elección de la variable auxiliar $u$ y su diferencial:</strong><br>
+                Sea la expresión subradical $u = x^3 + 2$. Diferenciando ambos miembros:
+                $$du = \frac{d}{dx}(x^3 + 2)\,dx = 3x^2\,dx \implies x^2\,dx = \frac{du}{3}$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 2: Transformación e integración por regla de la potencia:</strong><br>
+                $$\int \frac{x^2}{\sqrt{x^3 + 2}}\,dx = \int \frac{1}{\sqrt{u}} \cdot \frac{du}{3} = \frac{1}{3}\int u^{-1/2}\,du$$
+                $$\frac{1}{3} \cdot \left[ \frac{u^{-1/2 + 1}}{-\frac{1}{2} + 1} \right] + C = \frac{1}{3} \cdot \left[ \frac{u^{1/2}}{1/2} \right] + C = \frac{2}{3}u^{1/2} + C$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 3: Retorno a la variable original $x$:</strong><br>
+                $$\frac{2}{3}\sqrt{x^3 + 2} + C$$
+              </div>
+              <div class="example-step" style="border-left-color:var(--accent-teal);">
+                <strong style="color:var(--accent-teal);">Verificación por Derivación:</strong><br>
+                $$\frac{d}{dx}\left[ \frac{2}{3}(x^3 + 2)^{1/2} + C \right] = \frac{2}{3} \cdot \frac{1}{2}(x^3 + 2)^{-1/2} \cdot (3x^2) = \frac{x^2}{\sqrt{x^3 + 2}} \quad \checkmark$$
+              </div>
+            </article>
+
+            <!-- Ejemplo 2: Ejercicio 5 del Taller -->
+            <article class="example-card">
+              <div class="example-header">
+                <span>Ejercicio 2: Factor Lineal y Trinomio bajo Radical</span>
+                <span class="card-tag">Taller VII - Ej. 5</span>
+              </div>
+              <div class="formula-box" style="margin:0.5rem 0;">
+                $$\int (x + 3)\sqrt{x^2 + 6x}\,dx$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 1: Identificación y factorización del diferencial:</strong><br>
+                Sea $u = x^2 + 6x$. Derivando con respecto a $x$:
+                $$du = (2x + 6)\,dx = 2(x + 3)\,dx \implies (x + 3)\,dx = \frac{du}{2}$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 2: Reemplazo algebraico e integración:</strong><br>
+                $$\int (x + 3)(x^2 + 6x)^{1/2}\,dx = \int u^{1/2} \cdot \frac{du}{2} = \frac{1}{2}\int u^{1/2}\,du$$
+                $$\frac{1}{2} \cdot \frac{u^{3/2}}{3/2} + C = \frac{1}{2} \cdot \frac{2}{3} u^{3/2} + C = \frac{1}{3}u^{3/2} + C$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 3: Expresión final en función de $x$:</strong><br>
+                $$\frac{1}{3}(x^2 + 6x)^{3/2} + C = \frac{1}{3}\sqrt{(x^2 + 6x)^3} + C$$
+              </div>
+              <div class="example-step" style="border-left-color:var(--accent-teal);">
+                <strong style="color:var(--accent-teal);">Verificación por Regla de la Cadena:</strong><br>
+                $$\frac{d}{dx}\left[ \frac{1}{3}(x^2 + 6x)^{3/2} \right] = \frac{1}{3} \cdot \frac{3}{2}(x^2 + 6x)^{1/2}(2x + 6) = (x + 3)\sqrt{x^2 + 6x} \quad \checkmark$$
+              </div>
+            </article>
+
+            <!-- Ejemplo 3: Ejercicio 2 del Taller (Sustitución Lineal con Despeje) -->
+            <article class="example-card">
+              <div class="example-header">
+                <span>Ejercicio 3: Sustitución con Despeje de Variable Residual</span>
+                <span class="card-tag">Taller VII - Ej. 2</span>
+              </div>
+              <div class="formula-box" style="margin:0.5rem 0;">
+                $$\int \frac{x - 2}{(1 - 2x)^4}\,dx$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 1: Cambio de variable lineal y despeje de $x$:</strong><br>
+                Sea $u = 1 - 2x \implies 2x = 1 - u \implies x = \frac{1 - u}{2}$.<br>
+                Diferenciando: $du = -2\,dx \implies dx = -\frac{du}{2}$.<br>
+                El numerador se transforma en:
+                $$x - 2 = \frac{1 - u}{2} - 2 = \frac{1 - u - 4}{2} = -\frac{u + 3}{2}$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 2: Sustitución completa y separación de potencias:</strong><br>
+                $$\int \frac{-\frac{u + 3}{2}}{u^4} \left(-\frac{du}{2}\right) = \frac{1}{4} \int \frac{u + 3}{u^4}\,du = \frac{1}{4}\int \left( u^{-3} + 3u^{-4} \right)\,du$$
+                $$= \frac{1}{4}\left[ \frac{u^{-2}}{-2} + 3\left(\frac{u^{-3}}{-3}\right) \right] + C = \frac{1}{4}\left[ -\frac{1}{2u^2} - \frac{1}{u^3} \right] + C = -\frac{1}{8u^2} - \frac{1}{4u^3} + C$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 3: Retorno a $x$ y simplificación algebraica:</strong><br>
+                $$-\frac{1}{8(1 - 2x)^2} - \frac{1}{4(1 - 2x)^3} + C = -\frac{(1 - 2x) + 2}{8(1 - 2x)^3} + C = -\frac{3 - 2x}{8(1 - 2x)^3} + C$$
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
 
-  <!-- Footer -->
+  <!-- Pie de Página Institucional -->
   <footer class="footer">
     <div class="container footer-content">
       <div class="footer-brand">
         <h4>Universidad Tecnológica de Pereira</h4>
-        <p>Facultad de Ciencias Básicas • Departamento de Matemáticas • CB215 Matemáticas II</p>
+        <p>Facultad de Ciencias Básicas • Departamento de Matemáticas • CB215 Cálculo Integral</p>
       </div>
       <div class="footer-links">
         <a href="../../index.html">Menú Principal</a>
-        <a href="../modulo1/index.html">Módulo 1: Riemann</a>
         <a href="../modulo6/index.html">Módulo 6: Integración Directa</a>
+        <a href="../modulo8/index.html">Módulo 8: Integrales Exponenciales</a>
       </div>
     </div>
     <div class="footer-bottom container">
-      <p>© 2026 Plataforma de Cálculo Integral + Software - UTP. Desarrollado para Evaluación Parcial 1.</p>
+      <p>© 2026 Plataforma de Cálculo Integral + Desarrollo de Software - UTP. Fase 2 Curricular.</p>
     </div>
   </footer>
 
+  <!-- Scripts de Utilidades y Renderizado Matemático / Gráfico -->
   <script src="../../js/utils.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // 1. Renderizado Automático KaTeX
       UTPMath.renderAllMath();
+
+      // 2. Modelo de Funciones para el Contenedor Plotly.js
+      const models = {
+        'radical': {
+          title: 'f(x) = (x+3)√(x²+6x)',
+          uTex: 'u = x² + 6x',
+          duTex: '2(x+3)dx',
+          nTex: 'n = 1/2',
+          xRange: [0.1, 3.5],
+          f: (x) => (x + 3) * Math.sqrt(Math.max(0, x * x + 6 * x)),
+          F: (x, C) => (1 / 3) * Math.pow(Math.max(0, x * x + 6 * x), 1.5) + C
+        },
+        'rational_root': {
+          title: 'f(x) = x² / √(x³+2)',
+          uTex: 'u = x³ + 2',
+          duTex: '3x² dx',
+          nTex: 'n = -1/2',
+          xRange: [0, 3],
+          f: (x) => (x * x) / Math.sqrt(x * x * x + 2),
+          F: (x, C) => (2 / 3) * Math.sqrt(x * x * x + 2) + C
+        },
+        'power_chain': {
+          title: 'f(x) = (2x+1)(x²+x)²',
+          uTex: 'u = x² + x',
+          duTex: '(2x+1)dx',
+          nTex: 'n = 2',
+          xRange: [0, 1.6],
+          f: (x) => (2 * x + 1) * Math.pow(x * x + x, 2),
+          F: (x, C) => (1 / 3) * Math.pow(x * x + x, 3) + C
+        }
+      };
+
+      const selectEl = document.getElementById('potenciaFunctionSelect');
+      const cSlider = document.getElementById('cRangeSlider');
+      const cLabel = document.getElementById('cValueLabel');
+      const ghostCheck = document.getElementById('showGhostCurves');
+      const uDisp = document.getElementById('uAuxDisplay');
+      const duDisp = document.getElementById('duDisplay');
+      const nDisp = document.getElementById('nExponentDisplay');
+
+      function updatePlot() {
+        const selectedKey = selectEl.value;
+        const model = models[selectedKey];
+        const C = parseFloat(cSlider.value);
+        const showGhosts = ghostCheck.checked;
+
+        cLabel.textContent = `C = ${C >= 0 ? '+' : ''}${C.toFixed(1)}`;
+        uDisp.textContent = model.uTex;
+        duDisp.textContent = model.duTex;
+        nDisp.textContent = model.nTex;
+
+        const steps = 180;
+        const [xMin, xMax] = model.xRange;
+        const dx = (xMax - xMin) / steps;
+        const curveX = [];
+        const curveYf = [];
+        const curveYF = [];
+
+        for (let i = 0; i <= steps; i++) {
+          const x = xMin + i * dx;
+          curveX.push(x);
+          curveYf.push(model.f(x));
+          curveYF.push(model.F(x, C));
+        }
+
+        const traces = [];
+
+        // Familia Fantasma de Curvas
+        if (showGhosts) {
+          const ghosts = [-6, -3, 0, 3, 6];
+          ghosts.forEach(cVal => {
+            if (Math.abs(cVal - C) > 0.4) {
+              traces.push({
+                x: curveX,
+                y: curveX.map(x => model.F(x, cVal)),
+                type: 'scatter',
+                mode: 'lines',
+                name: `F(x) + (${cVal})`,
+                line: { color: 'rgba(148, 163, 184, 0.22)', width: 1.2, dash: 'dash' },
+                hoverinfo: 'none',
+                showlegend: false
+              });
+            }
+          });
+        }
+
+        // Función Integrando f(x)
+        traces.push({
+          x: curveX,
+          y: curveYf,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'f(x) [Integrando]',
+          line: { color: '#f59e0b', width: 2.2, dash: 'dot' }
+        });
+
+        // Curva de la Primitiva Activa F(x) + C
+        traces.push({
+          x: curveX,
+          y: curveYF,
+          type: 'scatter',
+          mode: 'lines',
+          name: `F(x) + C (C=${C.toFixed(1)})`,
+          line: { color: '#38bdf8', width: 3.2 }
+        });
+
+        const layout = UTPMath.getPlotlyLayout({
+          title: `Método de Sustitución: ${model.title}`,
+          xTitle: 'x',
+          yTitle: 'y = f(x) / F(x)'
+        });
+
+        Plotly.react('plotlyChart', traces, layout, { responsive: true, displayModeBar: false });
+      }
+
+      selectEl.addEventListener('change', updatePlot);
+      cSlider.addEventListener('input', updatePlot);
+      ghostCheck.addEventListener('change', updatePlot);
+
+      updatePlot();
     });
   </script>
 </body>

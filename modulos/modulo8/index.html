@@ -5,14 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Módulo 8: Integrales Exponenciales | UTP Cálculo Integral</title>
   
+  <!-- Estilos del Sistema Global -->
   <link rel="stylesheet" href="../../css/style.css">
+  
+  <!-- CDN KaTeX para Renderizado Matemático Riguroso -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
-</head>
-<body>
 
-  <!-- Navbar -->
+  <!-- Plotly.js para Visualización Dinámica -->
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body class="dark-theme">
+
+  <!-- Barra Superior / Navbar -->
   <header class="navbar">
     <div class="container nav-container">
       <a href="../../index.html" class="brand-wrapper">
@@ -30,68 +36,405 @@
     </div>
   </header>
 
-  <!-- Vista Placeholder -->
-  <main class="container">
-    <div class="placeholder-view">
-      <div class="placeholder-badge">🔒 Fase 2 (Parcial 2) • En Desarrollo</div>
-      <h1>Módulo 08: Integrales Exponenciales</h1>
-      <p style="font-size:1.15rem; max-width:680px; margin:0 auto; color:var(--text-muted);">
-        Integración de funciones exponenciales de base natural e y base general a.
-      </p>
-
-      <div class="placeholder-card">
-        <h2>📐 Modelo Matemático Principal</h2>
-        <div class="formula-box purple" style="font-size:1.15rem; text-align:center;">
-          $$\int e^u\,du = e^u + C, \quad \int a^x\,dx = \frac{a^x}{\ln(a)} + C \quad (a > 0, a \neq 1)$$
-        </div>
-
-        <h3 style="margin-top:2rem; font-size:1.1rem; color:var(--text-main);">📋 Contenidos Programados para esta Fase:</h3>
-        <ul class="placeholder-list">
-          <li><span class="bullet">✦</span> <span>Propiedades fundamentales de la función exponencial natural $e^x$</span></li>
-          <li><span class="bullet">✦</span> <span>Integrales de exponenciales combinadas $\int (e^{2x} + 3e^x)\,dx$</span></li>
-          <li><span class="bullet">✦</span> <span>Sustituciones no lineales con denominadores $e^x + e^{-x}$</span></li>
-          <li><span class="bullet">✦</span> <span>Integración de productos tipo $\int 5^x e^x\,dx = \int (5e)^x\,dx$</span></li>
-          <li><span class="bullet">✦</span> <span>Visualización de familias de primitivas exponenciales</span></li>
-        </ul>
-
-        <div style="background:rgba(56, 189, 248, 0.08); border-left:3px solid var(--accent-cyan); padding:1rem 1.25rem; border-radius:var(--radius-sm); margin-top:2rem;">
-          <strong style="color:var(--accent-cyan);">Nota de Planificación Curricular UTP:</strong>
-          <p style="font-size:0.9rem; margin-top:0.35rem; color:#cbd5e1;">
-            Este módulo se habilitará con sus simuladores interactivos, gráficos dinámicos y demostraciones paso a paso en las <strong>Fases 2 y 3</strong> del proyecto semestral CB215 Grupo 403.
+  <!-- Encabezado del Módulo -->
+  <header class="module-header">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Ruta de navegación">
+        <a href="../../index.html">Inicio</a>
+        <span>/</span>
+        <span>Fase 2: Métodos de Integración</span>
+        <span>/</span>
+        <span style="color: var(--text-main);">Módulo 8: Integrales Exponenciales</span>
+      </nav>
+      <div class="module-header-content">
+        <div class="module-title-box">
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem;">
+            <span class="module-index">MÓDULO 08</span>
+            <span class="phase-badge badge-live">● Fase 2 Activo</span>
+          </div>
+          <h1>Integrales de Funciones Exponenciales</h1>
+          <p class="module-subtitle">
+            Cálculo de antiderivadas de funciones exponenciales de base natural $e$ y base general $a > 0$, técnicas algebraicas en denominadores hiperbólicos y familias de curvas.
           </p>
         </div>
       </div>
+    </div>
+  </header>
 
-      <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;">
-        <a href="../../index.html" class="btn btn-primary" style="padding:0.75rem 2rem;">
-          <span>← Explorar Módulos Activos (1 a 6)</span>
-        </a>
-      </div>
+  <!-- Contenedor Principal -->
+  <main class="container">
+    <div class="module-layout-grid">
+
+      <!-- Panel Izquierdo: Visualizador Dinámico Plotly -->
+      <section class="simulator-panel card">
+        <div class="card-header">
+          <h2><span>⚡</span> Visualizador Exponencial Interactivo</h2>
+          <span class="card-tag">Plotly.js Visualizer</span>
+        </div>
+
+        <!-- Controles Interactivos -->
+        <div class="controls-card">
+          <div class="control-group">
+            <label for="expFunctionSelect" class="control-label">Seleccionar Función Exponencial del Taller:</label>
+            <select id="expFunctionSelect" class="form-select">
+              <option value="exp_sum">f(x) = e^(2x) + 3e^x  ⟹  F(x) = (1/2)e^(2x) + 3e^x</option>
+              <option value="product_base">f(x) = 5^x · e^x = (5e)^x  ⟹  F(x) = (5e)^x / (1 + ln 5)</option>
+              <option value="sech_type">f(x) = 1 / (e^x + e^(-x))  ⟹  F(x) = arctan(e^x)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Constante de Integración (C):</span>
+              <span id="cExpValLabel" class="control-value">C = 0.0</span>
+            </div>
+            <input type="range" id="cExpSlider" class="form-range" min="-8" max="8" value="0" step="0.5">
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+              <input type="checkbox" id="showGhostExp" checked style="cursor:pointer; accent-color:var(--accent-cyan);">
+              <span>Visualizar familia de curvas fantasma F(x) + C</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Métricas Rápidas -->
+        <div class="results-grid">
+          <div class="metric-box accent-value">
+            <div class="metric-title">Tasa de Crecimiento</div>
+            <div id="baseTypeDisplay" class="metric-value" style="font-size:0.95rem;">Base Natural e</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Fórmula Primitiva</div>
+            <div id="antiderivShortDisplay" class="metric-value" style="font-size:0.95rem;">F(x) + C</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Comportamiento Asintótico</div>
+            <div id="asymptoteDisplay" class="metric-value" style="font-size:0.95rem;">y → 0 (x → -∞)</div>
+          </div>
+        </div>
+
+        <!-- Espacio Preparado para Plotly -->
+        <div class="plotly-placeholder-wrapper">
+          <div class="plotly-placeholder-header">
+            <strong style="color:var(--accent-cyan); font-size:0.9rem;">Lienzo Gráfico Plotly: $f(x)$ vs $F(x) + C$</strong>
+            <span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);">Motor: Plotly SVG/Canvas</span>
+          </div>
+          <div id="plotlyChart" class="plot-container"></div>
+        </div>
+      </section>
+
+      <!-- Panel Derecho: Fundamento Teórico y Ejercicios Resueltos -->
+      <section class="theory-panel card">
+        <div class="card-header">
+          <h2><span>📖</span> Fundamentación Teórica Rigurosa</h2>
+          <span class="card-tag">Análisis Matemático</span>
+        </div>
+
+        <div class="card-body">
+          <div class="theory-text">
+            <p>
+              La <strong>función exponencial natural</strong> $e^x$ es la única función matemática (salvo constantes multiplicativas) cuya tasa de cambio instantáneo es idéntica a su valor instantáneo, es decir $\frac{d}{dx}e^x = e^x$. Por el Teorema Fundamental del Cálculo:
+            </p>
+          </div>
+
+          <div class="formula-box purple">
+            $$\int e^u\,du = e^u + C$$
+          </div>
+
+          <div class="theory-text">
+            <p>
+              Para una función exponencial con base positiva arbitraria $a \in \mathbb{R}^+ \setminus \{1\}$, dado que $a^x = e^{x \ln a}$, su diferencial es $d(a^x) = a^x \ln a\,dx$, obteniendo la regla general de integración:
+            </p>
+          </div>
+
+          <div class="formula-box amber">
+            $$\int a^u\,du = \frac{a^u}{\ln a} + C \quad (a > 0, \, a \neq 1)$$
+          </div>
+
+          <!-- Estrategias Algebraicas Esenciales -->
+          <div style="background:rgba(15, 23, 42, 0.6); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:1rem 1.25rem;">
+            <h4 style="color:var(--accent-cyan); font-size:0.95rem; margin-bottom:0.5rem;">💡 Transformaciones Algebraicas Clave:</h4>
+            <ul style="padding-left:1.25rem; font-size:0.875rem; color:var(--text-muted); line-height:1.7;">
+              <li><strong>Multiplicación neutra de la unidad:</strong> Multiplicar numerador y denominador por $e^x$ para transformar denominadores de la forma $e^x + e^{-x}$ en $e^{2x} + 1 = (e^x)^2 + 1$.</li>
+              <li><strong>Producto de potencias de igual exponente:</strong> Agrupar bases bajo un único exponente: $a^x \cdot b^x = (a \cdot b)^x$.</li>
+              <li><strong>Expansión de binomios exponenciales:</strong> Desarrollar $(a^x \pm b^x)^2 = a^{2x} \pm 2(ab)^x + b^{2x}$ antes de integrar término a término.</li>
+            </ul>
+          </div>
+
+          <!-- Sección de Ejercicios del Taller Oficial -->
+          <div class="examples-section">
+            <h3 style="color:var(--text-main); font-size:1.15rem; margin-bottom:1rem;">
+              <span>📝</span> Ejercicios Resueltos Paso a Paso (Taller Oficial UTP)
+            </h3>
+
+            <!-- Ejemplo 1: Ejercicio 4 del Taller -->
+            <article class="example-card">
+              <div class="example-header">
+                <span>Ejercicio 1: Combinación Lineal de Exponenciales</span>
+                <span class="card-tag">Taller VIII - Ej. 4</span>
+              </div>
+              <div class="formula-box" style="margin:0.5rem 0;">
+                $$\int (e^{2x} + 3e^x)\,dx$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 1: Aplicación de la linealidad del operador integral:</strong><br>
+                Separamos la suma en dos integrales independientes:
+                $$\int (e^{2x} + 3e^x)\,dx = \int e^{2x}\,dx + 3\int e^x\,dx$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 2: Integración de cada término:</strong><br>
+                Para el primer término, hacemos la sustitución $u = 2x \implies du = 2\,dx \implies dx = \frac{du}{2}$:
+                $$\int e^{2x}\,dx = \frac{1}{2}\int e^u\,du = \frac{1}{2}e^{2x}$$
+                Para el segundo término, la integral de $e^x$ es inmediata:
+                $$3\int e^x\,dx = 3e^x$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 3: Resultado final consolidado:</strong><br>
+                $$\frac{1}{2}e^{2x} + 3e^x + C$$
+              </div>
+              <div class="example-step" style="border-left-color:var(--accent-teal);">
+                <strong style="color:var(--accent-teal);">Verificación por Derivación:</strong><br>
+                $$\frac{d}{dx}\left[ \frac{1}{2}e^{2x} + 3e^x + C \right] = \frac{1}{2}(2e^{2x}) + 3e^x = e^{2x} + 3e^x \quad \checkmark$$
+              </div>
+            </article>
+
+            <!-- Ejemplo 2: Ejercicio 3 del Taller -->
+            <article class="example-card">
+              <div class="example-header">
+                <span>Ejercicio 2: Producto de Exponenciales de Distinta Base</span>
+                <span class="card-tag">Taller VIII - Ej. 3</span>
+              </div>
+              <div class="formula-box" style="margin:0.5rem 0;">
+                $$\int 5^x e^x\,dx$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 1: Agrupación bajo una base común:</strong><br>
+                Aplicando la ley de los exponentes $a^x \cdot b^x = (ab)^x$:
+                $$5^x \cdot e^x = (5e)^x$$
+                Nótese que la nueva base constante es $k = 5e \approx 13.5914 > 0$ y $k \neq 1$.
+              </div>
+              <div class="example-step">
+                <strong>Paso 2: Integración con la fórmula general de base $a$:</strong><br>
+                $$\int (5e)^x\,dx = \frac{(5e)^x}{\ln(5e)} + C$$
+                Aplicando propiedades del logaritmo natural ($\ln(ab) = \ln a + \ln b$ y $\ln e = 1$):
+                $$\ln(5e) = \ln 5 + \ln e = 1 + \ln 5$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 3: Solución analítica final:</strong><br>
+                $$\frac{5^x e^x}{1 + \ln 5} + C$$
+              </div>
+              <div class="example-step" style="border-left-color:var(--accent-teal);">
+                <strong style="color:var(--accent-teal);">Verificación por Derivación:</strong><br>
+                $$\frac{d}{dx}\left[ \frac{(5e)^x}{\ln(5e)} + C \right] = \frac{1}{\ln(5e)} \cdot (5e)^x \ln(5e) = (5e)^x = 5^x e^x \quad \checkmark$$
+              </div>
+            </article>
+
+            <!-- Ejemplo 3: Ejercicio 2 del Taller -->
+            <article class="example-card">
+              <div class="example-header">
+                <span>Ejercicio 3: Exponencial en Cociente (Tipo Arco Tangente)</span>
+                <span class="card-tag">Taller VIII - Ej. 2</span>
+              </div>
+              <div class="formula-box" style="margin:0.5rem 0;">
+                $$\int \frac{dx}{e^x + e^{-x}}$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 1: Multiplicación neutra por $\frac{e^x}{e^x}$:</strong><br>
+                $$\int \frac{dx}{e^x + e^{-x}} = \int \frac{e^x}{e^x(e^x + e^{-x})}\,dx = \int \frac{e^x}{e^{2x} + 1}\,dx = \int \frac{e^x}{(e^x)^2 + 1}\,dx$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 2: Sustitución elemental:</strong><br>
+                Sea $u = e^x \implies du = e^x\,dx$. Sustituyendo en la integral:
+                $$\int \frac{du}{u^2 + 1} = \arctan(u) + C$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 3: Retorno a la variable independiente:</strong><br>
+                $$\arctan(e^x) + C$$
+              </div>
+              <div class="example-step" style="border-left-color:var(--accent-teal);">
+                <strong style="color:var(--accent-teal);">Verificación por Derivación:</strong><br>
+                $$\frac{d}{dx}\left[ \arctan(e^x) \right] = \frac{1}{1 + (e^x)^2} \cdot \frac{d}{dx}(e^x) = \frac{e^x}{e^{2x} + 1} = \frac{1}{e^x + e^{-x}} \quad \checkmark$$
+              </div>
+            </article>
+
+            <!-- Ejemplo 4: Ejercicio 5 del Taller -->
+            <article class="example-card">
+              <div class="example-header">
+                <span>Ejercicio 4: Cuadrado de Binomio con Bases Distintas</span>
+                <span class="card-tag">Taller VIII - Ej. 5</span>
+              </div>
+              <div class="formula-box" style="margin:0.5rem 0;">
+                $$\int (a^x - b^x)^2\,dx \quad (a, b > 0, \, a \neq 1, \, b \neq 1)$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 1: Expansión del binomio al cuadrado:</strong><br>
+                $$(a^x - b^x)^2 = (a^x)^2 - 2a^x b^x + (b^x)^2 = a^{2x} - 2(ab)^x + b^{2x}$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 2: Integración término a término:</strong><br>
+                $$\int a^{2x}\,dx - 2\int (ab)^x\,dx + \int b^{2x}\,dx$$
+                - Para $\int a^{2x}dx = \int (a^2)^x dx = \frac{a^{2x}}{\ln(a^2)} = \frac{a^{2x}}{2\ln a}$.<br>
+                - Para $2\int (ab)^x dx = 2\frac{(ab)^x}{\ln(ab)} = \frac{2(ab)^x}{\ln a + \ln b}$.<br>
+                - Para $\int b^{2x}dx = \frac{b^{2x}}{2\ln b}$.
+              </div>
+              <div class="example-step">
+                <strong>Paso 3: Antiderivada general:</strong><br>
+                $$\frac{a^{2x}}{2\ln a} - \frac{2(ab)^x}{\ln(ab)} + \frac{b^{2x}}{2\ln b} + C$$
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
 
-  <!-- Footer -->
+  <!-- Pie de Página Institucional -->
   <footer class="footer">
     <div class="container footer-content">
       <div class="footer-brand">
         <h4>Universidad Tecnológica de Pereira</h4>
-        <p>Facultad de Ciencias Básicas • Departamento de Matemáticas • CB215 Matemáticas II</p>
+        <p>Facultad de Ciencias Básicas • Departamento de Matemáticas • CB215 Cálculo Integral</p>
       </div>
       <div class="footer-links">
         <a href="../../index.html">Menú Principal</a>
-        <a href="../modulo1/index.html">Módulo 1: Riemann</a>
-        <a href="../modulo6/index.html">Módulo 6: Integración Directa</a>
+        <a href="../modulo7/index.html">Módulo 7: Sustitución (Potencias)</a>
+        <a href="../modulo9/index.html">Módulo 9: Integrales Logarítmicas</a>
       </div>
     </div>
     <div class="footer-bottom container">
-      <p>© 2026 Plataforma de Cálculo Integral + Software - UTP. Desarrollado para Evaluación Parcial 1.</p>
+      <p>© 2026 Plataforma de Cálculo Integral + Desarrollo de Software - UTP. Fase 2 Curricular.</p>
     </div>
   </footer>
 
+  <!-- Scripts de Utilidades y Renderizado Matemático / Gráfico -->
   <script src="../../js/utils.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // 1. Renderizado Automático KaTeX
       UTPMath.renderAllMath();
+
+      // 2. Modelo de Funciones para Plotly.js
+      const expModels = {
+        'exp_sum': {
+          title: 'f(x) = e^(2x) + 3e^x',
+          baseType: 'Base e (Natural)',
+          formulaTex: 'F(x) = 0.5e^(2x) + 3e^x',
+          asymptote: 'y → 0 cuando x → -∞',
+          xRange: [-2.5, 1.2],
+          f: (x) => Math.exp(2 * x) + 3 * Math.exp(x),
+          F: (x, C) => 0.5 * Math.exp(2 * x) + 3 * Math.exp(x) + C
+        },
+        'product_base': {
+          title: 'f(x) = 5^x · e^x = (5e)^x',
+          baseType: 'Base a = 5e ≈ 13.59',
+          formulaTex: 'F(x) = (5e)^x / (1 + ln 5)',
+          asymptote: 'y → 0 rápido en x < 0',
+          xRange: [-2, 0.8],
+          f: (x) => Math.pow(5 * Math.E, x),
+          F: (x, C) => Math.pow(5 * Math.E, x) / (1 + Math.log(5)) + C
+        },
+        'sech_type': {
+          title: 'f(x) = 1 / (e^x + e^(-x))',
+          baseType: 'Hiperbólica / Racional',
+          formulaTex: 'F(x) = arctan(e^x)',
+          asymptote: 'F(x) → π/2 cuando x → +∞',
+          xRange: [-3.5, 3.5],
+          f: (x) => 1 / (Math.exp(x) + Math.exp(-x)),
+          F: (x, C) => Math.atan(Math.exp(x)) + C
+        }
+      };
+
+      const selectEl = document.getElementById('expFunctionSelect');
+      const cSlider = document.getElementById('cExpSlider');
+      const cLabel = document.getElementById('cExpValLabel');
+      const ghostCheck = document.getElementById('showGhostExp');
+      const baseDisp = document.getElementById('baseTypeDisplay');
+      const fDisp = document.getElementById('antiderivShortDisplay');
+      const asympDisp = document.getElementById('asymptoteDisplay');
+
+      function updatePlot() {
+        const selectedKey = selectEl.value;
+        const model = expModels[selectedKey];
+        const C = parseFloat(cSlider.value);
+        const showGhosts = ghostCheck.checked;
+
+        cLabel.textContent = `C = ${C >= 0 ? '+' : ''}${C.toFixed(1)}`;
+        baseDisp.textContent = model.baseType;
+        fDisp.textContent = model.formulaTex;
+        asympDisp.textContent = model.asymptote;
+
+        const steps = 180;
+        const [xMin, xMax] = model.xRange;
+        const dx = (xMax - xMin) / steps;
+        const curveX = [];
+        const curveYf = [];
+        const curveYF = [];
+
+        for (let i = 0; i <= steps; i++) {
+          const x = xMin + i * dx;
+          curveX.push(x);
+          curveYf.push(model.f(x));
+          curveYF.push(model.F(x, C));
+        }
+
+        const traces = [];
+
+        // Familia Fantasma
+        if (showGhosts) {
+          const ghosts = [-6, -3, 0, 3, 6];
+          ghosts.forEach(cVal => {
+            if (Math.abs(cVal - C) > 0.4) {
+              traces.push({
+                x: curveX,
+                y: curveX.map(x => model.F(x, cVal)),
+                type: 'scatter',
+                mode: 'lines',
+                name: `F(x) + (${cVal})`,
+                line: { color: 'rgba(148, 163, 184, 0.22)', width: 1.2, dash: 'dash' },
+                hoverinfo: 'none',
+                showlegend: false
+              });
+            }
+          });
+        }
+
+        // Función Original f(x)
+        traces.push({
+          x: curveX,
+          y: curveYf,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'f(x) [Exponencial]',
+          line: { color: '#f59e0b', width: 2.2, dash: 'dot' }
+        });
+
+        // Curva Primitiva Activa F(x) + C
+        traces.push({
+          x: curveX,
+          y: curveYF,
+          type: 'scatter',
+          mode: 'lines',
+          name: `F(x) + C (C=${C.toFixed(1)})`,
+          line: { color: '#38bdf8', width: 3.2 }
+        });
+
+        const layout = UTPMath.getPlotlyLayout({
+          title: `Integración Exponencial: ${model.title}`,
+          xTitle: 'x',
+          yTitle: 'y'
+        });
+
+        Plotly.react('plotlyChart', traces, layout, { responsive: true, displayModeBar: false });
+      }
+
+      selectEl.addEventListener('change', updatePlot);
+      cSlider.addEventListener('input', updatePlot);
+      ghostCheck.addEventListener('change', updatePlot);
+
+      updatePlot();
     });
   </script>
 </body>
