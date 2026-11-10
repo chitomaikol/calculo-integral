@@ -3,16 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Módulo 14: Integración por Partes | UTP Cálculo Integral</title>
+  <title>Módulo 14: Integración por Partes y Regla LIATE | UTP Cálculo Integral</title>
   
+  <!-- Estilos del Sistema Global -->
   <link rel="stylesheet" href="../../css/style.css">
+  
+  <!-- CDN KaTeX para Renderizado Matemático Riguroso -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
-</head>
-<body>
 
-  <!-- Navbar -->
+  <!-- Plotly.js para Visualización Dinámica -->
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body class="dark-theme">
+
+  <!-- Barra Superior / Navbar -->
   <header class="navbar">
     <div class="container nav-container">
       <a href="../../index.html" class="brand-wrapper">
@@ -30,68 +36,410 @@
     </div>
   </header>
 
-  <!-- Vista Placeholder -->
-  <main class="container">
-    <div class="placeholder-view">
-      <div class="placeholder-badge">🔒 Fase 3 (Proyecto Final) • En Desarrollo</div>
-      <h1>Módulo 14: Integración por Partes</h1>
-      <p style="font-size:1.15rem; max-width:680px; margin:0 auto; color:var(--text-muted);">
-        Técnica fundamental derivada de la regla del producto para integrar productos de funciones algebraicas, trascendentes y trigonométricas.
-      </p>
-
-      <div class="placeholder-card">
-        <h2>📐 Modelo Matemático Principal</h2>
-        <div class="formula-box purple" style="font-size:1.15rem; text-align:center;">
-          $$\int u\,dv = u \cdot v - \int v\,du$$
-        </div>
-
-        <h3 style="margin-top:2rem; font-size:1.1rem; color:var(--text-main);">📋 Contenidos Programados para esta Fase:</h3>
-        <ul class="placeholder-list">
-          <li><span class="bullet">✦</span> <span>Estrategia mnemotécnica LIATE (Logarítmicas, Inversas, Algebraicas, Trigonométricas, Exponenciales)</span></li>
-          <li><span class="bullet">✦</span> <span>Integrales cíclicas recurrentes como $\int e^{ax} \cos(bx)\,dx$</span></li>
-          <li><span class="bullet">✦</span> <span>Método tabular de derivaciones e integraciones sucesivas</span></li>
-          <li><span class="bullet">✦</span> <span>Integración de funciones inversas puras ($\ln x, \arctan x$)</span></li>
-          <li><span class="bullet">✦</span> <span>Conexión con el cálculo de volúmenes y sólidos de revolución en Fase 3</span></li>
-        </ul>
-
-        <div style="background:rgba(56, 189, 248, 0.08); border-left:3px solid var(--accent-cyan); padding:1rem 1.25rem; border-radius:var(--radius-sm); margin-top:2rem;">
-          <strong style="color:var(--accent-cyan);">Nota de Planificación Curricular UTP:</strong>
-          <p style="font-size:0.9rem; margin-top:0.35rem; color:#cbd5e1;">
-            Este módulo se habilitará con sus simuladores interactivos, gráficos dinámicos y demostraciones paso a paso en las <strong>Fases 2 y 3</strong> del proyecto semestral CB215 Grupo 403.
+  <!-- Encabezado del Módulo -->
+  <header class="module-header">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Ruta de navegación">
+        <a href="../../index.html">Inicio</a>
+        <span>/</span>
+        <span>Fase 3: Métodos Avanzados</span>
+        <span>/</span>
+        <span style="color: var(--text-main);">Módulo 14: Integración por Partes</span>
+      </nav>
+      <div class="module-header-content">
+        <div class="module-title-box">
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem;">
+            <span class="module-index">MÓDULO 14</span>
+            <span class="phase-badge badge-live">● Fase 3 Desarrollado</span>
+          </div>
+          <h1>Integración por Partes y Criterio Heurístico LIATE</h1>
+          <p class="module-subtitle">
+            Deducción formal desde la derivada del producto $\int u\,dv = uv - \int v\,du$, jerarquía de prioridades LIATE, integrales cíclicas recurrentes y método tabular abreviado.
           </p>
         </div>
       </div>
+    </div>
+  </header>
 
-      <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;">
-        <a href="../../index.html" class="btn btn-primary" style="padding:0.75rem 2rem;">
-          <span>← Explorar Módulos Activos (1 a 6)</span>
-        </a>
-      </div>
+  <!-- Contenedor Principal -->
+  <main class="container">
+    <div class="module-layout-grid">
+
+      <!-- Panel Izquierdo: Visualizador Dinámico Plotly -->
+      <section class="simulator-panel card">
+        <div class="card-header">
+          <h2><span>⚡</span> Visualizador de Productos y Primitivas</h2>
+          <span class="card-tag">Plotly.js Visualizer</span>
+        </div>
+
+        <!-- Controles Interactivos -->
+        <div class="controls-card">
+          <div class="control-group">
+            <label for="partesFunctionSelect" class="control-label">Seleccionar Función del Taller UTP:</label>
+            <select id="partesFunctionSelect" class="form-select">
+              <option value="x_arctan">f(x) = x · arctan(x)  ⟹  F(x) = ((x² + 1)/2) arctan(x) - x/2</option>
+              <option value="ln_quad">f(x) = ln(x² + 1)  ⟹  F(x) = x ln(x² + 1) - 2x + 2 arctan(x)</option>
+              <option value="exp_trig">f(x) = e^x · cos(x)  ⟹  F(x) = (e^x / 2)(cos(x) + sin(x))</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Constante de Integración (C):</span>
+              <span id="cPartesValLabel" class="control-value">C = 0.0</span>
+            </div>
+            <input type="range" id="cPartesSlider" class="form-range" min="-6" max="6" value="0" step="0.5">
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+              <input type="checkbox" id="showGhostPartes" checked style="cursor:pointer; accent-color:var(--accent-cyan);">
+              <span>Visualizar familia de curvas primitivas F(x) + C</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Métricas Analíticas -->
+        <div class="results-grid">
+          <div class="metric-box accent-value">
+            <div class="metric-title">Elección LIATE (u)</div>
+            <div id="uLiateDisplay" class="metric-value" style="font-size:0.95rem;">u = arctan(x) (I)</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Elección LIATE (dv)</div>
+            <div id="dvLiateDisplay" class="metric-value" style="font-size:0.95rem;">dv = x dx (A)</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Tipo de Método</div>
+            <div id="methodTypeDisplay" class="metric-value" style="font-size:0.95rem;">Partes Simple</div>
+          </div>
+        </div>
+
+        <!-- Espacio Preparado para Plotly -->
+        <div class="plotly-placeholder-wrapper">
+          <div class="plotly-placeholder-header">
+            <strong style="color:var(--accent-cyan); font-size:0.9rem;">Lienzo Gráfico Plotly: $f(x)$ vs $F(x) + C$</strong>
+            <span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);">Motor: Plotly SVG/Canvas</span>
+          </div>
+          <div id="plotlyChart" class="plot-container"></div>
+        </div>
+      </section>
+
+      <!-- Panel Derecho: Fundamento Teórico y Ejercicios Resueltos -->
+      <section class="theory-panel card">
+        <div class="card-header">
+          <h2><span>📖</span> Fundamentación Teórica Rigurosa</h2>
+          <span class="card-tag">Cálculo Diferencial e Integral</span>
+        </div>
+
+        <div class="card-body">
+          <div class="theory-text">
+            <p>
+              El método de <strong>Integración por Partes</strong> es el análogo integral directo de la <em>Regla de Leibniz</em> para la derivada del producto de dos funciones diferenciables:
+            </p>
+          </div>
+
+          <div class="formula-box purple">
+            $$\frac{d}{dx}(u \cdot v) = u \frac{dv}{dx} + v \frac{du}{dx} \implies d(uv) = u\,dv + v\,du$$
+            $$\int u\,dv = u \cdot v - \int v\,du$$
+          </div>
+
+          <div class="theory-text">
+            <p>
+              Para optimizar la elección de $u$ (la función que se derivará para simplificar el integrando) y $dv$ (la expresión diferencial que se integrará con facilidad), se emplea la <strong>Regla Mnemotécnica LIATE</strong> (en estricto orden de prioridad descendente):
+            </p>
+          </div>
+
+          <div class="formula-box amber">
+            $$\begin{aligned}
+              \mathbf{L} &\quad \longrightarrow \quad \text{Logarítmicas } (\ln x, \log_b x) \\
+              \mathbf{I} &\quad \longrightarrow \quad \text{Inversas Trigonométricas } (\arcsin x, \arctan x) \\
+              \mathbf{A} &\quad \longrightarrow \quad \text{Algebraicas / Polinómicas } (x^n, \sqrt{x}, P(x)) \\
+              \mathbf{T} &\quad \longrightarrow \quad \text{Trigonométricas } (\sin x, \cos x, \sec^2 x) \\
+              \mathbf{E} &\quad \longrightarrow \quad \text{Exponenciales } (e^x, a^x)
+            \end{aligned}$$
+          </div>
+
+          <!-- Métodos Avanzados -->
+          <div style="background:rgba(15, 23, 42, 0.6); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:1rem 1.25rem;">
+            <h4 style="color:var(--accent-cyan); font-size:0.95rem; margin-bottom:0.5rem;">🔄 Integrales Cíclicas y Despeje Algebraico:</h4>
+            <p style="font-size:0.875rem; color:var(--text-muted); line-height:1.6;">
+              Cuando se integran productos de funciones periódicas y exponenciales como $\int e^{ax}\cos(bx)\,dx$, tras aplicar partes dos veces consecutivas reaparece un múltiplo negativo de la integral original $I$. En lugar de continuar indefinidamente, se despeja $I$ algebraicamente: $(1 + k)I = \text{Términos Integrados} \implies I = \frac{\text{Términos Integrados}}{1 + k} + C$.
+            </p>
+          </div>
+
+          <!-- Sección de Ejercicios del Taller Oficial -->
+          <div class="examples-section">
+            <h3 style="color:var(--text-main); font-size:1.15rem; margin-bottom:1rem;">
+              <span>📝</span> Ejercicios Resueltos Paso a Paso (Taller Oficial UTP)
+            </h3>
+
+            <!-- Ejemplo 1: Ejercicio 4 del Taller -->
+            <article class="example-card">
+              <div class="example-header">
+                <span>Ejercicio 1: Producto de Función Algebraica e Inversa Trigonométrica</span>
+                <span class="card-tag">Taller XIV - Ej. 4</span>
+              </div>
+              <div class="formula-box" style="margin:0.5rem 0;">
+                $$\int x \arctan x\,dx$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 1: Asignación LIATE:</strong><br>
+                La función Inversa trigonométrica ($\mathbf{I}$) tiene prioridad sobre la Algebraica ($\mathbf{A}$):
+                $$u = \arctan x \implies du = \frac{1}{1 + x^2}\,dx$$
+                $$dv = x\,dx \implies v = \int x\,dx = \frac{x^2}{2}$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 2: Aplicación de la fórmula de partes:</strong><br>
+                $$\int x \arctan x\,dx = \left( \frac{x^2}{2} \right)\arctan x - \int \left( \frac{x^2}{2} \right)\left( \frac{1}{1 + x^2} \right)\,dx$$
+                $$= \frac{x^2}{2}\arctan x - \frac{1}{2}\int \frac{x^2}{1 + x^2}\,dx$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 3: Artificio algebraico para la segunda integral:</strong><br>
+                $$\frac{x^2}{1 + x^2} = \frac{x^2 + 1 - 1}{x^2 + 1} = 1 - \frac{1}{x^2 + 1}$$
+                $$\int \frac{x^2}{1 + x^2}\,dx = \int 1\,dx - \int \frac{dx}{x^2 + 1} = x - \arctan x$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 4: Consolidación y factorización:</strong><br>
+                $$\frac{x^2}{2}\arctan x - \frac{1}{2}(x - \arctan x) + C = \frac{x^2 + 1}{2}\arctan x - \frac{x}{2} + C$$
+              </div>
+              <div class="example-step" style="border-left-color:var(--accent-teal);">
+                <strong style="color:var(--accent-teal);">Verificación por Derivación:</strong><br>
+                $$\frac{d}{dx}\left[ \frac{x^2 + 1}{2}\arctan x - \frac{x}{2} \right] = \left( \frac{2x}{2}\arctan x + \frac{x^2 + 1}{2} \cdot \frac{1}{x^2 + 1} \right) - \frac{1}{2} = x\arctan x + \frac{1}{2} - \frac{1}{2} = x\arctan x \quad \checkmark$$
+              </div>
+            </article>
+
+            <!-- Ejemplo 2: Ejercicio 1 del Taller (Integral Cíclica) -->
+            <article class="example-card">
+              <div class="example-header">
+                <span>Ejercicio 2: Integral Cíclica Clásica Exponencial - Coseno</span>
+                <span class="card-tag">Taller XIV - Ej. 1</span>
+              </div>
+              <div class="formula-box" style="margin:0.5rem 0;">
+                $$I = \int e^{ax} \cos(bx)\,dx \quad (a^2 + b^2 \neq 0)$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 1: Primera integración por partes (LIATE: T antes de E):</strong><br>
+                $$u = \cos(bx) \implies du = -b\sin(bx)\,dx, \quad dv = e^{ax}\,dx \implies v = \frac{1}{a}e^{ax}$$
+                $$I = \frac{1}{a}e^{ax}\cos(bx) + \frac{b}{a}\int e^{ax}\sin(bx)\,dx$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 2: Segunda integración por partes sobre la integral residual:</strong><br>
+                $$u_2 = \sin(bx) \implies du_2 = b\cos(bx)\,dx, \quad dv_2 = e^{ax}\,dx \implies v_2 = \frac{1}{a}e^{ax}$$
+                $$\int e^{ax}\sin(bx)\,dx = \frac{1}{a}e^{ax}\sin(bx) - \frac{b}{a}\int e^{ax}\cos(bx)\,dx = \frac{1}{a}e^{ax}\sin(bx) - \frac{b}{a}I$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 3: Sustitución y despeje algebraico del ciclo:</strong><br>
+                $$I = \frac{1}{a}e^{ax}\cos(bx) + \frac{b}{a^2}e^{ax}\sin(bx) - \frac{b^2}{a^2}I$$
+                $$\left( 1 + \frac{b^2}{a^2} \right)I = \frac{e^{ax}(a\cos(bx) + b\sin(bx))}{a^2} \implies \left( \frac{a^2 + b^2}{a^2} \right)I = \frac{e^{ax}(a\cos(bx) + b\sin(bx))}{a^2}$$
+                $$I = \frac{e^{ax}\left( a\cos(bx) + b\sin(bx) \right)}{a^2 + b^2} + C$$
+              </div>
+            </article>
+
+            <!-- Ejemplo 3: Ejercicio 5 del Taller -->
+            <article class="example-card">
+              <div class="example-header">
+                <span>Ejercicio 3: Logaritmo de un Trinomio Cuadrático</span>
+                <span class="card-tag">Taller XIV - Ej. 5</span>
+              </div>
+              <div class="formula-box" style="margin:0.5rem 0;">
+                $$\int \ln(x^2 + 1)\,dx$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 1: Elección de partes con factor diferencial neutro $dv = dx$:</strong><br>
+                $$u = \ln(x^2 + 1) \implies du = \frac{2x}{x^2 + 1}\,dx$$
+                $$dv = dx \implies v = x$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 2: Desarrollo y división de polinomios:</strong><br>
+                $$\int \ln(x^2 + 1)\,dx = x\ln(x^2 + 1) - \int \frac{2x^2}{x^2 + 1}\,dx$$
+                Reescribiendo: $\frac{2x^2}{x^2 + 1} = 2 - \frac{2}{x^2 + 1}$.
+                $$\int \left( 2 - \frac{2}{x^2 + 1} \right)\,dx = 2x - 2\arctan x$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 3: Solución analítica completa:</strong><br>
+                $$x\ln(x^2 + 1) - 2x + 2\arctan(x) + C$$
+              </div>
+              <div class="example-step" style="border-left-color:var(--accent-teal);">
+                <strong style="color:var(--accent-teal);">Verificación por Derivación:</strong><br>
+                $$\frac{d}{dx}\left[ x\ln(x^2+1) - 2x + 2\arctan x \right] = \ln(x^2+1) + \frac{2x^2}{x^2+1} - 2 + \frac{2}{x^2+1} = \ln(x^2+1) + \frac{2x^2+2}{x^2+1} - 2 = \ln(x^2+1) \quad \checkmark$$
+              </div>
+            </article>
+
+            <!-- Ejemplo 4: Ejercicio 3 del Taller -->
+            <article class="example-card">
+              <div class="example-header">
+                <span>Ejercicio 4: Función Compuesta Trascendente Seno-Logaritmo</span>
+                <span class="card-tag">Taller XIV - Ej. 3</span>
+              </div>
+              <div class="formula-box" style="margin:0.5rem 0;">
+                $$\int \sin(\ln x)\,dx$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 1: Cambio de variable exponencial previo:</strong><br>
+                Sea $x = e^t \implies dx = e^t\,dt$ y $t = \ln x$. La integral toma la forma cíclica estándar:
+                $$\int e^t \sin(t)\,dt$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 2: Aplicación del resultado cíclico con $a = 1, b = 1$:</strong><br>
+                $$\int e^t \sin(t)\,dt = \frac{e^t(\sin t - \cos t)}{1^2 + 1^2} = \frac{e^t(\sin t - \cos t)}{2}$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 3: Retorno a la variable original $x$:</strong><br>
+                $$\frac{x\left( \sin(\ln x) - \cos(\ln x) \right)}{2} + C$$
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
 
-  <!-- Footer -->
+  <!-- Pie de Página Institucional -->
   <footer class="footer">
     <div class="container footer-content">
       <div class="footer-brand">
         <h4>Universidad Tecnológica de Pereira</h4>
-        <p>Facultad de Ciencias Básicas • Departamento de Matemáticas • CB215 Matemáticas II</p>
+        <p>Facultad de Ciencias Básicas • Departamento de Matemáticas • CB215 Cálculo Integral</p>
       </div>
       <div class="footer-links">
         <a href="../../index.html">Menú Principal</a>
-        <a href="../modulo1/index.html">Módulo 1: Riemann</a>
-        <a href="../modulo6/index.html">Módulo 6: Integración Directa</a>
+        <a href="../modulo13/index.html">Módulo 13: Trinomios ax² + bx + c</a>
+        <a href="../modulo1/index.html">Módulo 1: Sumas de Riemann</a>
       </div>
     </div>
     <div class="footer-bottom container">
-      <p>© 2026 Plataforma de Cálculo Integral + Software - UTP. Desarrollado para Evaluación Parcial 1.</p>
+      <p>© 2026 Plataforma de Cálculo Integral + Desarrollo de Software - UTP. Fase 3 Curricular.</p>
     </div>
   </footer>
 
+  <!-- Scripts de Utilidades y Renderizado Matemático / Gráfico -->
   <script src="../../js/utils.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // 1. Renderizado Automático KaTeX
       UTPMath.renderAllMath();
+
+      // 2. Modelo de Funciones por Partes para Plotly.js
+      const partesModels = {
+        'x_arctan': {
+          title: 'f(x) = x · arctan(x)',
+          uLiate: 'u = arctan(x) (Inversa)',
+          dvLiate: 'dv = x dx (Algebraica)',
+          methodType: 'Partes con Artificio Racional',
+          xRange: [-4, 4],
+          f: (x) => x * Math.atan(x),
+          F: (x, C) => 0.5 * (x * x + 1) * Math.atan(x) - 0.5 * x + C
+        },
+        'ln_quad': {
+          title: 'f(x) = ln(x² + 1)',
+          uLiate: 'u = ln(x² + 1) (Logarítmica)',
+          dvLiate: 'dv = dx (Algebraica Neutra)',
+          methodType: 'Partes Directo',
+          xRange: [-4, 4],
+          f: (x) => Math.log(x * x + 1),
+          F: (x, C) => x * Math.log(x * x + 1) - 2 * x + 2 * Math.atan(x) + C
+        },
+        'exp_trig': {
+          title: 'f(x) = e^x · cos(x)',
+          uLiate: 'u = cos(x) (Trigonométrica)',
+          dvLiate: 'dv = e^x dx (Exponencial)',
+          methodType: 'Integral Cíclica (2 iteraciones)',
+          xRange: [-2.5, 2.5],
+          f: (x) => Math.exp(x) * Math.cos(x),
+          F: (x, C) => 0.5 * Math.exp(x) * (Math.cos(x) + Math.sin(x)) + C
+        }
+      };
+
+      const selectEl = document.getElementById('partesFunctionSelect');
+      const cSlider = document.getElementById('cPartesSlider');
+      const cLabel = document.getElementById('cPartesValLabel');
+      const ghostCheck = document.getElementById('showGhostPartes');
+      const uDisp = document.getElementById('uLiateDisplay');
+      const dvDisp = document.getElementById('dvLiateDisplay');
+      const methodDisp = document.getElementById('methodTypeDisplay');
+
+      function updatePlot() {
+        const selectedKey = selectEl.value;
+        const model = partesModels[selectedKey];
+        const C = parseFloat(cSlider.value);
+        const showGhosts = ghostCheck.checked;
+
+        cLabel.textContent = `C = ${C >= 0 ? '+' : ''}${C.toFixed(1)}`;
+        uDisp.textContent = model.uLiate;
+        dvDisp.textContent = model.dvLiate;
+        methodDisp.textContent = model.methodType;
+
+        const steps = 180;
+        const [xMin, xMax] = model.xRange;
+        const dx = (xMax - xMin) / steps;
+        const curveX = [];
+        const curveYf = [];
+        const curveYF = [];
+
+        for (let i = 0; i <= steps; i++) {
+          const x = xMin + i * dx;
+          curveX.push(x);
+          curveYf.push(model.f(x));
+          curveYF.push(model.F(x, C));
+        }
+
+        const traces = [];
+
+        // Familia Fantasma
+        if (showGhosts) {
+          const ghosts = [-4, -2, 0, 2, 4];
+          ghosts.forEach(cVal => {
+            if (Math.abs(cVal - C) > 0.4) {
+              traces.push({
+                x: curveX,
+                y: curveX.map(x => model.F(x, cVal)),
+                type: 'scatter',
+                mode: 'lines',
+                name: `F(x) + (${cVal})`,
+                line: { color: 'rgba(148, 163, 184, 0.22)', width: 1.2, dash: 'dash' },
+                hoverinfo: 'none',
+                showlegend: false
+              });
+            }
+          });
+        }
+
+        // Función Original f(x)
+        traces.push({
+          x: curveX,
+          y: curveYf,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'f(x) [Integrando]',
+          line: { color: '#f59e0b', width: 2.2, dash: 'dot' }
+        });
+
+        // Curva Primitiva Activa F(x) + C
+        traces.push({
+          x: curveX,
+          y: curveYF,
+          type: 'scatter',
+          mode: 'lines',
+          name: `F(x) + C (C=${C.toFixed(1)})`,
+          line: { color: '#38bdf8', width: 3.2 }
+        });
+
+        const layout = UTPMath.getPlotlyLayout({
+          title: `Integración por Partes: ${model.title}`,
+          xTitle: 'x',
+          yTitle: 'y'
+        });
+
+        Plotly.react('plotlyChart', traces, layout, { responsive: true, displayModeBar: false });
+      }
+
+      selectEl.addEventListener('change', updatePlot);
+      cSlider.addEventListener('input', updatePlot);
+      ghostCheck.addEventListener('change', updatePlot);
+
+      updatePlot();
     });
   </script>
 </body>

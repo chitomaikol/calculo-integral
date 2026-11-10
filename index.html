@@ -60,16 +60,16 @@
           <div class="stat-label">Módulos Curriculares</div>
         </div>
         <div class="stat-card">
-          <div class="stat-number">6</div>
-          <div class="stat-label">Módulos Activos (Fase 1)</div>
+          <div class="stat-number">14</div>
+          <div class="stat-label">Módulos Desarrollados</div>
         </div>
         <div class="stat-card">
           <div class="stat-number">70</div>
           <div class="stat-label">Integrales del Taller</div>
         </div>
         <div class="stat-card">
-          <div class="stat-number">O(1/n⁴)</div>
-          <div class="stat-label">Precisión de Simpson</div>
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Plataforma Completa</div>
         </div>
       </div>
     </div>
@@ -81,7 +81,7 @@
     <!-- Filtros de Navegación -->
     <div class="filters-bar">
       <button class="filter-btn active" data-filter="all">Todos los Módulos (14)</button>
-      <button class="filter-btn" data-filter="phase1">Fase 1: Módulos Activos (1 a 6)</button>
+      <button class="filter-btn" data-filter="phase1">Fase 1: Numéricos & Directa (1 a 6)</button>
       <button class="filter-btn" data-filter="phase2">Fase 2: Métodos de Integración (7 a 11)</button>
       <button class="filter-btn" data-filter="phase3">Fase 3: Métodos Avanzados (12 a 14)</button>
     </div>
@@ -94,7 +94,7 @@
         <div>
           <div class="card-top">
             <span class="module-index">MÓDULO 01</span>
-            <span class="phase-badge badge-live">● Fase 1 Activo</span>
+            <span class="phase-badge badge-live">FASE 1 • DESARROLLADO</span>
           </div>
           <h2 class="card-title">Sumas de Riemann</h2>
           <p class="card-desc">
@@ -118,7 +118,7 @@
         <div>
           <div class="card-top">
             <span class="module-index">MÓDULO 02</span>
-            <span class="phase-badge badge-live">● Fase 1 Activo</span>
+            <span class="phase-badge badge-live">FASE 1 • DESARROLLADO</span>
           </div>
           <h2 class="card-title">Regla del Trapecio</h2>
           <p class="card-desc">
@@ -142,7 +142,7 @@
         <div>
           <div class="card-top">
             <span class="module-index">MÓDULO 03</span>
-            <span class="phase-badge badge-live">● Fase 1 Activo</span>
+            <span class="phase-badge badge-live">FASE 1 • DESARROLLADO</span>
           </div>
           <h2 class="card-title">Regla del Punto Medio</h2>
           <p class="card-desc">
@@ -166,7 +166,7 @@
         <div>
           <div class="card-top">
             <span class="module-index">MÓDULO 04</span>
-            <span class="phase-badge badge-live">● Fase 1 Activo</span>
+            <span class="phase-badge badge-live">FASE 1 • DESARROLLADO</span>
           </div>
           <h2 class="card-title">Regla de Simpson (1/3)</h2>
           <p class="card-desc">
@@ -190,7 +190,7 @@
         <div>
           <div class="card-top">
             <span class="module-index">MÓDULO 05</span>
-            <span class="phase-badge badge-live">● Fase 1 Activo</span>
+            <span class="phase-badge badge-live">FASE 1 • DESARROLLADO</span>
           </div>
           <h2 class="card-title">Integral Definida y Área</h2>
           <p class="card-desc">
@@ -214,7 +214,7 @@
         <div>
           <div class="card-top">
             <span class="module-index">MÓDULO 06</span>
-            <span class="phase-badge badge-live">● Fase 1 Activo</span>
+            <span class="phase-badge badge-live">FASE 1 • DESARROLLADO</span>
           </div>
           <h2 class="card-title">Integración Directa</h2>
           <p class="card-desc">
@@ -233,186 +233,194 @@
         </div>
       </article>
 
-      <!-- MÓDULO 7 (Placeholder) -->
-      <article class="module-card placeholder-phase" data-phase="phase2">
+      <!-- MÓDULO 7 -->
+      <article class="module-card active-phase" data-phase="phase2">
         <div>
           <div class="card-top">
             <span class="module-index">MÓDULO 07</span>
-            <span class="phase-badge badge-upcoming">Fase 2 • Próximamente</span>
+            <span class="phase-badge badge-live">FASE 2 • DESARROLLADO</span>
           </div>
           <h2 class="card-title">Sustitución (Potencias)</h2>
           <p class="card-desc">
-            Método de sustitución algebraica elemental $u = g(x)$ para funciones con radicales y potencias compuestas.
+            Método de cambio de variable algebraico $u = g(x)$ para funciones con radicales y potencias compuestas con balanceo de diferenciales.
           </p>
           <ul class="card-features">
-            <li>Integrales tipo $\int \frac{x^2}{\sqrt{x^3 + 2}}\,dx$</li>
-            <li>Balanceo algebraico de diferenciales</li>
+            <li>Simulador interactivo con Plotly para funciones de potencia</li>
+            <li>Resolución y verificación de $\int \frac{x^2}{\sqrt{x^3 + 2}}dx$ y $\int (x+3)\sqrt{x^2+6x}dx$</li>
+            <li>Sustitución lineal con despeje en fracciones con binomios</li>
           </ul>
         </div>
         <div class="card-action">
-          <a href="modulos/modulo7/index.html" class="btn btn-secondary">
-            <span>Ver Planificación →</span>
+          <a href="modulos/modulo7/index.html" class="btn btn-primary">
+            <span>Explorar Módulo & Simulador →</span>
           </a>
         </div>
       </article>
 
-      <!-- MÓDULO 8 (Placeholder) -->
-      <article class="module-card placeholder-phase" data-phase="phase2">
+      <!-- MÓDULO 8 -->
+      <article class="module-card active-phase" data-phase="phase2">
         <div>
           <div class="card-top">
             <span class="module-index">MÓDULO 08</span>
-            <span class="phase-badge badge-upcoming">Fase 2 • Próximamente</span>
+            <span class="phase-badge badge-live">FASE 2 • DESARROLLADO</span>
           </div>
           <h2 class="card-title">Integrales Exponenciales</h2>
           <p class="card-desc">
-            Integración de funciones exponenciales de base natural $e^u$ y base general $a^x$ con sustituciones avanzadas.
+            Integración de exponenciales de base natural $e^u$ y base general $a^x$, productos de bases mixtas y artificios con denominadores hiperbólicos.
           </p>
           <ul class="card-features">
-            <li>Integrales $\int \frac{dx}{e^x + e^{-x}}$ y $\int 5^x e^x dx$</li>
-            <li>Modelado de crecimiento y saturación</li>
+            <li>Visualizador interactivo de familias de curvas exponenciales</li>
+            <li>Resolución paso a paso de $\int 5^x e^x dx$ y $\int \frac{dx}{e^x + e^{-x}}$</li>
+            <li>Desarrollo de binomios con potencias de base arbitraria</li>
           </ul>
         </div>
         <div class="card-action">
-          <a href="modulos/modulo8/index.html" class="btn btn-secondary">
-            <span>Ver Planificación →</span>
+          <a href="modulos/modulo8/index.html" class="btn btn-primary">
+            <span>Explorar Módulo & Simulador →</span>
           </a>
         </div>
       </article>
 
-      <!-- MÓDULO 9 (Placeholder) -->
-      <article class="module-card placeholder-phase" data-phase="phase2">
+      <!-- MÓDULO 9 -->
+      <article class="module-card active-phase" data-phase="phase2">
         <div>
           <div class="card-top">
             <span class="module-index">MÓDULO 09</span>
-            <span class="phase-badge badge-upcoming">Fase 2 • Próximamente</span>
+            <span class="phase-badge badge-live">FASE 2 • DESARROLLADO</span>
           </div>
           <h2 class="card-title">Integrales Logarítmicas</h2>
           <p class="card-desc">
-            Cuadraturas que conducen a logaritmos naturales $\int \frac{du}{u} = \ln|u| + C$ y fracciones algebraicas.
+            Tratamiento de la potencia singular $n = -1$, integración con valor absoluto $\ln|u|$ y descomposición de fracciones cuadráticas mixtas.
           </p>
           <ul class="card-features">
-            <li>Integrales tipo $\int \frac{dx}{x \ln x}$</li>
-            <li>Fracciones racionales con denominadores cuadráticos</li>
+            <li>Visualizador de singularidades y asíntotas con Plotly</li>
+            <li>Resolución de $\int \frac{dx}{x \ln x}$ y $\int \frac{dx}{x(\ln x)^2}$</li>
+            <li>Descomposición de numeradores lineales sobre trinomios irreducibles</li>
           </ul>
         </div>
         <div class="card-action">
-          <a href="modulos/modulo9/index.html" class="btn btn-secondary">
-            <span>Ver Planificación →</span>
+          <a href="modulos/modulo9/index.html" class="btn btn-primary">
+            <span>Explorar Módulo & Simulador →</span>
           </a>
         </div>
       </article>
 
-      <!-- MÓDULO 10 (Placeholder) -->
-      <article class="module-card placeholder-phase" data-phase="phase2">
+      <!-- MÓDULO 10 -->
+      <article class="module-card active-phase" data-phase="phase2">
         <div>
           <div class="card-top">
             <span class="module-index">MÓDULO 10</span>
-            <span class="phase-badge badge-upcoming">Fase 2 • Próximamente</span>
+            <span class="phase-badge badge-live">FASE 2 • DESARROLLADO</span>
           </div>
           <h2 class="card-title">Integrales Trigonométricas</h2>
           <p class="card-desc">
-            Integración de funciones circulares periódicas aplicando identidades pitagóricas y ángulo doble.
+            Integración de funciones circulares periódicas aplicando identidades pitagóricas, reducción de ángulo doble y sustitución en potencias de secante.
           </p>
           <ul class="card-features">
-            <li>Integrales de potencias de senos, cosenos y secantes</li>
-            <li>Sustitución en funciones trigonométricas directas</li>
+            <li>Visualizador de ondas sinusoidales y traslaciones periódicas</li>
+            <li>Resolución de $\int (\cos x - \sin x)^2 dx$ y $\int \frac{\sin 3x}{\cos^4 3x} dx$</li>
+            <li>Deducción canónica de la secante cúbica por partes</li>
           </ul>
         </div>
         <div class="card-action">
-          <a href="modulos/modulo10/index.html" class="btn btn-secondary">
-            <span>Ver Planificación →</span>
+          <a href="modulos/modulo10/index.html" class="btn btn-primary">
+            <span>Explorar Módulo & Simulador →</span>
           </a>
         </div>
       </article>
 
-      <!-- MÓDULO 11 (Placeholder) -->
-      <article class="module-card placeholder-phase" data-phase="phase2">
+      <!-- MÓDULO 11 -->
+      <article class="module-card active-phase" data-phase="phase2">
         <div>
           <div class="card-top">
             <span class="module-index">MÓDULO 11</span>
-            <span class="phase-badge badge-upcoming">Fase 2 • Próximamente</span>
+            <span class="phase-badge badge-live">FASE 2 • DESARROLLADO</span>
           </div>
           <h2 class="card-title">Trigonométricas Inversas</h2>
           <p class="card-desc">
-            Formas canónicas que generan arcosenos, arcotangentes y arcosecantes mediante sustitución directa y trigonométrica.
+            Formas canónicas cuadráticas que generan arcosenos, arcotangentes y arcosecantes mediante sustitución directa y algebraica.
           </p>
           <ul class="card-features">
-            <li>Integrales tipo $\int \frac{du}{\sqrt{a^2 - u^2}}$ y $\int \frac{du}{a^2 + u^2}$</li>
-            <li>Separación en sumas logarítmicas e inversas</li>
+            <li>Visualizador interactivo de formas canónicas en Plotly</li>
+            <li>Resolución de $\int \frac{3+x}{\sqrt{1-x^2}}dx$ y $\int \frac{2x-7}{x^2+9}dx$</li>
+            <li>Sustitución en funciones exponenciales y trigonométricas previas</li>
           </ul>
         </div>
         <div class="card-action">
-          <a href="modulos/modulo11/index.html" class="btn btn-secondary">
-            <span>Ver Planificación →</span>
+          <a href="modulos/modulo11/index.html" class="btn btn-primary">
+            <span>Explorar Módulo & Simulador →</span>
           </a>
         </div>
       </article>
 
-      <!-- MÓDULO 12 (Placeholder) -->
-      <article class="module-card placeholder-phase" data-phase="phase3">
+      <!-- MÓDULO 12 -->
+      <article class="module-card active-phase" data-phase="phase3">
         <div>
           <div class="card-top">
             <span class="module-index">MÓDULO 12</span>
-            <span class="phase-badge badge-upcoming">Fase 3 • Próximamente</span>
+            <span class="phase-badge badge-live">FASE 3 • DESARROLLADO</span>
           </div>
           <h2 class="card-title">Hiperbólicas Inversas</h2>
           <p class="card-desc">
-            Integración con radicales tipo $\sqrt{u^2 \pm a^2}$ expresadas en términos de logaritmos naturales y funciones catenarias.
+            Integración con radicales tipo $\sqrt{u^2 \pm a^2}$ expresadas en logaritmos naturales y modelado de curvas catenarias en ingeniería.
           </p>
           <ul class="card-features">
+            <li>Simulador de funciones inversas hiperbólicas con Plotly</li>
             <li>Resolución de $\int \frac{dx}{\sqrt{x^2 + 16}}$ y $\int \frac{dx}{\sqrt{4x^2 - 25}}$</li>
-            <li>Aplicaciones en líneas de transmisión y cables colgantes</li>
+            <li>Separación de numeradores mixtos y verificación analítica</li>
           </ul>
         </div>
         <div class="card-action">
-          <a href="modulos/modulo12/index.html" class="btn btn-secondary">
-            <span>Ver Planificación →</span>
+          <a href="modulos/modulo12/index.html" class="btn btn-primary">
+            <span>Explorar Módulo & Simulador →</span>
           </a>
         </div>
       </article>
 
-      <!-- MÓDULO 13 (Placeholder) -->
-      <article class="module-card placeholder-phase" data-phase="phase3">
+      <!-- MÓDULO 13 -->
+      <article class="module-card active-phase" data-phase="phase3">
         <div>
           <div class="card-top">
             <span class="module-index">MÓDULO 13</span>
-            <span class="phase-badge badge-upcoming">Fase 3 • Próximamente</span>
+            <span class="phase-badge badge-live">FASE 3 • DESARROLLADO</span>
           </div>
           <h2 class="card-title">Trinomios ax² + bx + c</h2>
           <p class="card-desc">
-            Completación de cuadrados en expresiones cuadráticas bajo raíces y en denominadores para reducir a formas canónicas conocidas.
+            Completación de cuadrados perfectos en trinomios cuadráticos bajo radicales y desacoplamiento de numeradores lineales $Ax + B$.
           </p>
           <ul class="card-features">
-            <li>Casos con discriminante positivo, negativo y nulo</li>
-            <li>Integrales con numeradores lineales tipo $Ax + B$</li>
+            <li>Visualizador dinámico de curvas cuadráticas con Plotly</li>
+            <li>Resolución de $\int \frac{2x+2}{\sqrt{x^2+2x-3}}dx$ y $\int \frac{x+2}{\sqrt{4x-x^2}}dx$</li>
+            <li>Tratamiento de casos con discriminante positivo y negativo</li>
           </ul>
         </div>
         <div class="card-action">
-          <a href="modulos/modulo13/index.html" class="btn btn-secondary">
-            <span>Ver Planificación →</span>
+          <a href="modulos/modulo13/index.html" class="btn btn-primary">
+            <span>Explorar Módulo & Simulador →</span>
           </a>
         </div>
       </article>
 
-      <!-- MÓDULO 14 (Placeholder) -->
-      <article class="module-card placeholder-phase" data-phase="phase3">
+      <!-- MÓDULO 14 -->
+      <article class="module-card active-phase" data-phase="phase3">
         <div>
           <div class="card-top">
             <span class="module-index">MÓDULO 14</span>
-            <span class="phase-badge badge-upcoming">Fase 3 • Próximamente</span>
+            <span class="phase-badge badge-live">FASE 3 • DESARROLLADO</span>
           </div>
           <h2 class="card-title">Integración por Partes</h2>
           <p class="card-desc">
-            Técnica $\int u\,dv = u v - \int v\,du$ basada en la regla mnemotécnica LIATE, integrales cíclicas y método tabular.
+            Técnica fundamental $\int u\,dv = uv - \int v\,du$, jerarquía mnemotécnica LIATE, integrales cíclicas recurrentes y método tabular.
           </p>
           <ul class="card-features">
-            <li>Integrales de productos $\int e^{ax} \cos(bx) dx$ y $\int x \arctan(x) dx$</li>
-            <li>Conexión con cálculo de volúmenes de revolución en Fase 3</li>
+            <li>Simulador de productos y antiderivadas en Plotly</li>
+            <li>Resolución de $\int x \arctan x dx$ y la cíclica $\int e^{ax}\cos(bx)dx$</li>
+            <li>Integrales de logaritmos cuadráticos y funciones compuestas</li>
           </ul>
         </div>
         <div class="card-action">
-          <a href="modulos/modulo14/index.html" class="btn btn-secondary">
-            <span>Ver Planificación →</span>
+          <a href="modulos/modulo14/index.html" class="btn btn-primary">
+            <span>Explorar Módulo & Simulador →</span>
           </a>
         </div>
       </article>

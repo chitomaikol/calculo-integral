@@ -5,14 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Módulo 12: Integrales que Conducen a Hiperbólicas Inversas | UTP Cálculo Integral</title>
   
+  <!-- Estilos del Sistema Global -->
   <link rel="stylesheet" href="../../css/style.css">
+  
+  <!-- CDN KaTeX para Renderizado Matemático Riguroso -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
-</head>
-<body>
 
-  <!-- Navbar -->
+  <!-- Plotly.js para Visualización Dinámica -->
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body class="dark-theme">
+
+  <!-- Barra Superior / Navbar -->
   <header class="navbar">
     <div class="container nav-container">
       <a href="../../index.html" class="brand-wrapper">
@@ -30,68 +36,387 @@
     </div>
   </header>
 
-  <!-- Vista Placeholder -->
-  <main class="container">
-    <div class="placeholder-view">
-      <div class="placeholder-badge">🔒 Fase 3 (Proyecto Final) • En Desarrollo</div>
-      <h1>Módulo 12: Integrales que Conducen a Hiperbólicas Inversas</h1>
-      <p style="font-size:1.15rem; max-width:680px; margin:0 auto; color:var(--text-muted);">
-        Resolución de integrales de campos hiperbólicos inversos expresadas en términos de logaritmos naturales.
-      </p>
-
-      <div class="placeholder-card">
-        <h2>📐 Modelo Matemático Principal</h2>
-        <div class="formula-box purple" style="font-size:1.15rem; text-align:center;">
-          $$\int \frac{du}{\sqrt{u^2 \pm a^2}} = \ln\left| u + \sqrt{u^2 \pm a^2} \right| + C$$
-        </div>
-
-        <h3 style="margin-top:2rem; font-size:1.1rem; color:var(--text-main);">📋 Contenidos Programados para esta Fase:</h3>
-        <ul class="placeholder-list">
-          <li><span class="bullet">✦</span> <span>Relación entre funciones hiperbólicas ($\sinh, \cosh$) y logaritmos</span></li>
-          <li><span class="bullet">✦</span> <span>Resolución de $\int \frac{dx}{\sqrt{x^2 + 16}}$ y $\int \frac{dx}{\sqrt{4x^2 - 25}}$</span></li>
-          <li><span class="bullet">✦</span> <span>Sustituciones hiperbólicas $u = a \sinh(t)$ y $u = a \cosh(t)$</span></li>
-          <li><span class="bullet">✦</span> <span>Comportamiento asintótico en el infinito</span></li>
-          <li><span class="bullet">✦</span> <span>Modelado de catenarias y líneas de transmisión eléctrica</span></li>
-        </ul>
-
-        <div style="background:rgba(56, 189, 248, 0.08); border-left:3px solid var(--accent-cyan); padding:1rem 1.25rem; border-radius:var(--radius-sm); margin-top:2rem;">
-          <strong style="color:var(--accent-cyan);">Nota de Planificación Curricular UTP:</strong>
-          <p style="font-size:0.9rem; margin-top:0.35rem; color:#cbd5e1;">
-            Este módulo se habilitará con sus simuladores interactivos, gráficos dinámicos y demostraciones paso a paso en las <strong>Fases 2 y 3</strong> del proyecto semestral CB215 Grupo 403.
+  <!-- Encabezado del Módulo -->
+  <header class="module-header">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Ruta de navegación">
+        <a href="../../index.html">Inicio</a>
+        <span>/</span>
+        <span>Fase 3: Métodos Avanzados</span>
+        <span>/</span>
+        <span style="color: var(--text-main);">Módulo 12: Hiperbólicas Inversas</span>
+      </nav>
+      <div class="module-header-content">
+        <div class="module-title-box">
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem;">
+            <span class="module-index">MÓDULO 12</span>
+            <span class="phase-badge badge-live">● Fase 3 Desarrollado</span>
+          </div>
+          <h1>Integrales que Conducen a Hiperbólicas Inversas</h1>
+          <p class="module-subtitle">
+            Cuadraturas canónicas con radicales tipo $\sqrt{u^2 \pm a^2}$, equivalencias con logaritmos naturales, modelado de curvas catenarias en ingeniería y sustituciones compuestas.
           </p>
         </div>
       </div>
+    </div>
+  </header>
 
-      <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;">
-        <a href="../../index.html" class="btn btn-primary" style="padding:0.75rem 2rem;">
-          <span>← Explorar Módulos Activos (1 a 6)</span>
-        </a>
-      </div>
+  <!-- Contenedor Principal -->
+  <main class="container">
+    <div class="module-layout-grid">
+
+      <!-- Panel Izquierdo: Visualizador Dinámico Plotly -->
+      <section class="simulator-panel card">
+        <div class="card-header">
+          <h2><span>⚡</span> Visualizador de Curvas Hiperbólicas</h2>
+          <span class="card-tag">Plotly.js Visualizer</span>
+        </div>
+
+        <!-- Controles Interactivos -->
+        <div class="controls-card">
+          <div class="control-group">
+            <label for="hypFunctionSelect" class="control-label">Seleccionar Función del Taller UTP:</label>
+            <select id="hypFunctionSelect" class="form-select">
+              <option value="arsinh_base">f(x) = 1 / √(x² + 16)  ⟹  F(x) = ln(x + √(x² + 16))</option>
+              <option value="hyp_mixed">f(x) = (x + 2) / √(x² + 9)  ⟹  F(x) = √(x² + 9) + 2 ln(x + √(x² + 9))</option>
+              <option value="arcosh_base">f(x) = 1 / √(4x² - 25)  ⟹  F(x) = (1/2) ln|2x + √(4x² - 25)|</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Constante de Integración (C):</span>
+              <span id="cHypValLabel" class="control-value">C = 0.0</span>
+            </div>
+            <input type="range" id="cHypSlider" class="form-range" min="-6" max="6" value="0" step="0.5">
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+              <input type="checkbox" id="showGhostHyp" checked style="cursor:pointer; accent-color:var(--accent-cyan);">
+              <span>Visualizar familia de curvas primitivas F(x) + C</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Métricas Analíticas -->
+        <div class="results-grid">
+          <div class="metric-box accent-value">
+            <div class="metric-title">Forma Inversa</div>
+            <div id="hypTypeDisplay" class="metric-value" style="font-size:0.95rem;">arsinh(x/4)</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Parámetro a</div>
+            <div id="paramADisplay" class="metric-value" style="font-size:0.95rem;">a = 4.0</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Simetría</div>
+            <div id="symmetryDisplay" class="metric-value" style="font-size:0.95rem;">Par en f(x)</div>
+          </div>
+        </div>
+
+        <!-- Espacio Preparado para Plotly -->
+        <div class="plotly-placeholder-wrapper">
+          <div class="plotly-placeholder-header">
+            <strong style="color:var(--accent-cyan); font-size:0.9rem;">Lienzo Gráfico Plotly: $f(x)$ vs $F(x) + C$</strong>
+            <span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);">Motor: Plotly SVG/Canvas</span>
+          </div>
+          <div id="plotlyChart" class="plot-container"></div>
+        </div>
+      </section>
+
+      <!-- Panel Derecho: Fundamento Teórico y Ejercicios Resueltos -->
+      <section class="theory-panel card">
+        <div class="card-header">
+          <h2><span>📖</span> Fundamentación Teórica Rigurosa</h2>
+          <span class="card-tag">Cálculo Diferencial e Integral</span>
+        </div>
+
+        <div class="card-body">
+          <div class="theory-text">
+            <p>
+              Las funciones hiperbólicas $\sinh(t) = \frac{e^t - e^{-t}}{2}$ y $\cosh(t) = \frac{e^t + e^{-t}}{2}$ cumplen la identidad fundamental $\cosh^2(t) - \sinh^2(t) = 1$. Mediante sustituciones hiperbólicas o relaciones logarítmicas directas, las cuadraturas con signos positivos bajo el radical se expresan rigurosamente como:
+            </p>
+          </div>
+
+          <div class="formula-box purple">
+            $$\begin{aligned}
+              \int \frac{du}{\sqrt{u^2 + a^2}} &= \ln\left(u + \sqrt{u^2 + a^2}\right) + C = \text{arsinh}\left(\frac{u}{a}\right) + C_1 \\
+              \int \frac{du}{\sqrt{u^2 - a^2}} &= \ln\left|u + \sqrt{u^2 - a^2}\right| + C = \text{arcosh}\left(\frac{u}{a}\right) + C_1 \quad (|u| > a)
+            \end{aligned}$$
+          </div>
+
+          <div class="theory-text">
+            <p>
+              Para expresiones sin radical en el denominador con diferencia de cuadrados, la descomposición en fracciones parciales conduce a la forma del <strong>área tangente hiperbólica</strong>:
+            </p>
+          </div>
+
+          <div class="formula-box amber">
+            $$\int \frac{du}{a^2 - u^2} = \frac{1}{2a}\ln\left|\frac{a + u}{a - u}\right| + C = \frac{1}{a}\text{artanh}\left(\frac{u}{a}\right) + C_1 \quad (|u| < a)$$
+          </div>
+
+          <!-- Aplicación en Ingeniería -->
+          <div style="background:rgba(15, 23, 42, 0.6); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:1rem 1.25rem;">
+            <h4 style="color:var(--accent-cyan); font-size:0.95rem; margin-bottom:0.5rem;">🏗️ Aplicación en Ingeniería: La Catenaria</h4>
+            <p style="font-size:0.875rem; color:var(--text-muted); line-height:1.6;">
+              El cable de una línea de transmisión suspendido entre dos torres adopta la curva $y = a\cosh(x/a)$. La longitud de arco y las tensiones estructurales se calculan resolviendo integrales de la forma $\int \sqrt{1 + (y')^2}dx = \int \cosh(x/a)dx = a\sinh(x/a)$.
+            </p>
+          </div>
+
+          <!-- Sección de Ejercicios del Taller Oficial -->
+          <div class="examples-section">
+            <h3 style="color:var(--text-main); font-size:1.15rem; margin-bottom:1rem;">
+              <span>📝</span> Ejercicios Resueltos Paso a Paso (Taller Oficial UTP)
+            </h3>
+
+            <!-- Ejemplo 1: Ejercicio 1 del Taller -->
+            <article class="example-card">
+              <div class="example-header">
+                <span>Ejercicio 1: Radical Cuadrático Positivo Puro</span>
+                <span class="card-tag">Taller XII - Ej. 1</span>
+              </div>
+              <div class="formula-box" style="margin:0.5rem 0;">
+                $$\int \frac{dx}{\sqrt{x^2 + 16}}$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 1: Identificación del parámetro canónico:</strong><br>
+                Reconocemos la forma estándar $\int \frac{du}{\sqrt{u^2 + a^2}}$ donde $u = x$ y $a^2 = 16 \implies a = 4$.
+              </div>
+              <div class="example-step">
+                <strong>Paso 2: Aplicación directa de la fórmula hiperbólica inversa / logarítmica:</strong><br>
+                $$\int \frac{dx}{\sqrt{x^2 + 4^2}} = \ln\left(x + \sqrt{x^2 + 16}\right) + C$$
+              </div>
+              <div class="example-step" style="border-left-color:var(--accent-teal);">
+                <strong style="color:var(--accent-teal);">Verificación por Derivación:</strong><br>
+                $$\frac{d}{dx}\left[ \ln\left(x + \sqrt{x^2 + 16}\right) \right] = \frac{1 + \frac{2x}{2\sqrt{x^2 + 16}}}{x + \sqrt{x^2 + 16}} = \frac{\frac{\sqrt{x^2 + 16} + x}{\sqrt{x^2 + 16}}}{x + \sqrt{x^2 + 16}} = \frac{1}{\sqrt{x^2 + 16}} \quad \checkmark$$
+              </div>
+            </article>
+
+            <!-- Ejemplo 2: Ejercicio 2 del Taller -->
+            <article class="example-card">
+              <div class="example-header">
+                <span>Ejercicio 2: Coeficiente Cuadrático Distinto de la Unidad</span>
+                <span class="card-tag">Taller XII - Ej. 2</span>
+              </div>
+              <div class="formula-box" style="margin:0.5rem 0;">
+                $$\int \frac{dx}{\sqrt{4x^2 - 25}}$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 1: Factorización o sustitución lineal previa:</strong><br>
+                Sea $u = 2x \implies u^2 = 4x^2$.<br>
+                Diferenciando: $du = 2\,dx \implies dx = \frac{du}{2}$.<br>
+                La constante es $a^2 = 25 \implies a = 5$.
+              </div>
+              <div class="example-step">
+                <strong>Paso 2: Transformación e integración canónica:</strong><br>
+                $$\int \frac{\frac{du}{2}}{\sqrt{u^2 - 5^2}} = \frac{1}{2}\int \frac{du}{\sqrt{u^2 - 5^2}} = \frac{1}{2}\ln\left|u + \sqrt{u^2 - 25}\right| + C$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 3: Retorno a la variable original $x$:</strong><br>
+                $$\frac{1}{2}\ln\left|2x + \sqrt{4x^2 - 25}\right| + C$$
+              </div>
+              <div class="example-step" style="border-left-color:var(--accent-teal);">
+                <strong style="color:var(--accent-teal);">Verificación por Derivación:</strong><br>
+                $$\frac{d}{dx}\left[ \frac{1}{2}\ln|2x + \sqrt{4x^2 - 25}| \right] = \frac{1}{2} \cdot \frac{2 + \frac{8x}{2\sqrt{4x^2 - 25}}}{2x + \sqrt{4x^2 - 25}} = \frac{1}{\sqrt{4x^2 - 25}} \quad \checkmark$$
+              </div>
+            </article>
+
+            <!-- Ejemplo 3: Ejercicio 3 del Taller -->
+            <article class="example-card">
+              <div class="example-header">
+                <span>Ejercicio 3: Numerador Mixto Lineal y Radical</span>
+                <span class="card-tag">Taller XII - Ej. 3</span>
+              </div>
+              <div class="formula-box" style="margin:0.5rem 0;">
+                $$\int \frac{x + 2}{\sqrt{x^2 + 9}}\,dx$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 1: Separación de la suma en dos integrales independientes:</strong><br>
+                $$\int \frac{x + 2}{\sqrt{x^2 + 9}}\,dx = \int \frac{x}{\sqrt{x^2 + 9}}\,dx + 2\int \frac{dx}{\sqrt{x^2 + 9}}$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 2: Evaluación por métodos específicos:</strong><br>
+                - Término 1: Regla de potencia con $w = x^2 + 9 \implies dw = 2x\,dx$:
+                $$\int \frac{x}{\sqrt{x^2 + 9}}\,dx = \frac{1}{2}\int w^{-1/2}\,dw = w^{1/2} = \sqrt{x^2 + 9}$$
+                - Término 2: Hiperbólica inversa estándar con $a = 3$:
+                $$2\int \frac{dx}{\sqrt{x^2 + 3^2}} = 2\ln\left(x + \sqrt{x^2 + 9}\right)$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 3: Expresión consolidada final:</strong><br>
+                $$\sqrt{x^2 + 9} + 2\ln\left(x + \sqrt{x^2 + 9}\right) + C$$
+              </div>
+            </article>
+
+            <!-- Ejemplo 4: Ejercicio 4 del Taller -->
+            <article class="example-card">
+              <div class="example-header">
+                <span>Ejercicio 4: Forma Paramétrica General con Coeficientes Literales</span>
+                <span class="card-tag">Taller XII - Ej. 4</span>
+              </div>
+              <div class="formula-box" style="margin:0.5rem 0;">
+                $$\int \frac{dx}{\sqrt{b^2 x^2 - a^2}} \quad (b > 0, \, a > 0)$$
+              </div>
+              <div class="example-step">
+                <strong>Paso 1: Sustitución de escala:</strong><br>
+                Sea $u = bx \implies du = b\,dx \implies dx = \frac{du}{b}$.
+              </div>
+              <div class="example-step">
+                <strong>Paso 2: Integración inmediata:</strong><br>
+                $$\frac{1}{b}\int \frac{du}{\sqrt{u^2 - a^2}} = \frac{1}{b}\ln\left|u + \sqrt{u^2 - a^2}\right| + C = \frac{1}{b}\ln\left|bx + \sqrt{b^2 x^2 - a^2}\right| + C$$
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
 
-  <!-- Footer -->
+  <!-- Pie de Página Institucional -->
   <footer class="footer">
     <div class="container footer-content">
       <div class="footer-brand">
         <h4>Universidad Tecnológica de Pereira</h4>
-        <p>Facultad de Ciencias Básicas • Departamento de Matemáticas • CB215 Matemáticas II</p>
+        <p>Facultad de Ciencias Básicas • Departamento de Matemáticas • CB215 Cálculo Integral</p>
       </div>
       <div class="footer-links">
         <a href="../../index.html">Menú Principal</a>
-        <a href="../modulo1/index.html">Módulo 1: Riemann</a>
-        <a href="../modulo6/index.html">Módulo 6: Integración Directa</a>
+        <a href="../modulo11/index.html">Módulo 11: Trigonométricas Inversas</a>
+        <a href="../modulo13/index.html">Módulo 13: Trinomios ax² + bx + c</a>
       </div>
     </div>
     <div class="footer-bottom container">
-      <p>© 2026 Plataforma de Cálculo Integral + Software - UTP. Desarrollado para Evaluación Parcial 1.</p>
+      <p>© 2026 Plataforma de Cálculo Integral + Desarrollo de Software - UTP. Fase 3 Curricular.</p>
     </div>
   </footer>
 
+  <!-- Scripts de Utilidades y Renderizado Matemático / Gráfico -->
   <script src="../../js/utils.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // 1. Renderizado Automático KaTeX
       UTPMath.renderAllMath();
+
+      // 2. Modelo de Funciones Hiperbólicas para Plotly.js
+      const hypModels = {
+        'arsinh_base': {
+          title: 'f(x) = 1 / √(x² + 16)',
+          hypType: 'arsinh(x/4)',
+          paramA: 'a = 4.0',
+          sym: 'Par en f(x) (f(-x) = f(x))',
+          xRange: [-8, 8],
+          f: (x) => 1 / Math.sqrt(x * x + 16),
+          F: (x, C) => Math.log(x + Math.sqrt(x * x + 16)) + C
+        },
+        'hyp_mixed': {
+          title: 'f(x) = (x+2)/√(x²+9)',
+          hypType: '√(x²+9) + 2 arsinh(x/3)',
+          paramA: 'a = 3.0',
+          sym: 'Asimétrica (Término Lineal)',
+          xRange: [-6, 6],
+          f: (x) => (x + 2) / Math.sqrt(x * x + 9),
+          F: (x, C) => Math.sqrt(x * x + 9) + 2 * Math.log(x + Math.sqrt(x * x + 9)) + C
+        },
+        'arcosh_base': {
+          title: 'f(x) = 1 / √(4x² - 25)',
+          hypType: '(1/2) arcosh(2x/5)',
+          paramA: 'a = 5/2 = 2.5',
+          sym: 'Definida para |x| > 2.5',
+          xRange: [2.55, 8],
+          f: (x) => 1 / Math.sqrt(Math.max(0.001, 4 * x * x - 25)),
+          F: (x, C) => 0.5 * Math.log(2 * x + Math.sqrt(Math.max(0, 4 * x * x - 25))) + C
+        }
+      };
+
+      const selectEl = document.getElementById('hypFunctionSelect');
+      const cSlider = document.getElementById('cHypSlider');
+      const cLabel = document.getElementById('cHypValLabel');
+      const ghostCheck = document.getElementById('showGhostHyp');
+      const hypDisp = document.getElementById('hypTypeDisplay');
+      const paramDisp = document.getElementById('paramADisplay');
+      const symDisp = document.getElementById('symmetryDisplay');
+
+      function updatePlot() {
+        const selectedKey = selectEl.value;
+        const model = hypModels[selectedKey];
+        const C = parseFloat(cSlider.value);
+        const showGhosts = ghostCheck.checked;
+
+        cLabel.textContent = `C = ${C >= 0 ? '+' : ''}${C.toFixed(1)}`;
+        hypDisp.textContent = model.hypType;
+        paramDisp.textContent = model.paramA;
+        symDisp.textContent = model.sym;
+
+        const steps = 180;
+        const [xMin, xMax] = model.xRange;
+        const dx = (xMax - xMin) / steps;
+        const curveX = [];
+        const curveYf = [];
+        const curveYF = [];
+
+        for (let i = 0; i <= steps; i++) {
+          const x = xMin + i * dx;
+          curveX.push(x);
+          curveYf.push(model.f(x));
+          curveYF.push(model.F(x, C));
+        }
+
+        const traces = [];
+
+        // Familia Fantasma
+        if (showGhosts) {
+          const ghosts = [-4, -2, 0, 2, 4];
+          ghosts.forEach(cVal => {
+            if (Math.abs(cVal - C) > 0.4) {
+              traces.push({
+                x: curveX,
+                y: curveX.map(x => model.F(x, cVal)),
+                type: 'scatter',
+                mode: 'lines',
+                name: `F(x) + (${cVal})`,
+                line: { color: 'rgba(148, 163, 184, 0.22)', width: 1.2, dash: 'dash' },
+                hoverinfo: 'none',
+                showlegend: false
+              });
+            }
+          });
+        }
+
+        // Función Original f(x)
+        traces.push({
+          x: curveX,
+          y: curveYf,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'f(x) [Derivada]',
+          line: { color: '#f59e0b', width: 2.2, dash: 'dot' }
+        });
+
+        // Curva Primitiva Activa F(x) + C
+        traces.push({
+          x: curveX,
+          y: curveYF,
+          type: 'scatter',
+          mode: 'lines',
+          name: `F(x) + C (C=${C.toFixed(1)})`,
+          line: { color: '#38bdf8', width: 3.2 }
+        });
+
+        const layout = UTPMath.getPlotlyLayout({
+          title: `Hiperbólicas Inversas: ${model.title}`,
+          xTitle: 'x',
+          yTitle: 'y'
+        });
+
+        Plotly.react('plotlyChart', traces, layout, { responsive: true, displayModeBar: false });
+      }
+
+      selectEl.addEventListener('change', updatePlot);
+      cSlider.addEventListener('input', updatePlot);
+      ghostCheck.addEventListener('change', updatePlot);
+
+      updatePlot();
     });
   </script>
 </body>
