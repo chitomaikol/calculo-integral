@@ -598,12 +598,16 @@ a:hover {
 /* Grilla del Módulo: Simulador a un lado, Teoría y Ejemplos */
 .module-layout-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 2rem;
   margin-bottom: 3.5rem;
 }
 
-@media (max-width: 1024px) {
+.module-layout-grid > * {
+  min-width: 0;
+}
+
+@media (max-width: 1200px) {
   .module-layout-grid {
     grid-template-columns: 1fr;
   }
@@ -1080,3 +1084,38 @@ body.dark-theme {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+
+
+/* ==========================================================================
+   Lienzos gráficos: tamaño adecuado y responsive
+   ========================================================================== */
+.plotly-placeholder-wrapper {
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.plotly-placeholder-wrapper .plot-container,
+.plot-container {
+  min-height: 420px;
+  height: 520px;
+}
+
+.plot-container .js-plotly-plot,
+.plot-container .plotly {
+  width: 100% !important;
+}
+
+@media (max-width: 768px) {
+  .simulator-panel, .theory-panel, .card {
+    padding: 1rem;
+  }
+  .plotly-placeholder-wrapper {
+    padding: 0.5rem;
+  }
+  .plotly-placeholder-wrapper .plot-container,
+  .plot-container {
+    min-height: 340px;
+    height: 400px;
+  }
+}
