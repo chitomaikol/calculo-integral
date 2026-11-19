@@ -29,7 +29,11 @@ El código está estructurado de forma limpia y desacoplada, sin requerir compil
 ├── css/
 │   └── style.css               # Sistema de diseño global (Dark Tech, Glassmorphism, Responsive)
 ├── js/
-│   └── utils.js                # Motores de cálculo numérico, evaluador y tema de Plotly
+│   ├── utils.js                # Motores de cálculo numérico, evaluador y tema de Plotly
+│   └── calc3d.js               # Motor 3D: parser de f(x,y), derivadas parciales, integral doble
+├── calculadora3d/              # Calculadora Tridimensional (superficies e integrales dobles)
+│   ├── index.html
+│   └── calc3d-ui.js
 └── modulos/
     ├── modulo1/                # Sumas de Riemann (Izquierda, Derecha, Punto Medio)
     │   └── index.html
@@ -105,6 +109,15 @@ El código está estructurado de forma limpia y desacoplada, sin requerir compil
   2. $\int (\frac{3}{x^2} - \frac{9}{\sqrt{x}}) dx = -\frac{3}{x} - 18\sqrt{x} + C$.
   3. $\int (x-1)(x+1) dx = \frac{x^3}{3} - x + C$.  
   *Todos verificados rigurosamente por derivación.*
+
+---
+
+### Herramienta: Calculadora Tridimensional (`calculadora3d/`)
+- **Superficies:** grafica $z=f(x,y)$ (Plotly 3D) con curvas de nivel y plano tangente.
+- **Integral doble:** $\iint_R f\,dA$ sobre regiones tipo I ($g_1(x)\le y\le g_2(x)$) por **Simpson 2D** y **Punto Medio 2D**, con área de la región y comparación entre métodos.
+- **Cálculo multivariable:** $f_x$, $f_y$, $
+abla f$, $f_{xx}$, $f_{yy}$, $f_{xy}$, discriminante $D$ y clasificación de puntos críticos.
+- **Seguridad:** las expresiones se interpretan con un parser propio (`js/calc3d.js`), sin `eval`.
 
 ---
 

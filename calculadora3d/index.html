@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora 3D: Superficies e Integrales Dobles | UTP Cálculo Integral</title>
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    .row3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; }
+    .small-label { font-size: .78rem; color: var(--text-muted); margin-bottom: .25rem; display: block; }
+    .calc-error { color: #f43f5e; font-size: .85rem; min-height: 1.2rem; margin-top: .4rem; }
+    .plot-3d { width: 100%; height: 520px; border-radius: 12px; overflow: hidden; }
+    .tab-bar { display: flex; gap: .5rem; margin: 1rem 0 .5rem; flex-wrap: wrap; }
+    .tab-bar button { cursor: pointer; }
+    .result-note { font-size: .82rem; color: var(--text-muted); margin-top: .5rem; }
+    @media (max-width: 600px) { .row3 { grid-template-columns: 1fr 1fr; } .plot-3d { height: 380px; } }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="../index.html" class="brand-wrapper">
+        <div class="brand-logo-badge">∫</div>
+        <div class="brand-text">
+          <h1>Cálculo Integral + Software</h1>
+          <span>Universidad Tecnológica de Pereira</span>
+        </div>
+      </a>
+      <div class="nav-actions">
+        <a href="../index.html" class="btn btn-secondary"><span>← Volver al Menú Principal</span></a>
+      </div>
+    </div>
+  </header>
+
+  <div class="module-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="../index.html">Inicio</a><span>/</span>
+        <span>Herramientas</span><span>/</span>
+        <span style="color: var(--text-main);">Calculadora Tridimensional</span>
+      </div>
+      <div class="module-header-content">
+        <div class="module-title-box">
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.5rem;">
+            <span class="module-index">HERRAMIENTA 3D</span>
+            <span class="phase-badge badge-live">● Activo</span>
+          </div>
+          <h1>Calculadora Tridimensional</h1>
+          <p class="module-subtitle">Grafique superficies $z = f(x,y)$, calcule integrales dobles sobre regiones tipo I (Simpson 2D y Punto Medio 2D), derivadas parciales, gradiente, plano tangente y clasifique puntos críticos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+    <div class="module-layout-grid">
+
+      <!-- Panel izquierdo: calculadora -->
+      <section class="simulator-panel">
+        <div class="panel-header">
+          <h2><span>🧊</span> Superficie e Integral Doble</h2>
+          <span style="font-size:.8rem; color:var(--text-muted); font-family:var(--font-mono);">3D Engine</span>
+        </div>
+
+        <div class="controls-card">
+          <div class="control-group">
+            <label class="control-label" for="presetSel">Ejemplos predefinidos:</label>
+            <select id="presetSel" class="form-select"></select>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="fInput">f(x, y) =</label>
+            <input id="fInput" class="form-input" type="text" value="x^2 + y^2" spellcheck="false" autocomplete="off">
+            <span class="small-label" style="margin-top:.3rem;">Use x, y, pi, e, ^, sin, cos, tan, exp, ln, sqrt, abs… (ej. <code>2x*sin(y)</code>, <code>exp(-(x^2+y^2))</code>)</span>
+          </div>
+
+          <div class="row2">
+            <div class="control-group">
+              <label class="small-label" for="aInput">x desde (a)</label>
+              <input id="aInput" class="form-input" type="text" value="0">
+            </div>
+            <div class="control-group">
+              <label class="small-label" for="bInput">x hasta (b)</label>
+              <input id="bInput" class="form-input" type="text" value="1">
+            </div>
+          </div>
+          <div class="row2">
+            <div class="control-group">
+              <label class="small-label" for="ylInput">y desde: g₁(x)</label>
+              <input id="ylInput" class="form-input" type="text" value="0">
+            </div>
+            <div class="control-group">
+              <label class="small-label" for="yhInput">y hasta: g₂(x)</label>
+              <input id="yhInput" class="form-input" type="text" value="x">
+            </div>
+          </div>
+          <span class="small-label">Región tipo I: $a \le x \le b,\; g_1(x) \le y \le g_2(x)$. Para un rectángulo use constantes.</span>
+
+          <div class="control-group" style="margin-top:.75rem;">
+            <div class="control-label">
+              <span>Subdivisiones n (por eje):</span>
+              <span id="nDisplay" class="control-value">n = 20</span>
+            </div>
+            <input type="range" id="nSlider" class="form-range" min="2" max="200" step="2" value="20">
+          </div>
+
+          <div class="row3">
+            <div class="control-group">
+              <label class="small-label" for="x0Input">Punto x₀</label>
+              <input id="x0Input" class="form-input" type="text" value="0.5">
+            </div>
+            <div class="control-group">
+              <label class="small-label" for="y0Input">Punto y₀</label>
+              <input id="y0Input" class="form-input" type="text" value="0.25">
+            </div>
+            <div class="control-group">
+              <label class="small-label">&nbsp;</label>
+              <button id="calcBtn" class="btn btn-primary" style="width:100%;">Calcular</button>
+            </div>
+          </div>
+          <div id="errorMsg" class="calc-error" role="alert"></div>
+        </div>
+
+        <div class="results-grid">
+          <div class="metric-box accent-value">
+            <div class="metric-title">∬ f dA (Simpson 2D)</div>
+            <div id="simpVal" class="metric-value">—</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">∬ f dA (Punto Medio 2D)</div>
+            <div id="midVal" class="metric-value">—</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-title">Área de la región R</div>
+            <div id="areaVal" class="metric-value">—</div>
+          </div>
+          <div class="metric-box error-box">
+            <div class="metric-title">Diferencia |Simpson − Medio|</div>
+            <div id="diffVal" class="metric-value">—</div>
+          </div>
+        </div>
+
+        <div class="tab-bar">
+          <button class="btn btn-primary" id="tabSurface">Superficie 3D</button>
+          <button class="btn btn-secondary" id="tabContour">Curvas de nivel</button>
+          <label style="display:flex; align-items:center; gap:.4rem; font-size:.85rem; color:var(--text-muted);">
+            <input type="checkbox" id="tangentChk"> Plano tangente en (x₀, y₀)
+          </label>
+        </div>
+        <div id="plot3d" class="plot-3d"></div>
+      </section>
+
+      <!-- Panel derecho: análisis diferencial + teoría -->
+      <section class="theory-panel">
+        <div class="panel-header">
+          <h2><span>📐</span> Análisis en el punto $(x_0, y_0)$</h2>
+          <span style="font-size:.8rem; color:var(--accent-cyan); font-weight:600;">UTP CB215</span>
+        </div>
+
+        <div class="results-grid">
+          <div class="metric-box"><div class="metric-title">f(x₀, y₀)</div><div id="mF" class="metric-value">—</div></div>
+          <div class="metric-box"><div class="metric-title">∂f/∂x</div><div id="mFx" class="metric-value">—</div></div>
+          <div class="metric-box"><div class="metric-title">∂f/∂y</div><div id="mFy" class="metric-value">—</div></div>
+          <div class="metric-box"><div class="metric-title">‖∇f‖</div><div id="mGrad" class="metric-value">—</div></div>
+          <div class="metric-box"><div class="metric-title">f_xx</div><div id="mFxx" class="metric-value">—</div></div>
+          <div class="metric-box"><div class="metric-title">f_yy</div><div id="mFyy" class="metric-value">—</div></div>
+          <div class="metric-box"><div class="metric-title">f_xy</div><div id="mFxy" class="metric-value">—</div></div>
+          <div class="metric-box"><div class="metric-title">D = f_xx f_yy − f_xy²</div><div id="mD" class="metric-value">—</div></div>
+        </div>
+        <div class="formula-box" style="margin-top:.75rem;">
+          <strong>Clasificación:</strong> <span id="mNature">—</span><br>
+          <strong>Plano tangente:</strong> <span id="mPlane">—</span>
+        </div>
+
+        <div class="theory-text">
+          <div class="formula-box amber">
+            <strong>Integral doble (Teorema de Fubini, región tipo I):</strong>
+            $$\iint_R f(x,y)\,dA = \int_a^b \int_{g_1(x)}^{g_2(x)} f(x,y)\,dy\,dx$$
+          </div>
+          <div class="formula-box">
+            <strong>Punto medio 2D:</strong> $\displaystyle \iint_R f\,dA \approx \sum_{i}\sum_{j} f(\bar x_i,\bar y_j)\,\Delta x\,\Delta y$<br>
+            <strong>Simpson 2D:</strong> se aplica la regla de Simpson 1/3 a la integral interior y luego a la exterior (n par).
+          </div>
+          <div class="formula-box purple">
+            <strong>Plano tangente:</strong>
+            $$z = f(x_0,y_0) + f_x(x_0,y_0)(x-x_0) + f_y(x_0,y_0)(y-y_0)$$
+            <strong>Criterio de la segunda derivada:</strong> con $\nabla f = 0$, si $D>0$ y $f_{xx}>0$ → mínimo; $D>0$ y $f_{xx}<0$ → máximo; $D<0$ → punto silla.
+          </div>
+          <p>
+            <strong>Interpretación:</strong> si $f \ge 0$ sobre $R$, la integral doble es el <em>volumen</em> del sólido bajo la superficie $z=f(x,y)$ y sobre $R$. Si la función cambia de signo, el resultado es un volumen con signo.
+          </p>
+        </div>
+
+        <div class="examples-section">
+          <h3><span>📝</span> Ejemplo resuelto</h3>
+          <div class="example-card">
+            <div class="example-header"><span>$\displaystyle\iint_R (x^2+y^2)\,dA$, &nbsp; $0\le x\le 1,\; 0\le y\le x$</span></div>
+            <div class="example-step">
+              <strong>Paso 1 (planteamiento):</strong>
+              $$\int_0^1\!\int_0^x (x^2+y^2)\,dy\,dx$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 2 (integral interior):</strong>
+              $$\int_0^x (x^2+y^2)\,dy = x^2y+\frac{y^3}{3}\Big|_0^x = x^3+\frac{x^3}{3}=\frac{4x^3}{3}$$
+            </div>
+            <div class="example-step">
+              <strong>Paso 3 (integral exterior):</strong>
+              $$\int_0^1 \frac{4x^3}{3}\,dx=\frac{x^4}{3}\Big|_0^1=\mathbf{\frac{1}{3}}\approx 0.333333$$
+              Cargue el preset «Región triangular» y compare con la calculadora.
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <h4>Universidad Tecnológica de Pereira</h4>
+        <p>Facultad de Ciencias Básicas • Departamento de Matemáticas • CB215 Matemáticas II</p>
+      </div>
+      <div class="footer-links">
+        <a href="../modulos/modulo6/index.html">← Módulo 6</a>
+        <a href="../index.html">Menú Principal</a>
+      </div>
+    </div>
+    <div class="footer-bottom container">
+      <p>© 2026 Plataforma de Cálculo Integral + Software - UTP.</p>
+    </div>
+  </footer>
+
+  <script src="../js/utils.js"></script>
+  <script src="../js/calc3d.js"></script>
+  <script src="calc3d-ui.js"></script>
+</body>
+</html>
